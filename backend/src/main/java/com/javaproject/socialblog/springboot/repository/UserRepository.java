@@ -1,19 +1,15 @@
 package com.javaproject.socialblog.springboot.repository;
 
 import com.javaproject.socialblog.springboot.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-/**
- * Created on Ağustos, 2020
- *
- * @author Faruk
- */
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends MongoRepository<User, ObjectId> {
 
-	User findByUsername(String username);
+    User findByUsername(String username);
 
-	boolean existsByEmail(String email);
+    boolean existsByEmail(String email);
 
-	boolean existsByUsername(String username);
+    boolean existsByUsername(String username);
 
 }

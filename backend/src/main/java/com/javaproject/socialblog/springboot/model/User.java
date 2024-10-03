@@ -1,37 +1,35 @@
 package com.javaproject.socialblog.springboot.model;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
-/**
- * Created on Ağustos, 2020
- *
- * @author Faruk
- */
-@Getter
-@Setter
-@Entity
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "USERS")
+@Document(collection = "users")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private ObjectId id;
 
-	private String name;
+    private String name;
 
-	@Column(unique = true)
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private String email;
+    private String email;
 
-	@Enumerated(EnumType.STRING)
-	private UserRole userRole;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 
 }

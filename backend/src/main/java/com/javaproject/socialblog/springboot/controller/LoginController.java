@@ -12,25 +12,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created on Ağustos, 2020
- *
- * @author Faruk
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/login")
 public class LoginController {
 
-	private final JwtTokenService jwtTokenService;
+    private final JwtTokenService jwtTokenService;
 
-	@PostMapping
-	@Operation(tags = "Login Service", description = "You must log in with the correct information to successfully obtain the token information.")
-	public ResponseEntity<LoginResponse> loginRequest(@Valid @RequestBody LoginRequest loginRequest) {
+    @PostMapping
+    @Operation(tags = "Login Service", description = "You must log in with the correct information to successfully obtain the token information.")
+    public ResponseEntity<LoginResponse> loginRequest(@Valid @RequestBody LoginRequest loginRequest) {
 
-		final LoginResponse loginResponse = jwtTokenService.getLoginResponse(loginRequest);
+        final LoginResponse loginResponse = jwtTokenService.getLoginResponse(loginRequest);
 
-		return ResponseEntity.ok(loginResponse);
-	}
+        return ResponseEntity.ok(loginResponse);
+    }
 
 }

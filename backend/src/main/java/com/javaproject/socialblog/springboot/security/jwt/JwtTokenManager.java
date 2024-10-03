@@ -11,23 +11,18 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-/**
- * Created on Ağustos, 2020
- *
- * @author Faruk
- */
 @Component
 @RequiredArgsConstructor
 public class JwtTokenManager {
 
-	private final JwtProperties jwtProperties;
+    private final JwtProperties jwtProperties;
 
-	public String generateToken(User user) {
+    public String generateToken(User user) {
 
-		final String username = user.getUsername();
-		final UserRole userRole = user.getUserRole();
+        final String username = user.getUsername();
+        final UserRole userRole = user.getUserRole();
 
-		//@formatter:off
+        //@formatter:off
 		return JWT.create()
 				.withSubject(username)
 				.withIssuer(jwtProperties.getIssuer())
@@ -36,43 +31,43 @@ public class JwtTokenManager {
 				.withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpirationMinute() * 60 * 1000))
 				.sign(Algorithm.HMAC256(jwtProperties.getSecretKey().getBytes()));
 		//@formatter:on
-	}
+    }
 
-	public String getUsernameFromToken(String token) {
+    public String getUsernameFromToken(String token) {
 
-		final DecodedJWT decodedJWT = getDecodedJWT(token);
+        final DecodedJWT decodedJWT = getDecodedJWT(token);
 
-		return decodedJWT.getSubject();
-	}
+        return decodedJWT.getSubject();
+    }
 
-	public boolean validateToken(String token, String authenticatedUsername) {
+    public boolean validateToken(String token, String authenticatedUsername) {
 
-		final String usernameFromToken = getUsernameFromToken(token);
+        final String usernameFromToken = getUsernameFromToken(token);
 
-		final boolean equalsUsername = usernameFromToken.equals(authenticatedUsername);
-		final boolean tokenExpired = isTokenExpired(token);
+        final boolean equalsUsername = usernameFromToken.equals(authenticatedUsername);
+        final boolean tokenExpired = isTokenExpired(token);
 
-		return equalsUsername && !tokenExpired;
-	}
+        return equalsUsername && !tokenExpired;
+    }
 
-	private boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) {
 
-		final Date expirationDateFromToken = getExpirationDateFromToken(token);
-		return expirationDateFromToken.before(new Date());
-	}
+        final Date expirationDateFromToken = getExpirationDateFromToken(token);
+        return expirationDateFromToken.before(new Date());
+    }
 
-	private Date getExpirationDateFromToken(String token) {
+    private Date getExpirationDateFromToken(String token) {
 
-		final DecodedJWT decodedJWT = getDecodedJWT(token);
+        final DecodedJWT decodedJWT = getDecodedJWT(token);
 
-		return decodedJWT.getExpiresAt();
-	}
+        return decodedJWT.getExpiresAt();
+    }
 
-	private DecodedJWT getDecodedJWT(String token) {
+    private DecodedJWT getDecodedJWT(String token) {
 
-		final JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(jwtProperties.getSecretKey().getBytes())).build();
+        final JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(jwtProperties.getSecretKey().getBytes())).build();
 
-		return jwtVerifier.verify(token);
-	}
+        return jwtVerifier.verify(token);
+    }
 
 }

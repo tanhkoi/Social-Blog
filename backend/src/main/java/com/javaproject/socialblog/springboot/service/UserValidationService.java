@@ -8,58 +8,53 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-/**
- * Created on Ağustos, 2020
- *
- * @author Faruk
- */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserValidationService {
 
-	private static final String EMAIL_ALREADY_EXISTS = "email_already_exists";
+    private static final String EMAIL_ALREADY_EXISTS = "email_already_exists";
 
-	private static final String USERNAME_ALREADY_EXISTS = "username_already_exists";
+    private static final String USERNAME_ALREADY_EXISTS = "username_already_exists";
 
-	private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-	private final ExceptionMessageAccessor exceptionMessageAccessor;
+    private final ExceptionMessageAccessor exceptionMessageAccessor;
 
-	public void validateUser(RegistrationRequest registrationRequest) {
+    public void validateUser(RegistrationRequest registrationRequest) {
 
-		final String email = registrationRequest.getEmail();
-		final String username = registrationRequest.getUsername();
+        final String email = registrationRequest.getEmail();
+        final String username = registrationRequest.getUsername();
 
-		checkEmail(email);
-		checkUsername(username);
-	}
+        checkEmail(email);
+        checkUsername(username);
+    }
 
-	private void checkUsername(String username) {
+    private void checkUsername(String username) {
 
-		final boolean existsByUsername = userRepository.existsByUsername(username);
+        final boolean existsByUsername = userRepository.existsByUsername(username);
 
-		if (existsByUsername) {
+        if (existsByUsername) {
 
-			log.warn("{} is already being used!", username);
+            log.warn("{} is already being used!", username);
 
-			final String existsUsername = exceptionMessageAccessor.getMessage(null, USERNAME_ALREADY_EXISTS);
-			throw new RegistrationException(existsUsername);
-		}
+            final String existsUsername = exceptionMessageAccessor.getMessage(null, USERNAME_ALREADY_EXISTS);
+            throw new RegistrationException(existsUsername);
+        }
 
-	}
+    }
 
-	private void checkEmail(String email) {
+    private void checkEmail(String email) {
 
-		final boolean existsByEmail = userRepository.existsByEmail(email);
+        final boolean existsByEmail = userRepository.existsByEmail(email);
 
-		if (existsByEmail) {
+        if (existsByEmail) {
 
-			log.warn("{} is already being used!", email);
+            log.warn("{} is already being used!", email);
 
-			final String existsEmail = exceptionMessageAccessor.getMessage(null, EMAIL_ALREADY_EXISTS);
-			throw new RegistrationException(existsEmail);
-		}
-	}
+            final String existsEmail = exceptionMessageAccessor.getMessage(null, EMAIL_ALREADY_EXISTS);
+            throw new RegistrationException(existsEmail);
+        }
+    }
 
 }
