@@ -1,10 +1,9 @@
 package com.javaproject.socialblog.springboot.repository;
 
 import com.javaproject.socialblog.springboot.model.User;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends MongoRepository<User, ObjectId> {
+public interface UserRepository extends MongoRepository<User, String> {
 
     User findByUsername(String username);
 
