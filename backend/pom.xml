@@ -12,7 +12,6 @@
     <groupId>com.javaproject</groupId>
     <artifactId>socialblog</artifactId>
     <version>3.3.1</version>
-
     <name>social-blog</name>
     <description>
         Social Blog.

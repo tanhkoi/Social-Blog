@@ -3,6 +3,6 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17.0.1-jdk-slim
-COPY --from=build /target/socialblog-0.0.1-SNAPSHOT.jar socialblog.jar
+COPY --from=build /target/social-blog-3.3.1.jar social-blog.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "socialblog.jar"]
+ENTRYPOINT ["java", "-jar", "social-blog.jar"]
