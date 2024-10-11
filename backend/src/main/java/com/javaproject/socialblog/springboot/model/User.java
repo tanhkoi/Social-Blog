@@ -28,6 +28,8 @@ public class User {
 
     private String email;
 
+    private String profilePicture;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
