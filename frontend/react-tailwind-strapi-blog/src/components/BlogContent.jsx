@@ -1,8 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const Blogs = () => {
+const BlogContent = () => {
+  const { id } = useParams();
+
   const blogs = [
     {
       id: 1,
@@ -45,43 +47,41 @@ const Blogs = () => {
     },
   ];
 
+  let blog = blogs.filter((blog) => blog.id == id);
+  blog = blog[0];
+
   return (
-    <div className="w-full bg-[#f9f9f9] py-[50px]">
+    <div className="w-full pb-10 bg-[#f9f9f9]">
       <div className="max-w-[1240px] mx-auto">
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 ss:grid-cols-1 gap-8 px-4 text-black">
-          {blogs.map((blog) => (
-            <Link key={blog.id} to={`/blog/${blog.id}`}>
-              <div className="bg-white rounded-xl overflow-hidden drop-shadow-md">
-                <img
-                  className="h-56 w-full object-cover"
-                  src={blog.coverImg}
-                  alt="Blog cover"
-                />
-                <div className="p-8">
-                  <h3 className="font-bold text-2xl my-1">{blog.title}</h3>
-                  <p className="text-gray-600 text-xl">{blog.desc}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
-
-          {/* {blogs1.map((blog)=>
-
-                <Link key={blog.id} to={`/blog/${blog.id}`}>
-                    <div  className='bg-white rounded-xl overflow-hidden drop-shadow-md'>
-                        <img className='h-56 w-full object-cover' src={blog.coverImg} />
-                        <div className='p-8'>
-                            <h3 className='font-bold text-2xl my-1'>{blog.title}</h3>
-                            <p className='text-gray-600 text-xl'>{blog.desc}</p>
-                        </div>
-                    </div>
-                </Link>           
-                
-                )} */}
+        <div
+          className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 ss:grid-cols-1
+            md:gap-x-8 sm:gap-y-8 ss:gap-y-8 px-4 sm:pt-20 md:mt-0 ss:pt-20 text-black"
+        >
+          <div className="col-span-2 ">
+            <img className="h-56 w-full object-cover" src={blog.coverImg} />
+            <h1 className="font-bold text-2xl my-1 pt-5">{blog.title}</h1>
+            <div className="pt-5">
+              <p>{blog.content}</p>
+            </div>
+          </div>
+          <div className="items-center w-full bg-white rounded-xl drop-shadow-md py-5 max-h-[250px]">
+            <div>
+              <img
+                className="p-2 w-32 h-32 rounded-full mx-auto object-cover"
+                src={blog.authorImg}
+              />
+              <h1 className="font-bold text-2xl text-center text-gray-900 pt-3">
+                {blog.authorName}
+              </h1>
+              <p className="text-center text-gray-900 font-medium">
+                {blog.authorDesc}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Blogs;
+export default BlogContent;
