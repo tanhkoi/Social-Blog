@@ -1,10 +1,21 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from "react";
 import { menu, close, logo } from "../assets";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [toggle, setToggle] = useState(false); 
+  const [toggle, setToggle] = useState(false);
   const handleClick = () => setToggle(!toggle);
+
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleSignUpClick = () => {
+    navigate('/signup');
+  };
 
   return (
     <div className="w-full h-[80px] z-10 bg-white drop-shadow-lg relative">
@@ -28,10 +39,18 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex sm:mr-10 md:mr-10">
-          <button className="border-none bg-transparent text-black mr-4">
+          <button
+            className="border-none bg-transparent text-black mr-4"
+            onClick={handleLoginClick}
+          >
             Login
           </button>
-          <button className="px-8 py-3">Sign Up</button>
+          <button
+            className="px-8 py-3"
+            onClick={handleSignUpClick}
+          >
+            Sign Up
+          </button>
         </div>
 
         <div className="md:hidden" onClick={handleClick}>
@@ -53,10 +72,18 @@ const Navbar = () => {
         <li>Platform</li>
         <li>Pricing</li>
         <div className="flex flex-col my-4">
-          <button className="bg-transparent text-black mb-4 py-3 px-8">
+          <button
+            className="bg-transparent text-black mb-4 py-3 px-8"
+            onClick={handleLoginClick}
+          >
             Login
           </button>
-          <button className="px-8 py-3">Sign Up</button>
+          <button
+            className="px-8 py-3"
+            onClick={handleSignUpClick}
+          >
+            Sign Up
+          </button>
         </div>
       </ul>
     </div>

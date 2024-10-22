@@ -1,13 +1,21 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { Link } from "react-router-dom"; // Import Link
+import { Link, useNavigate } from "react-router-dom"; 
 
 const Login = () => {
+  const navigate = useNavigate(); 
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    
+    navigate("/"); 
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
       <div className="bg-gray-800 rounded-lg shadow-lg p-8 w-96">
         <h2 className="text-2xl font-bold text-center text-blue-400">Login</h2>
-        <form className="mt-4">
+        <form className="mt-4" onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block text-sm text-gray-300" htmlFor="email">
               Email
