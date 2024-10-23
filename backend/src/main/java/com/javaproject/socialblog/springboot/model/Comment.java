@@ -8,33 +8,25 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import java.util.Date;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "users")
-public class User {
+@Document(collection = "comments")
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    private String name;
+    private String postId;
 
-    private String username;
+    private String userId;
 
-    private String password;
+    private String content;
 
-    private String email;
-
-    private String profilePicture;
-
-    private String verificationCode;
-
-    private boolean enabled;
-
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private Date createdAt;
 
 }

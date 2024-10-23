@@ -2,39 +2,44 @@ package com.javaproject.socialblog.springboot.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "users")
-public class User {
+@Document(collection = "posts")
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    private String name;
+    private String title;
 
-    private String username;
+    private String category;
 
-    private String password;
+    private List<String> tags;
 
-    private String email;
+    private String content;
 
-    private String profilePicture;
+    private Date createdAt;
 
-    private String verificationCode;
+    @DBRef
+    private User author;
 
-    private boolean enabled;
+    @DBRef
+    private List<Comment> comments;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    @DBRef
+    private List<Interaction> interactions;
 
 }

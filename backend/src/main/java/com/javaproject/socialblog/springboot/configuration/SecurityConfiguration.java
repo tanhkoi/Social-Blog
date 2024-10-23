@@ -38,6 +38,7 @@ public class SecurityConfiguration {
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 				.authorizeHttpRequests(request -> request.requestMatchers("/register",
 																	      "/login",
+																		  "/verify",
 																	      "/v3/api-docs/**",
 																          "/swagger-ui/**",
 																	      "/swagger-ui.html",
