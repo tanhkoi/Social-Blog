@@ -30,6 +30,10 @@ public class User {
 
     private String profilePicture;
 
+    private String verificationCode;
+
+    private boolean enabled;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 

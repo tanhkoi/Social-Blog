@@ -13,4 +13,6 @@ public interface UserService {
 
     AuthenticatedUserDto findAuthenticatedUserByUsername(String username);
 
+    boolean verify(String verificationCode);
+
 }
