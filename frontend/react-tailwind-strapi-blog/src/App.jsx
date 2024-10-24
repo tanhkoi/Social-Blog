@@ -9,7 +9,7 @@ export default function App() {
   // if(error) return <p>Error!</p>
   // console.log(data)
   return (
-    <div>
+    <div className="Hello">
       <Routes>
         <Route path='/' element={<Homepage/>}></Route>
         <Route path='/blog/:id' element={<BlogContentPage />}></Route>
