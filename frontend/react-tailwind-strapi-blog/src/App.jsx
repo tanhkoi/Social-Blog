@@ -1,21 +1,21 @@
-import { Homepage, BlogContentPage, LoginPage, SignUpPage } from "./pages";
 import { Routes, Route } from "react-router-dom";
-// import useFetch from './hooks/useFetch'
+import Login from "./components/Login";
+import { Homepage, BlogContentPage, SignUpPage, AboutPage, NotFoundPage, SupportPage } from "./pages";
 
-
-export default function App() {
-  // let {loading, data, error} =useFetch('http://localhost:1337/api/blogs?populate=*')
-  // if(loading) return <p>Loading...</p>
-  // if(error) return <p>Error!</p>
-  // console.log(data)
+const App = () => {
   return (
     <div>
       <Routes>
-        <Route path='/' element={<Homepage/>}></Route>
-        <Route path='/blog/:id' element={<BlogContentPage />}></Route>
-        <Route path='/signup' element={<SignUpPage />}></Route>
-        <Route path='/login' element={<LoginPage/>}></Route>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/blog/:id" element={<BlogContentPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/pagenotfound" element={<NotFoundPage />} />
+        <Route path="/support" element={<SupportPage />} />
       </Routes>
     </div>
   );
-}
+};
+
+export default App;
