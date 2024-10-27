@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 
 
+
+
 const SideBar = () => {
     return(
-        <aside className="w-64 bg-white  p-4 rounded-lg drop-shadow-lg fixed">
+        <aside className="w-56 bg-white  p-4 rounded-lg drop-shadow-lg fixed">
             
     <ul className="space-y-2">
       <li><a href="#" className="hover:text-zinc-400">My feed</a></li>

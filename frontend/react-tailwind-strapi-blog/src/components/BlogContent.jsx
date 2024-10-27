@@ -51,7 +51,7 @@ const BlogContent = () => {
   blog = blog[0];
 
   return (
-    <div className="w-full pb-10 bg-[#f9f9f9] ml-64 mt-10">
+    <div className="w-full pb-10 bg-[#f9f9f9]  mt-10">
       <div className="max-w-[1240px] mx-auto">
         <div
           className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 ss:grid-cols-1
