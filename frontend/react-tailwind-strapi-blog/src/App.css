@@ -33,6 +33,13 @@
   }
 }
 
+.btn-nav {
+  border: none;
+  background: transparent;
+  color: black;
+  margin-right: 1rem;
+}
+
 .card {
   padding: 2em;
 }

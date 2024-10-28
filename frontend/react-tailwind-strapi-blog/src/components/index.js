@@ -13,5 +13,8 @@ export {
     Footer,
     BlogContent,
     SignUp,
-    Login
+    Login,
+    About,
+    PageNotFound,
+    Support,
 }

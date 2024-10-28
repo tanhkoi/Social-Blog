@@ -10,11 +10,16 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleSignUpClick = () => {
-    navigate('/signup');
+    navigate("/signup");
+  };
+
+  const handleNavClick = (path) => {
+    navigate(path);
+    setToggle(false);
   };
 
   return (
@@ -28,13 +33,38 @@ const Navbar = () => {
           />
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center ">
           <ul className="hidden md:flex">
-            <li>Home</li>
-            <li>About</li>
-            <li>Support</li>
-            <li>Platform</li>
-            <li>Pricing</li>
+            <button
+              className="border-none bg-transparent text-black mr-4"
+              onClick={() => handleNavClick("/")}
+            >
+              Home
+            </button>
+            <button
+              className="border-none bg-transparent text-black mr-4"
+              onClick={() => handleNavClick("/about")}
+            >
+              About
+            </button>
+            <button
+              className="border-none bg-transparent text-black mr-4"
+              onClick={() => handleNavClick("/support")}
+            >
+              Support
+            </button>
+            <button
+              className="border-none bg-transparent text-black mr-4"
+              onClick={() => handleNavClick("/platform")}
+            >
+              Platform
+            </button>
+            <button
+              className="border-none bg-transparent text-black mr-4"
+              onClick={() => handleNavClick("/pricing")}
+            >
+              Pricing
+            </button>
           </ul>
         </div>
 
@@ -45,10 +75,7 @@ const Navbar = () => {
           >
             Login
           </button>
-          <button
-            className="px-8 py-3"
-            onClick={handleSignUpClick}
-          >
+          <button className="px-8 py-3" onClick={handleSignUpClick}>
             Sign Up
           </button>
         </div>
@@ -61,31 +88,6 @@ const Navbar = () => {
           />
         </div>
       </div>
-      <ul
-        className={
-          toggle ? "absolute bg-white w-full px-8 md:hidden" : "hidden"
-        }
-      >
-        <li>Home</li>
-        <li>About</li>
-        <li>Support</li>
-        <li>Platform</li>
-        <li>Pricing</li>
-        <div className="flex flex-col my-4">
-          <button
-            className="bg-transparent text-black mb-4 py-3 px-8"
-            onClick={handleLoginClick}
-          >
-            Login
-          </button>
-          <button
-            className="px-8 py-3"
-            onClick={handleSignUpClick}
-          >
-            Sign Up
-          </button>
-        </div>
-      </ul>
     </div>
   );
 };

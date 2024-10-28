@@ -77,20 +77,6 @@ const Blogs = () => {
               </div>
             </Link>
           ))}
-
-          {/* {blogs1.map((blog)=>
-
-                <Link key={blog.id} to={`/blog/${blog.id}`}>
-                    <div  className='bg-white rounded-xl overflow-hidden drop-shadow-md'>
-                        <img className='h-56 w-full object-cover' src={blog.coverImg} />
-                        <div className='p-8'>
-                            <h3 className='font-bold text-2xl my-1'>{blog.title}</h3>
-                            <p className='text-gray-600 text-xl'>{blog.desc}</p>
-                        </div>
-                    </div>
-                </Link>           
-                
-                )} */}
         </div>
       </div>
     </div>
