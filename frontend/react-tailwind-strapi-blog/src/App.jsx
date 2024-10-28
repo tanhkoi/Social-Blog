@@ -4,7 +4,7 @@ import { Homepage, BlogContentPage, SignUpPage, AboutPage, NotFoundPage, Support
 
 const App = () => {
   return (
-    <div>
+    <div className="Hello">
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/blog/:id" element={<BlogContentPage />} />

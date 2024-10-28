@@ -4,13 +4,11 @@ import Footer from "./Footer";
 import BlogContent from "./BlogContent";
 import SignUp from "./SignUp";
 import Login from "./Login";
-import About from "./About";
-import PageNotFound from "./PageNotFound";
-import Support from "./Support";
-
+import SideBar from "./SideBar";
 
 export {
     NavBar,
+    SideBar,
     Blogs,
     Footer,
     BlogContent,

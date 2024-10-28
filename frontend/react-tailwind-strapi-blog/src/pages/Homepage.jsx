@@ -1,13 +1,48 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
-import { NavBar, Blogs, Footer } from "../components";
+import React, { useState } from "react";
+import { NavBar, Blogs, Footer, SideBar } from "../components";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Homepage = () => {
+
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   return (
     <div>
-      <NavBar />
-      <Blogs />
-      <Footer />
+      <header>
+        <NavBar />
+      </header>
+      <main>
+      <div className="flex">
+      {isSidebarVisible && (
+            <div className="w-60">
+              <SideBar />
+            </div>
+          )}
+          <div className="inline-flex justify-center items-center h-[480px]">
+            <button
+              className="bg-white text-gray-800 rounded px-2 py-1 text-sm fixed "
+              onClick={() => setIsSidebarVisible(!isSidebarVisible)}
+            >
+              {isSidebarVisible ? (
+                <FontAwesomeIcon icon={faChevronLeft} className="h-5 w-5" />
+              ) : (
+                <FontAwesomeIcon icon={faChevronRight} className="h-5 w-5" />
+              )}
+            </button>
+          </div>
+          <div className={`flex-grow ${isSidebarVisible ? "ml-4" : ""}`}>
+        <Blogs />
+        </div>
+        </div>
+      </main>
+      {/* <footer className="absolute bottom-0 left-0 w-full">
+        <Footer />
+      </footer> */}
     </div>
   );
 };
