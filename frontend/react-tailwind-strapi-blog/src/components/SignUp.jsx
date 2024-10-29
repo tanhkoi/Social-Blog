@@ -6,12 +6,12 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(""); // State for error messages
+  const [error, setError] = useState(""); 
   const navigate = useNavigate(); 
 
   const handleSignup = (e) => {
     e.preventDefault();
-    setError(""); // Reset error state
+    setError(""); 
 
     if (!username || !email || !password || !confirmPassword) {
       setError("Please fill in all fields");
@@ -30,6 +30,7 @@ const Signup = () => {
     }
 
     console.log({ username, email, password });
+    localStorage.setItem("signupSuccess", "true");
     navigate("/login");
   };
 

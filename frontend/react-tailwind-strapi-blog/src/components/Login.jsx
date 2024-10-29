@@ -1,13 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const signupSuccess = localStorage.getItem("signupSuccess");
+    if (signupSuccess) {
+      toast.success("Signup Successfully! Please log in.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      localStorage.removeItem("signupSuccess");
+    }
+  }, []);
+
   const handleLogin = (e) => {
     e.preventDefault();
     console.log("Logging in with:", email);
+    localStorage.setItem("loginSuccess", "true");
+    toast.success("Login Successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     navigate("/");
   };
 
@@ -52,7 +79,7 @@ const Login = () => {
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                     Don’t have an account?{" "}
                     <Link
-                      to="/signup" // Adjust the path to your signup route
+                      to="/signup"
                       className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out"
                     >
                       SignUp

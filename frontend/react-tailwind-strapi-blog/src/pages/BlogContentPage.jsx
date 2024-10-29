@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavBar, Footer, BlogContent, SideBar } from "../components";
+import { useState } from "react";
+import { NavBar, BlogContent, SideBar } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,

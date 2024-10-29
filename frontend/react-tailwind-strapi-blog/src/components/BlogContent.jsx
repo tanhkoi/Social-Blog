@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import { useParams } from "react-router-dom";
 
 const BlogContent = () => {
@@ -45,6 +43,19 @@ const BlogContent = () => {
         "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1600",
       authorDesc: "Web Developer",
     },
+    {
+      id: 4,
+      title: "Blog 4",
+      desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+      coverImg:
+        "https://mir-s3-cdn-cf.behance.net/project_modules/fs/876c22100707927.5f0ec9851cb08.png",
+      content:
+        "dsajknda ckasndqwabsicwbkabckjbakbjcjlksajn.ckmxz,m ;lám;lcm a.sdasdasdas",
+      authorName: "John Doe",
+      authorImg:
+        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      authorDesc: "Web Developer",
+    }
   ];
 
   let blog = blogs.filter((blog) => blog.id == id);
