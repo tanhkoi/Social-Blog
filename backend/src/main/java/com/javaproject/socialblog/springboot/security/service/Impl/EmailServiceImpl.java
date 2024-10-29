@@ -1,11 +1,12 @@
-package com.javaproject.socialblog.springboot.service.Impl;
+package com.javaproject.socialblog.springboot.security.service.Impl;
 
 import com.javaproject.socialblog.springboot.model.User;
-import com.javaproject.socialblog.springboot.service.EmailService;
+import com.javaproject.socialblog.springboot.security.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
+
+    @Value("${app.base-url}")
+    private String baseUrl;
 
     @Override
     public void sendVerificationEmail(User user) {
@@ -33,7 +37,7 @@ public class EmailServiceImpl implements EmailService {
                     "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>" +
                     "<p>Have fun blogging, and don't hesitate to contact us with your feedback.</p>";
 
-            String verifyURL = "http://localhost:8080" + "/verify?code=" + user.getVerificationCode();
+            String verifyURL = baseUrl + "/verify?code=" + user.getVerificationCode();
 
             htmlContent = htmlContent.replace("[[URL]]", verifyURL);
             message.setContent(htmlContent, "text/html; charset=utf-8");

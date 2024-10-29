@@ -1,4 +1,4 @@
-package com.javaproject.socialblog.springboot.security.service;
+package com.javaproject.socialblog.springboot.security.service.Impl;
 
 import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.model.UserRole;
@@ -7,7 +7,8 @@ import com.javaproject.socialblog.springboot.security.dto.AuthenticatedUserDto;
 import com.javaproject.socialblog.springboot.security.dto.RegistrationRequest;
 import com.javaproject.socialblog.springboot.security.dto.RegistrationResponse;
 import com.javaproject.socialblog.springboot.security.mapper.UserMapper;
-import com.javaproject.socialblog.springboot.service.EmailService;
+import com.javaproject.socialblog.springboot.security.service.EmailService;
+import com.javaproject.socialblog.springboot.security.service.UserService;
 import com.javaproject.socialblog.springboot.service.UserValidationService;
 import com.javaproject.socialblog.springboot.utils.GeneralMessageAccessor;
 import lombok.RequiredArgsConstructor;

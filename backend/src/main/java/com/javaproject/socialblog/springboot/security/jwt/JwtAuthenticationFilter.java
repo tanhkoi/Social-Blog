@@ -1,6 +1,6 @@
 package com.javaproject.socialblog.springboot.security.jwt;
 
-import com.javaproject.socialblog.springboot.security.service.UserDetailsServiceImpl;
+import com.javaproject.socialblog.springboot.security.service.Impl.UserDetailsServiceImpl;
 import com.javaproject.socialblog.springboot.security.utils.SecurityConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
