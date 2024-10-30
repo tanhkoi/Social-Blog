@@ -31,13 +31,10 @@ public class Post {
 
     private Date createdAt;
 
-    @DBRef
-    private User author;
+    private String authorId;
 
-    @DBRef
-    private List<Comment> comments;
+    private List<String> commentsId;
 
-    @DBRef
-    private List<Interaction> interactions;
+    private List<String> interactionsId;
 
 }

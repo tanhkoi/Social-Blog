@@ -4,50 +4,53 @@ import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.service.PostService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
 
-    @Autowired
-    public PostServiceImpl(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
-
     @Override
     public List<Post> getAllPosts() {
+
         return postRepository.findAll();
     }
 
     @Override
     public Optional<Post> getPostById(String id) {
+
         return postRepository.findById(id);
     }
 
     @Override
     public Post createPost(Post post) {
+
         post.setCreatedAt(new Date());  // Sets the created date to now
+        post.setCommentsId(new ArrayList<>()); // Just init the post, so it doesn't have any comments and interactions yet
+        post.setInteractionsId(new ArrayList<>());
         return postRepository.save(post);
     }
 
     @Override
     public Post updatePost(String id, Post postDetails) {
+
         return postRepository.findById(id).map(post -> {
             post.setTitle(postDetails.getTitle());
             post.setCategory(postDetails.getCategory());
             post.setTags(postDetails.getTags());
             post.setContent(postDetails.getContent());
-            post.setAuthor(postDetails.getAuthor());
-            post.setComments(postDetails.getComments());
-            post.setInteractions(postDetails.getInteractions());
+            post.setAuthorId(postDetails.getAuthorId());
+            post.setCommentsId(postDetails.getCommentsId());
+            post.setInteractionsId(postDetails.getInteractionsId());
             post.setCreatedAt(new Date());  // Sets the updated date to now
             return postRepository.save(post);
         }).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
@@ -55,6 +58,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(String id) {
+
         postRepository.deleteById(id);
     }
 
