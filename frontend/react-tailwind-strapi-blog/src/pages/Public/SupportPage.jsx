@@ -1,14 +1,14 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { NavBar, About } from "../components";
+import { NavBar, Support } from "../../components";
 
-const AboutPage = () => {
+const SupportPage = () => {
   return (
     <div>
       <NavBar />
-      <About />
+      <Support />
     </div>
   );
 };
 
-export default AboutPage;
+export default SupportPage;
