@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,12 +16,14 @@ public class PostController {
 
     private final PostService postService;
 
+    // get all
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
 
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
+    // get by id
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable String id) {
 
@@ -29,12 +32,14 @@ public class PostController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // create
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
 
         return ResponseEntity.ok(postService.createPost(post));
     }
 
+    // update
     @PutMapping("/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody Post postDetails) {
 
@@ -49,6 +54,7 @@ public class PostController {
         }
     }
 
+    // delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable String id) {
 
