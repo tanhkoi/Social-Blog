@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from './pages/Admin/Header';
 import Sidebar from './pages/Admin/Sidebar';
 import Home from './pages/Admin/Home'; 
-import { Homepage, BlogContentPage, SignUpPage, LoginPage, Aboutpage, NotFoundPage, SupportPage } from "./pages/Public";
+import { Homepage, BlogContentPage, SignUpPage, LoginPage, Aboutpage, NotFoundPage, SupportPage, HistoryPage } from "./pages/Public";
 
 const AdminLayout = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -46,6 +46,7 @@ const App = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/support" element={<SupportPage />} />
       <Route path="/admin/*" element={<AdminLayout />} />
+      <Route path="/history" element={<HistoryPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
     </>

@@ -72,9 +72,9 @@ const Navbar = () => {
             </button>
             <button
               className="border-none bg-transparent text-black mr-4"
-              onClick={() => handleNavClick("/pricing")}
+              onClick={() => handleNavClick("/history")}
             >
-              Pricing
+              History
             </button>
           </ul>
         </div>

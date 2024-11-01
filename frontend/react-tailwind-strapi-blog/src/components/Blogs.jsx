@@ -92,7 +92,7 @@ const BlogItem = ({ blog }) => {
   );
 };
 
-// Khai báo propTypes cho BlogItem
+
 BlogItem.propTypes = {
   blog: PropTypes.shape({
     id: PropTypes.number.isRequired,

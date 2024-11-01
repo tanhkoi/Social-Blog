@@ -5,6 +5,7 @@ import SignUpPage from "./SignUpPage";
 import Aboutpage from "./Aboutpage";
 import NotFoundPage from "./NotFoundPage";
 import SupportPage from "./SupportPage";
+import HistoryPage from "./HistoryPage";
 
 
 export {
@@ -14,5 +15,6 @@ export {
     SignUpPage,
     Aboutpage,
     NotFoundPage,
-    SupportPage
+    SupportPage,
+    HistoryPage
 };
