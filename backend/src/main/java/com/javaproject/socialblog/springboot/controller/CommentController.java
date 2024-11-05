@@ -1,13 +1,12 @@
 package com.javaproject.socialblog.springboot.controller;
 
 import com.javaproject.socialblog.springboot.model.Comment;
-import com.javaproject.socialblog.springboot.repository.CommentRepository;
-import org.springframework.http.HttpStatus;
+import com.javaproject.socialblog.springboot.security.service.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import lombok.RequiredArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -15,29 +14,30 @@ import java.util.List;
 @RequestMapping("/api/comments")
 public class CommentController {
 
-    private final CommentRepository commentRepository;
+    private final CommentService commentService;
 
-    // get all
+    // get by post id
     @GetMapping("/{postId}")
+    @Operation(tags = "Comment Service")
     public ResponseEntity<List<Comment>> getCommentsByPost(@PathVariable String postId) {
 
-        return ResponseEntity.ok(commentRepository.findByPostId(postId));
+        return ResponseEntity.ok(commentService.getCommentsByPost(postId));
     }
 
     // create
     @PostMapping
-    public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
+    @Operation(tags = "Comment Service")
+    public ResponseEntity<Comment> createComment(@PathVariable String postId, @RequestBody Comment comment) {
 
-        comment.setCreatedAt(new Date());
-
-        return ResponseEntity.ok(commentRepository.save(comment));
+        return ResponseEntity.ok(commentService.createComment(comment, postId));
     }
 
     // delete
     @DeleteMapping("/{id}")
+    @Operation(tags = "Comment Service")
     public ResponseEntity<Void> deleteComment(@PathVariable String id) {
 
-        commentRepository.deleteById(id);
+        commentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
 
