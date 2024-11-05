@@ -1,12 +1,13 @@
 package com.javaproject.socialblog.springboot.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.util.Date;
@@ -31,15 +32,15 @@ public class Post {
 
     private String content;
 
+    private String imageCloudUrl;
+
     private Date createdAt;
 
     @DBRef
     private User author;
 
-    @DBRef
     private List<Comment> comments;
 
-    @DBRef
     private List<Interaction> interactions;
 
 }

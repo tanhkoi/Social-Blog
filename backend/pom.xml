@@ -17,21 +17,12 @@
         Social Blog.
     </description>
 
-    <developers>
-        <developer>
-            <name></name>
-            <email></email>
-            <url></url>
-        </developer>
-    </developers>
-
     <properties>
 
         <java.version>17</java.version>
         <jwt.version>4.4.0</jwt.version>
-        <mongodb.version>5.0.1</mongodb.version>
+        <mongodb.version>5.2.0</mongodb.version>
         <openapi-swagger.version>2.6.0</openapi-swagger.version>
-
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
@@ -77,10 +68,11 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.cloudinary/cloudinary-http5 -->
         <dependency>
             <groupId>com.cloudinary</groupId>
-            <artifactId>cloudinary-http44</artifactId>
-            <version>1.38.0</version>
+            <artifactId>cloudinary-http5</artifactId>
+            <version>2.0.0</version>
         </dependency>
 
         <dependency>
@@ -142,6 +134,13 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/me.paulschwarz/spring-dotenv -->
+        <dependency>
+            <groupId>me.paulschwarz</groupId>
+            <artifactId>spring-dotenv</artifactId>
+            <version>2.3.0</version>
         </dependency>
 
     </dependencies>

@@ -1,4 +1,4 @@
-package com.javaproject.socialblog.springboot.service;
+package com.javaproject.socialblog.springboot.security.service;
 
 import com.javaproject.socialblog.springboot.model.User;
 

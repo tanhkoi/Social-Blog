@@ -2,10 +2,9 @@ package com.javaproject.socialblog.springboot.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.util.Date;
@@ -23,7 +22,8 @@ public class Comment {
 
     private String postId;
 
-    private String userId;
+    @DBRef
+    private User user;
 
     private String content;
 
