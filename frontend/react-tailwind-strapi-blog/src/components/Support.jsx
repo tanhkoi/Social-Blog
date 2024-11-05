@@ -5,7 +5,7 @@ const Support = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-8">
       <div className="bg-[#02044A] w-full text-white py-8 text-center">
-        <h1 className="text-4xl font-bold">Support Center</h1>
+        <h1 className="text-4xl font-bold mt-6">Support Center</h1>
         <p className="mt-2 text-gray-300">
           We’re here to help you. Explore our resources or get in touch.
         </p>

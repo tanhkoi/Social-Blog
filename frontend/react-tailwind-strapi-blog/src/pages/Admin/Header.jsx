@@ -32,7 +32,7 @@ const Header = ({ OpenSidebar }) => {
               type="text"
               value={searchTerm}
               onChange={handleSearchChange}
-              className="border border-black rounded px-4 py-2 pl-10 pr-4 bg-[#1d2634] text-white"
+              className="border border-black rounded px-4 py-2 pl-10 pr-4  text-white"
               />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
               <svg

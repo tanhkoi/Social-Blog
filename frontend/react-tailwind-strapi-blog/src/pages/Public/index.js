@@ -6,6 +6,8 @@ import Aboutpage from "./Aboutpage";
 import NotFoundPage from "./NotFoundPage";
 import SupportPage from "./SupportPage";
 import HistoryPage from "./HistoryPage";
+import UserProfilePage from "./UserProfilePage";
+
 
 
 export {
@@ -16,5 +18,6 @@ export {
     Aboutpage,
     NotFoundPage,
     SupportPage,
-    HistoryPage
+    HistoryPage,
+    UserProfilePage
 };

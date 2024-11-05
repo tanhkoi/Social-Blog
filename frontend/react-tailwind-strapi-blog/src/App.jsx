@@ -5,7 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from './pages/Admin/Header';
 import Sidebar from './pages/Admin/Sidebar';
 import Home from './pages/Admin/Home'; 
-import { Homepage, BlogContentPage, SignUpPage, LoginPage, Aboutpage, NotFoundPage, SupportPage, HistoryPage } from "./pages/Public";
+import { Homepage, BlogContentPage, SignUpPage, LoginPage, Aboutpage, NotFoundPage, SupportPage, HistoryPage,UserProfilePage } from "./pages/Public";
+import { CategoriesPage, BlogPage, CustomerPage, SettingPage } from "./pages/Admin"
 
 const AdminLayout = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -21,12 +22,11 @@ const AdminLayout = () => {
       <div className="content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="blogs" element={<div>Blogs Page</div>} />
-          <Route path="categories" element={<div>Categories Page</div>} />
-          <Route path="customers" element={<div>Customers Page</div>} />
+          <Route path="products" element={<BlogPage/>} />
+          <Route path="categories" element={<CategoriesPage/>} />
+          <Route path="customers" element={<CustomerPage/>} />
           <Route path="inventory" element={<div>Inventory Page</div>} />
-          <Route path="reports" element={<div>Reports Page</div>} />
-          <Route path="settings" element={<div>Settings Page</div>} />
+          <Route path="settings" element={<SettingPage/>} />
         </Routes>
         <ToastContainer />
       </div>
@@ -47,6 +47,7 @@ const App = () => {
       <Route path="/support" element={<SupportPage />} />
       <Route path="/admin/*" element={<AdminLayout />} />
       <Route path="/history" element={<HistoryPage />} />
+      <Route path="/profile" element={<UserProfilePage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
     </>

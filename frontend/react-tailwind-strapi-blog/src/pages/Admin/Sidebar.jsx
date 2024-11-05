@@ -6,7 +6,6 @@ import {
   BsFillGrid3X3GapFill, 
   BsPeopleFill, 
   BsListCheck, 
-  BsMenuButtonWideFill, 
   BsFillGearFill 
 } from 'react-icons/bs';
 import '../../App.css'; 
@@ -48,11 +47,6 @@ const Sidebar = ({ openSidebarToggle, OpenSidebar }) => {
         <li className='list-item'>
           <Link to="/admin/inventory">
             <BsListCheck className='admin-icon' /> Inventory
-          </Link>
-        </li>
-        <li className='list-item'>
-          <Link to="/admin/reports">
-            <BsMenuButtonWideFill className='admin-icon' /> Reports
           </Link>
         </li>
         <li className='list-item'>

@@ -4,8 +4,8 @@ import React from "react";
 const About = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 max-w-3xl text-center">
-        <h1 className="text-4xl font-bold text-blue-500 mb-6">About SocialBlog</h1>
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-3xl text-left ">
+        <h1 className="text-4xl font-bold text-blue-500 mb-6 mt-10">About SocialBlog</h1>
         
         <p className="text-lg text-gray-700 mb-8">
           Welcome to <span className="font-bold">SocialBlog</span> — a place where stories connect us. We believe that everyone has a voice, and through SocialBlog, you can share your journey, opinions, and passions with a growing community of like-minded individuals.
