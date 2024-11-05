@@ -35,8 +35,8 @@ public class Post {
 
     private String authorId;
 
-    private List<String> commentsId;
+    private List<Comment> comments;
 
-    private List<String> interactionsId;
+    private List<Interaction> interactions;
 
 }
