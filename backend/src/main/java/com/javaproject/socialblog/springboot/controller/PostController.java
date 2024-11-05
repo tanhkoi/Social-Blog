@@ -34,7 +34,6 @@ public class PostController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // todo: limit the content size and add picture, link, attachment
     // create
     @PostMapping
     @Operation(tags = "Post Service")

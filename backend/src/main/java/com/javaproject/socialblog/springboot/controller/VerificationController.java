@@ -20,7 +20,7 @@ public class VerificationController {
     private final UserService userService;
 
     @GetMapping
-    @Operation(tags = "Verification Service", description = "You can verify account by this endpoint.")
+    @Operation(tags = "Register Service")
     public ResponseEntity<String>  verificationRequest(@Param("code") String code){
         if (userService.verify(code)){
             return ResponseEntity.ok("Verify Success");
