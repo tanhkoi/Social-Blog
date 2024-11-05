@@ -25,7 +25,7 @@ public class CommentController {
     }
 
     // create
-    @PostMapping
+    @PostMapping("/{postId}")
     @Operation(tags = "Comment Service")
     public ResponseEntity<Comment> createComment(@PathVariable String postId, @RequestBody Comment comment) {
 
