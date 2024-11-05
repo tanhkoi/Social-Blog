@@ -2,10 +2,14 @@ package com.javaproject.socialblog.springboot.security.service.Impl;
 
 import com.javaproject.socialblog.springboot.model.Comment;
 import com.javaproject.socialblog.springboot.model.Post;
+import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.repository.CommentRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.service.CommentService;
+import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -19,6 +23,8 @@ public class CommentServiceImpl implements CommentService {
 
     private final PostRepository postRepository;
 
+    private final UserService userService;
+
     @Override
     public List<Comment> getCommentsByPost(String id) {
 
@@ -30,6 +36,11 @@ public class CommentServiceImpl implements CommentService {
 
         comment.setPostId(postId);
         comment.setCreatedAt(new Date());
+
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+        User currUser = userService.findByUsername(username);
+        comment.setUser(currUser); // Set curr user
 
         Comment savedComment = commentRepository.save(comment);
 
