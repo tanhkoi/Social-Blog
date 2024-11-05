@@ -29,6 +29,8 @@ public class Post {
 
     private String content;
 
+    private String imageCloudUrl;
+
     private Date createdAt;
 
     private String authorId;
