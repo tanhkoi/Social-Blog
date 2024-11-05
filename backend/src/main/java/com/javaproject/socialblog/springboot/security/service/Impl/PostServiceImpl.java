@@ -4,19 +4,16 @@ import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.service.PostService;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +45,7 @@ public class PostServiceImpl implements PostService {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
         User currUser = userService.findByUsername(username);
-        post.setAuthorId(currUser.getId()); // Set curr user
+        post.setAuthor(currUser); // Set curr user
 
         return postRepository.save(post);
     }
@@ -61,7 +58,6 @@ public class PostServiceImpl implements PostService {
             post.setCategory(postDetails.getCategory());
             post.setTags(postDetails.getTags());
             post.setContent(postDetails.getContent());
-            post.setAuthorId(postDetails.getAuthorId());
             // TODO: need change the logic update of comment and interaction
             post.setComments(postDetails.getComments());
             post.setInteractions(postDetails.getInteractions());
