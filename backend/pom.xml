@@ -21,9 +21,8 @@
 
         <java.version>17</java.version>
         <jwt.version>4.4.0</jwt.version>
-        <mongodb.version>5.0.1</mongodb.version>
+        <mongodb.version>5.2.0</mongodb.version>
         <openapi-swagger.version>2.6.0</openapi-swagger.version>
-
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 
