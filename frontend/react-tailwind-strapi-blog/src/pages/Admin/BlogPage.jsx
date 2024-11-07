@@ -105,7 +105,7 @@ const BlogPage = () => {
         </form>
       )}
 
-      <table className="w-11/12 bg-white border border-gray-200 rounded shadow-md">
+      <table className="w-full bg-white border border-gray-200 rounded shadow-md">
         <thead>
           <tr className="bg-gray-100 border-b">
             <th className="py-6 px-8 text-left">#</th>

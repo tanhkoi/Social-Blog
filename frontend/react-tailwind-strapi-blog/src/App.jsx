@@ -7,6 +7,8 @@ import Sidebar from './pages/Admin/Sidebar';
 import Home from './pages/Admin/Home'; 
 import { Homepage, BlogContentPage, SignUpPage, LoginPage, Aboutpage, NotFoundPage, SupportPage, HistoryPage,UserProfilePage } from "./pages/Public";
 import { CategoriesPage, BlogPage, CustomerPage, SettingPage } from "./pages/Admin"
+import NewPostPage  from './pages/Public/NewPostPage'; 
+
 
 const AdminLayout = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -48,6 +50,7 @@ const App = () => {
       <Route path="/admin/*" element={<AdminLayout />} />
       <Route path="/history" element={<HistoryPage />} />
       <Route path="/profile" element={<UserProfilePage />} />
+      <Route path="/newpost" element={<NewPostPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
     </>

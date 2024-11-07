@@ -7,7 +7,7 @@ import NotFoundPage from "./NotFoundPage";
 import SupportPage from "./SupportPage";
 import HistoryPage from "./HistoryPage";
 import UserProfilePage from "./UserProfilePage";
-
+import NewPostPage from "./NewPostPage";
 
 
 export {
@@ -19,5 +19,6 @@ export {
     NotFoundPage,
     SupportPage,
     HistoryPage,
-    UserProfilePage
+    UserProfilePage,
+    NewPostPage 
 };

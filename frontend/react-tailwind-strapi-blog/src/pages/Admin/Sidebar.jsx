@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'; 
+import { logo } from "../../assets";
 import { 
   BsGrid1X2Fill, 
   BsFillArchiveFill, 
@@ -8,50 +9,82 @@ import {
   BsListCheck, 
   BsFillGearFill 
 } from 'react-icons/bs';
-import '../../App.css'; 
 
 const Sidebar = ({ openSidebarToggle, OpenSidebar }) => {
   return (
     <aside 
-      id="sidebar" 
-      className={`${openSidebarToggle ? "responsive" : ""}`}
+      id="sidebar"
+      style={{
+        width: openSidebarToggle ? '250px' : '0',
+        height: '100%',
+        backgroundColor: '#263043',
+        overflowY: 'auto',
+        transition: 'all 0.5s ease',
+        position: 'fixed',
+        zIndex: '12',
+      }}
     >
-      <div className='title'>
-        <div className='brand'>
-          CWTS
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '15px 30px',
+      }}>
+        <div style={{ marginTop: '15px' }}>
+          <Link to="/">
+            <img
+              src={logo}
+              alt="logo"
+              style={{
+                opacity: '0.55',
+                width: '100%',
+                height: '25px',
+                marginLeft: openSidebarToggle ? '10px' : '3px',
+              }}
+            />
+          </Link>
         </div>
-        <span className='admin-icon admin-close_icon' onClick={OpenSidebar}>X</span>
+        <span 
+          style={{
+            color: 'red',
+            marginLeft: '30px',
+            marginTop: '10px',
+            cursor: 'pointer',
+            fontSize: '20px',
+          }}
+          onClick={OpenSidebar}
+        >×</span>
       </div>
 
-      <ul className='list'>
-        <li className='list-item'>
-          <Link to="/admin">
-            <BsGrid1X2Fill className='admin-icon' /> Dashboard
+      <ul style={{ padding: '0', listStyleType: 'none' }}>
+        <li style={{ padding: '20px', fontSize: '18px' }}>
+          <Link to="/admin" style={{ textDecoration: 'none', color: '#9e9ea4' }}>
+            <BsGrid1X2Fill style={{ fontSize: '20px', marginRight: '10px' }} /> Dashboard
           </Link>
         </li>
-        <li className='list-item'>
-          <Link to="/admin/products">
-            <BsFillArchiveFill className='admin-icon' /> Blogs
+        <li style={{ padding: '20px', fontSize: '18px' }}>
+          <Link to="/admin/products" style={{ textDecoration: 'none', color: '#9e9ea4' }}>
+            <BsFillArchiveFill style={{ fontSize: '20px', marginRight: '10px' }} /> Blogs
           </Link>
         </li>
-        <li className='list-item'>
-          <Link to="/admin/categories">
-            <BsFillGrid3X3GapFill className='admin-icon' /> Categories
+        <li style={{ padding: '20px', fontSize: '18px' }}>
+          <Link to="/admin/categories" style={{ textDecoration: 'none', color: '#9e9ea4' }}>
+            <BsFillGrid3X3GapFill style={{ fontSize: '20px', marginRight: '10px' }} /> Categories
           </Link>
         </li>
-        <li className='list-item'>
-          <Link to="/admin/customers">
-            <BsPeopleFill className='admin-icon' /> Customers
+        <li style={{ padding: '20px', fontSize: '18px' }}>
+          <Link to="/admin/customers" style={{ textDecoration: 'none', color: '#9e9ea4' }}>
+            <BsPeopleFill style={{ fontSize: '20px', marginRight: '10px' }} /> Customers
           </Link>
         </li>
-        <li className='list-item'>
-          <Link to="/admin/inventory">
-            <BsListCheck className='admin-icon' /> Inventory
+        <li style={{ padding: '20px', fontSize: '18px' }}>
+          <Link to="/admin/inventory" style={{ textDecoration: 'none', color: '#9e9ea4' }}>
+            <BsListCheck style={{ fontSize: '20px', marginRight: '10px' }} /> Inventory
           </Link>
         </li>
-        <li className='list-item'>
-          <Link to="/admin/settings">
-            <BsFillGearFill className='admin-icon' /> Setting
+        <li style={{ padding: '20px', fontSize: '18px' }}>
+          <Link to="/admin/settings" style={{ textDecoration: 'none', color: '#9e9ea4' }}>
+            <BsFillGearFill style={{ fontSize: '20px', marginRight: '10px' }} /> Setting
           </Link>
         </li>
       </ul>

@@ -16,7 +16,6 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import "../../App.css";
 
 const Home = () => {
   const data = [
@@ -30,47 +29,102 @@ const Home = () => {
   ];
 
   return (
-    <main className="main-container">
-      <div className=" main-title">
-        <h3>DASHBOARD</h3>
+    <main style={{ padding: "20px", backgroundColor: "#f4f5f7" }}>
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: "20px",
+      }}>
+        <h3 style={{ fontSize: "24px", fontWeight: "bold", color: "#263043" }}>DASHBOARD</h3>
       </div>
 
-      <div className=" main-cards">
-        <div className=" card">
-          <div className=" card-inner">
-            <h3>BLOGS</h3>
-            <BsFillArchiveFill className=" card_icon" />
+      <div style={{ display: "flex", gap: "20px", marginBottom: "30px" }}>
+        <div style={{
+          flex: "1",
+          backgroundColor: "#ffffff",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "15px",
+          }}>
+            <h3 style={{ fontSize: "18px", color: "#263043" }}>BLOGS</h3>
+            <BsFillArchiveFill style={{ fontSize: "24px", color: "#8884d8" }} />
           </div>
-          <h1>300</h1>
+          <h1 style={{ fontSize: "32px", fontWeight: "bold", color: "#263043" }}>300</h1>
         </div>
-        <div className=" card">
-          <div className=" card-inner">
-            <h3>CATEGORIES</h3>
-            <BsFillGrid3X3GapFill className=" card_icon" />
+
+        <div style={{
+          flex: "1",
+          backgroundColor: "#ffffff",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "15px",
+          }}>
+            <h3 style={{ fontSize: "18px", color: "#263043" }}>CATEGORIES</h3>
+            <BsFillGrid3X3GapFill style={{ fontSize: "24px", color: "#82ca9d" }} />
           </div>
-          <h1>12</h1>
+          <h1 style={{ fontSize: "32px", fontWeight: "bold", color: "#263043" }}>12</h1>
         </div>
-        <div className=" card">
-          <div className=" card-inner">
-            <h3>CUSTOMERS</h3>
-            <BsPeopleFill className=" card_icon" />
+
+        <div style={{
+          flex: "1",
+          backgroundColor: "#ffffff",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "15px",
+          }}>
+            <h3 style={{ fontSize: "18px", color: "#263043" }}>CUSTOMERS</h3>
+            <BsPeopleFill style={{ fontSize: "24px", color: "#8884d8" }} />
           </div>
-          <h1>33</h1>
+          <h1 style={{ fontSize: "32px", fontWeight: "bold", color: "#263043" }}>33</h1>
         </div>
-        <div className=" card">
-          <div className=" card-inner">
-            <h3>ALERTS</h3>
-            <BsFillBellFill className=" card_icon" />
+
+        <div style={{
+          flex: "1",
+          backgroundColor: "#ffffff",
+          padding: "20px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "15px",
+          }}>
+            <h3 style={{ fontSize: "18px", color: "#263043" }}>ALERTS</h3>
+            <BsFillBellFill style={{ fontSize: "24px", color: "#f39c12" }} />
           </div>
-          <h1>42</h1>
+          <h1 style={{ fontSize: "32px", fontWeight: "bold", color: "#263043" }}>42</h1>
         </div>
       </div>
 
-      <div className=" charts">
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "20px",
+        height: "400px",
+      }}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            width={500}
-            height={300}
             data={data}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >
@@ -86,8 +140,6 @@ const Home = () => {
 
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
-            width={500}
-            height={300}
             data={data}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
           >

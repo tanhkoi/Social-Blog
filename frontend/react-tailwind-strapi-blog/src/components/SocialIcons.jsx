@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { FaHeart, FaComment, FaShare } from "react-icons/fa";
+import { FaHeart, FaComment, FaBookmark } from "react-icons/fa";
 
 const SocialIcons = () => {
   const [likes, setLikes] = useState(110);
+  const [isSaved, setIsSaved] = useState(false);
 
   const handleLike = () => {
     setLikes(likes + 1);
   };
 
-
-
-  const handleShare = () => {
-    alert("Đã chia sẻ!");
+  const handleSave = () => {
+    setIsSaved(!isSaved);
   };
 
   return (
@@ -23,19 +22,16 @@ const SocialIcons = () => {
         <FaHeart />
         <span>{likes}</span>
       </div>
-      <div
-
-        className="flex items-center space-x-1 cursor-pointer hover:text-blue-500"
-      >
+      <div className="flex items-center space-x-1 cursor-pointer hover:text-blue-500">
         <FaComment />
         <span>comments</span>
       </div>
       <div
-        onClick={handleShare}
-        className="flex items-center space-x-1 cursor-pointer hover:text-green-500"
+        onClick={handleSave}
+        className="flex items-center space-x-1 cursor-pointer hover:text-yellow-500"
       >
-        <FaShare />
-        <span>Share</span>
+        <FaBookmark />
+        <span>{isSaved ? "Saved" : "Save"}</span>
       </div>
     </div>
   );

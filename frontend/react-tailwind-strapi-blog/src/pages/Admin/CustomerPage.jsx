@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const initialCustomers = [
   { id: 1, name: "John Doe", email: "john@example.com", phone: "123-456-7890" },
@@ -18,11 +18,6 @@ const CustomerPage = () => {
     setCurrentCustomer({ ...currentCustomer, [name]: value });
   };
 
-  const handleAddCustomer = () => {
-    setCurrentCustomer({ id: null, name: "", email: "", phone: "" });
-    setIsEditing(false);
-    setShowForm(true);
-  };
 
   const handleEditCustomer = (customer) => {
     setCurrentCustomer(customer);
@@ -47,9 +42,6 @@ const CustomerPage = () => {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Customers</h2>
-      <button onClick={handleAddCustomer} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
-        <FontAwesomeIcon icon={faPlus} /> Add Customer
-      </button>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-4 border p-4 rounded">

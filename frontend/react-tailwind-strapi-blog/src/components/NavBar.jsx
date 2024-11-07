@@ -31,6 +31,8 @@ const Navbar = () => {
     setSearchTerm("");
   };
 
+
+
   return (
     <div className="w-full h-[80px] z-10 bg-white drop-shadow-lg fixed">
       <div className="flex justify-between items-center w-full h-full md:max-w-[1240px] m-auto">
@@ -111,6 +113,8 @@ const Navbar = () => {
         </form>
 
         <div className="hidden md:flex sm:mr-10 md:mr-10">
+        <button onClick={() => navigate("/newpost")}>New Post</button>
+
           <button
             className="border-none bg-transparent text-black mr-4"
             onClick={handleLoginClick}
