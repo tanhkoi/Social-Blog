@@ -1,65 +1,96 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
-import { Link, useNavigate } from "react-router-dom"; 
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
-  const navigate = useNavigate(); 
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const signupSuccess = localStorage.getItem("signupSuccess");
+    if (signupSuccess) {
+      toast.success("Signup Successfully! Please log in.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      localStorage.removeItem("signupSuccess");
+    }
+  }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    
-    navigate("/"); 
+    console.log("Logging in with:", email);
+    localStorage.setItem("loginSuccess", "true");
+    toast.success("Login Successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    navigate("/");
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
-      <div className="bg-gray-800 rounded-lg shadow-lg p-8 w-96">
-        <h2 className="text-2xl font-bold text-center text-blue-400">Login</h2>
-        <form className="mt-4" onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label className="block text-sm text-gray-300" htmlFor="email">
-              Email
-            </label>
-            <input
-              className="w-full p-2 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
-              type="email"
-              id="email"
-              placeholder="Email"
-              required
-            />
+    <div>
+      <section className="h-screen">
+        <div className="px-6 h-full text-gray-800">
+          <div className="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
+            <div className="grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12 mb-12 md:mb-0">
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                className="w-full"
+                alt="Sample"
+              />
+            </div>
+            <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
+              <form onSubmit={handleLogin}>
+                <div className="mb-6">
+                  <input
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    placeholder="Email address"
+                    required
+                  />
+                </div>
+                <div className="mb-6">
+                  <input
+                    type="password"
+                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    placeholder="Password"
+                    required
+                  />
+                </div>
+                <div className="text-center lg:text-left">
+                  <button
+                    type="submit"
+                    className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out"
+                  >
+                    Login
+                  </button>
+                  <p className="text-sm font-semibold mt-2 pt-1 mb-0">
+                    Don’t have an account?{" "}
+                    <Link
+                      to="/signup"
+                      className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out"
+                    >
+                      SignUp
+                    </Link>
+                  </p>
+                </div>
+              </form>
+            </div>
           </div>
-          <div className="mb-4">
-            <label className="block text-sm text-gray-300" htmlFor="password">
-              Password
-            </label>
-            <input
-              className="w-full p-2 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
-              type="password"
-              id="password"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white hover:bg-blue-600 p-2 rounded-lg w-full"
-          >
-            Login
-          </button>
-          <p className="text-sm text-gray-300 text-center">
-            Lost password?{" "}
-            <a href="#" className="text-blue-400 hover:underline">
-              Click here!
-            </a>
-          </p>
-          <p className="text-sm text-gray-300 text-center">
-            Don&apos;t have an account?{" "}
-            <Link to="/signup" className="text-blue-400 hover:underline">
-              Sign Up
-            </Link>
-          </p>
-        </form>
-      </div>
+        </div>
+      </section>
     </div>
   );
 };
