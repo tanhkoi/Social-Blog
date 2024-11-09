@@ -10,23 +10,87 @@ const BlogContent = () => {
 
   // Lấy bài viết từ localStorage khi component mount
   useEffect(() => {
-    const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
-    const foundBlog = blogs.find((b) => b.id.toString() === id); // Tìm blog theo id
-    setBlog(foundBlog); // Cập nhật blog vào state
+    const fetchBlogData = async () => {
+      try {
+        const token = localStorage.getItem("token");  // Lấy token từ localStorage
+        const response = await fetch(`http://localhost:8080/api/posts/${id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,  // Gửi token trong header
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch blog data');
+        }
+        const blogData = await response.json();
+        setBlog(blogData);  // Cập nhật blog vào state
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchBlogData();
   }, [id]);
 
-  // Lấy bình luận từ localStorage khi component mount
+  // Lấy bình luận từ API khi component mount
   useEffect(() => {
-    const savedComments = JSON.parse(localStorage.getItem(`comments-${id}`)) || [];
-    setComments(savedComments);
-  }, [id]);
+    const fetchComments = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(`http://localhost:8080/api/comments/${id}`,{
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,  // Gửi token trong header
+          },
+        });
 
-  // Lưu bình luận vào localStorage khi có sự thay đổi
-  useEffect(() => {
-    if (comments.length > 0) {
-      localStorage.setItem(`comments-${id}`, JSON.stringify(comments));
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch comments');
+        }
+
+        const commentsData = await response.json();
+        setComments(commentsData);  // Cập nhật bình luận vào state
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchComments();
+  }, [id]);
+ // Xử lý việc gửi bình luận mới
+  const handleCommentSubmit = async (e) => {
+    const token = localStorage.getItem("token");
+    e.preventDefault();
+    if (commentText.trim()) {
+      const newComment = {
+        content: commentText
+      };
+
+      try {
+        
+        const response = await fetch(`http://localhost:8080/api/comments/${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, 
+          },
+          body: JSON.stringify(newComment),
+        });
+        console.log(newComment)
+        if (response.ok) {
+          const savedComment = await response.json();
+          setComments([...comments, savedComment]);
+          setCommentText("");  // Reset input sau khi gửi bình luận
+        } else {
+          throw new Error('Failed to post comment');
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }, [comments, id]);
+  };
 
   // Xử lý tăng lượt thích cho bình luận
   const handleLike = (index) => {
@@ -36,20 +100,7 @@ const BlogContent = () => {
     setComments(updatedComments);
   };
 
-  // Xử lý việc gửi bình luận mới
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-    if (commentText.trim()) {
-      const newComment = {
-        text: commentText,
-        timestamp: new Date().toLocaleString(),
-        likes: 0,
-      };
-      setComments([...comments, newComment]);
-      setCommentText("");
-    }
-  };
-
+ 
   // Nếu blog chưa được tải, hiển thị loading
   if (!blog) {
     return <div>Loading...</div>;
@@ -98,6 +149,12 @@ const BlogContent = () => {
               placeholder="Add a comment"
               className="w-full p-2 border border-gray-300 rounded-md"
             />
+            <button
+    type="submit"
+    className="hidden" // Ẩn nút submit (tùy chọn)
+  >
+    Submit
+  </button>
           </form>
 
           <div className="space-y-2 mt-4">
