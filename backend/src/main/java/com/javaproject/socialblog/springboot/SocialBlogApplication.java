@@ -13,4 +13,18 @@ public class SocialBlogApplication {
 
     }
 
+//    @Bean
+//    CommandLineRunner run(EmailServiceImpl emailService) {
+//        return args -> {
+//            try {
+//                User newUser = new User();
+//                newUser.setEmail("tankhoi46@gmail.com");
+//                newUser.setUsername("tankhoi");
+//                emailService.sendVerificationEmail(newUser);  // Calling the sendHtmlEmail method
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        };
+//    }
+
 }

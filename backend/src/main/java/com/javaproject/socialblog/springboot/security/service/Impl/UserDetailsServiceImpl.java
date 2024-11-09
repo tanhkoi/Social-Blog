@@ -1,7 +1,8 @@
-package com.javaproject.socialblog.springboot.security.service;
+package com.javaproject.socialblog.springboot.security.service.Impl;
 
 import com.javaproject.socialblog.springboot.model.UserRole;
 import com.javaproject.socialblog.springboot.security.dto.AuthenticatedUserDto;
+import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
