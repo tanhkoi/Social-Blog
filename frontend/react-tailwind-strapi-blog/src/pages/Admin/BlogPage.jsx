@@ -1,27 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-
-const initialBlogs = [
-  { id: 1, title: "React Basics", category: "Technology", description: "Learn the basics of React", date: "2023-10-01" },
-  { id: 2, title: "Advanced React", category: "Technology", description: "Deep dive into React hooks", date: "2023-10-10" },
-];
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const BlogPage = () => {
-  const [blogs, setBlogs] = useState(initialBlogs);
+  const [blogs, setBlogs] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", category: "", description: "", date: "" });
+  const [currentBlog, setCurrentBlog] = useState({
+    id: null,
+    title: "",
+    category: "",
+    description: "",
+    coverImg: "",
+    date: "",
+  });
   const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    const storedBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
+    setBlogs(storedBlogs);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setCurrentBlog({ ...currentBlog, [name]: value });
+    setCurrentBlog((prevBlog) => ({ ...prevBlog, [name]: value }));
   };
 
-  const handleAddBlog = () => {
-    setCurrentBlog({ id: null, title: "",category: "",  description: "", date: "" });
-    setIsEditing(false);
-    setShowForm(true);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCurrentBlog((prevBlog) => ({ ...prevBlog, coverImg: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleEditBlog = (blog) => {
@@ -31,25 +43,30 @@ const BlogPage = () => {
   };
 
   const handleDeleteBlog = (id) => {
-    setBlogs(blogs.filter(blog => blog.id !== id));
+    const updatedBlogs = blogs.filter((blog) => blog.id !== id);
+    setBlogs(updatedBlogs);
+    localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isEditing) {
-      setBlogs(blogs.map(b => (b.id === currentBlog.id ? currentBlog : b)));
+      const updatedBlogs = blogs.map((blog) =>
+        blog.id === currentBlog.id ? currentBlog : blog
+      );
+      setBlogs(updatedBlogs);
+      localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
     } else {
-      setBlogs([...blogs, { ...currentBlog, id: blogs.length + 1 }]);
+      const newBlog = { ...currentBlog, id: blogs.length + 1 };
+      setBlogs([...blogs, newBlog]);
+      localStorage.setItem("blogs", JSON.stringify([...blogs, newBlog]));
     }
     setShowForm(false);
   };
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Products</h2>
-      <button onClick={handleAddBlog} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
-        <FontAwesomeIcon icon={faPlus} /> Add Blog
-      </button>
+      <h2 className="text-2xl font-bold mb-4">Blogs</h2>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-4 border p-4 rounded">
@@ -84,6 +101,18 @@ const BlogPage = () => {
               required
               className="border rounded w-full px-3 py-2"
             />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium mb-1">Cover Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="border rounded w-full px-3 py-2"
+            />
+            {currentBlog.coverImg && (
+              <img src={currentBlog.coverImg} alt="Cover preview" className="mt-2 w-32 h-32 object-cover" />
+            )}
           </div>
           <div className="mb-3">
             <label className="block text-sm font-medium mb-1">Date</label>

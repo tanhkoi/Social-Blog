@@ -27,8 +27,18 @@ const Navbar = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    navigate(`/search?query=${searchTerm}`);
+    
+    const allBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
+    const filteredBlogs = allBlogs.filter((blog) =>
+      blog.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  
+    // Lưu kết quả tìm kiếm vào localStorage hoặc context
+    localStorage.setItem("searchResults", JSON.stringify(filteredBlogs));
+  
+    // Chuyển hướng tới trang kết quả
     setSearchTerm("");
+    navigate("/");
   };
 
 
@@ -68,9 +78,9 @@ const Navbar = () => {
             </button>
             <button
               className="border-none bg-transparent text-black mr-4"
-              onClick={() => handleNavClick("/platform")}
+              onClick={() => handleNavClick("/saved")}
             >
-              Platform
+              Bookmarks
             </button>
             <button
               className="border-none bg-transparent text-black mr-4"

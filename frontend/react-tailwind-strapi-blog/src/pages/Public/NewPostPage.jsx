@@ -5,13 +5,13 @@ const NewPostPage = () => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [content, setContent] = useState("");
-  const [previewImg, setPreviewImg] = useState(null); // Chỉ cần URL xem trước
+  const [previewImg, setPreviewImg] = useState(null);
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPreviewImg(URL.createObjectURL(file)); // Tạo URL xem trước
+      setPreviewImg(URL.createObjectURL(file));
     }
   };
 
@@ -21,7 +21,7 @@ const NewPostPage = () => {
       title,
       desc,
       content,
-      coverImg: previewImg, // Sử dụng URL xem trước để hiển thị
+      coverImg: previewImg,
       authorName: "John Doe",
       authorImg: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1600",
       authorDesc: "Web Developer",
@@ -60,8 +60,8 @@ const NewPostPage = () => {
       <input
         type="file"
         className="w-full mt-4 p-2 border rounded"
-        onChange={handleImageChange} 
-        accept="image/*" 
+        onChange={handleImageChange}
+        accept="image/*"
       />
       {previewImg && (
         <img

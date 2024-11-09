@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaHeart, FaComment, FaBookmark } from "react-icons/fa";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
 
-const Blogs = () => {
+const Blogs = ({ searchTerm }) => {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
@@ -13,18 +13,21 @@ const Blogs = () => {
     }
   }, []);
 
-  // Đồng bộ hóa lại dữ liệu blogs với localStorage mỗi khi blogs thay đổi
   useEffect(() => {
     if (blogs.length > 0) {
       localStorage.setItem("blogs", JSON.stringify(blogs));
     }
   }, [blogs]);
 
+  const filteredBlogs = blogs.filter((blog) =>
+    blog.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="w-full bg-[#f9f9f9] py-[50px] mt-10">
       <div className="max-w-[1240px] mx-auto">
         <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 ss:grid-cols-1 gap-8 px-4 text-black">
-          {blogs.map((blog) => (
+          {filteredBlogs.map((blog) => (
             <BlogItem key={blog.id} blog={blog} setBlogs={setBlogs} />
           ))}
         </div>
@@ -33,16 +36,15 @@ const Blogs = () => {
   );
 };
 
+// BlogItem Component (không cần import từ file khác nếu bạn đang dùng chung file)
 const BlogItem = ({ blog, setBlogs }) => {
-  const [likes, setLikes] = useState(blog.likes || 110); // Đặt giá trị mặc định từ blog nếu có
-  const [isSaved, setIsSaved] = useState(blog.isSaved || false); // Đặt giá trị mặc định từ blog nếu có
+  const [likes, setLikes] = useState(blog.likes || 110);
+  const [isSaved, setIsSaved] = useState(blog.isSaved || false);
 
   const handleLike = (e) => {
     e.stopPropagation();
     const newLikes = likes + 1;
     setLikes(newLikes);
-
-    // Cập nhật lại blogs trong state và localStorage
     setBlogs((prevBlogs) =>
       prevBlogs.map((b) => (b.id === blog.id ? { ...b, likes: newLikes } : b))
     );
@@ -52,11 +54,16 @@ const BlogItem = ({ blog, setBlogs }) => {
     e.stopPropagation();
     const newIsSaved = !isSaved;
     setIsSaved(newIsSaved);
-
-    // Cập nhật lại blogs trong state và localStorage
     setBlogs((prevBlogs) =>
       prevBlogs.map((b) => (b.id === blog.id ? { ...b, isSaved: newIsSaved } : b))
     );
+
+    const savedBlogs = JSON.parse(localStorage.getItem("savedBlogs")) || [];
+    const updatedSavedBlogs = newIsSaved
+      ? [...savedBlogs, blog]
+      : savedBlogs.filter((b) => b.id !== blog.id);
+
+    localStorage.setItem("savedBlogs", JSON.stringify(updatedSavedBlogs));
   };
 
   return (
@@ -92,14 +99,14 @@ BlogItem.propTypes = {
     title: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,
     coverImg: PropTypes.string.isRequired,
-    likes: PropTypes.number, // Validation cho likes
-    isSaved: PropTypes.bool, // Validation cho isSaved
+    likes: PropTypes.number,
+    isSaved: PropTypes.bool,
   }).isRequired,
-  setBlogs: PropTypes.func.isRequired, // Validation cho setBlogs
+  setBlogs: PropTypes.func.isRequired,
 };
 
 Blogs.propTypes = {
-  blogs: PropTypes.array.isRequired, // Validation cho blogs nếu truyền vào như prop (nếu có)
+  searchTerm: PropTypes.string.isRequired,
 };
 
 export default Blogs;
