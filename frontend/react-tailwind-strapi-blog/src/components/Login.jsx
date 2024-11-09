@@ -1,15 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();  // Điều hướng sau khi đăng nhập thành công
 
-  useEffect(() => {
-    const signupSuccess = localStorage.getItem("signupSuccess");
-    if (signupSuccess) {
-      toast.success("Signup Successfully! Please log in.", {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
+      const data = await response.json();
+      // Lưu token hoặc xử lý dữ liệu sau khi đăng nhập thành công
+      localStorage.setItem('token', data.token);
+      toast.success("Login successful!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -18,24 +33,19 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
-      localStorage.removeItem("signupSuccess");
+      navigate("/");  // Điều hướng về trang chủ sau khi đăng nhập thành công
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
-  }, []);
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("Logging in with:", email);
-    localStorage.setItem("loginSuccess", "true");
-    toast.success("Login Successfully!", {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-    navigate("/");
   };
 
   return (
@@ -54,19 +64,22 @@ const Login = () => {
               <form onSubmit={handleLogin}>
                 <div className="mb-6">
                   <input
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="email"
+                    onChange={(e) => setUsername(e.target.value)}  // Gán giá trị username
+                    type="text"
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    placeholder="Email address"
+                    placeholder="Username"
                     required
+                    value={username}  // Liên kết với state username
                   />
                 </div>
                 <div className="mb-6">
                   <input
+                    onChange={(e) => setPassword(e.target.value)}  // Gán giá trị password
                     type="password"
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     placeholder="Password"
                     required
+                    value={password}  // Liên kết với state password
                   />
                 </div>
                 <div className="text-center lg:text-left">
