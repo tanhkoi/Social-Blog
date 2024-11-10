@@ -5,6 +5,7 @@ import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.repository.CommentRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
+import com.javaproject.socialblog.springboot.security.dto.CommentRequest;
 import com.javaproject.socialblog.springboot.security.service.CommentService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,17 +33,20 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment createComment(Comment comment, String postId) {
+    public Comment createComment(CommentRequest comment, String postId) {
 
-        comment.setPostId(postId);
-        comment.setCreatedAt(new Date());
+        Comment newComment = new Comment();
+
+        newComment.setPostId(postId);
+        newComment.setCreatedAt(new Date());
+        newComment.setContent(comment.getContent());
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
         User currUser = userService.findByUsername(username);
-        comment.setUser(currUser); // Set curr user
+        newComment.setUser(currUser); // Set curr user
 
-        Comment savedComment = commentRepository.save(comment);
+        Comment savedComment = commentRepository.save(newComment);
 
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         post.getComments().add(savedComment);
