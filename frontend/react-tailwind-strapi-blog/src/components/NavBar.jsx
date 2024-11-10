@@ -26,7 +26,7 @@ const Navbar = () => {
   };
 
   const handleSignUpClick = () => {
-    navigate("/signup");
+    navigate("/register");
   };
 
   const handleNavClick = (path) => {
@@ -40,8 +40,18 @@ const Navbar = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    navigate(`/search?query=${searchTerm}`);
+    
+    const allBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
+    const filteredBlogs = allBlogs.filter((blog) =>
+      blog.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  
+    // Lưu kết quả tìm kiếm vào localStorage hoặc context
+    localStorage.setItem("searchResults", JSON.stringify(filteredBlogs));
+  
+    // Chuyển hướng tới trang kết quả
     setSearchTerm("");
+    navigate("/");
   };
 
   const handleLogout = () => {
@@ -50,7 +60,9 @@ const Navbar = () => {
     localStorage.removeItem('username');
     localStorage.removeItem('profilePicture');
     setUser(null);
-    navigate("/");  // Điều hướng về trang chủ sau khi đăng xuất
+    window.location.reload();
+    navigate("/");
+      // Điều hướng về trang chủ sau khi đăng xuất
   };
 
   const toggleDropdown = () => {
@@ -96,9 +108,9 @@ const Navbar = () => {
             </button>
             <button
               className="border-none bg-transparent text-black mr-4"
-              onClick={() => handleNavClick("/platform")}
+              onClick={() => handleNavClick("/saved")}
             >
-              Platform
+              Bookmarks
             </button>
             <button
               className="border-none bg-transparent text-black mr-4"

@@ -8,6 +8,8 @@ import SupportPage from "./SupportPage";
 import HistoryPage from "./HistoryPage";
 import UserProfilePage from "./UserProfilePage";
 import NewPostPage from "./NewPostPage";
+import SavedBlogsPage from "./SavedBlogsPage";
+
 
 
 export {
@@ -20,5 +22,7 @@ export {
     SupportPage,
     HistoryPage,
     UserProfilePage,
-    NewPostPage 
+    NewPostPage,
+    SavedBlogsPage,
+
 };

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
@@ -106,7 +107,7 @@ const Login = () => {
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                     Don’t have an account?{" "}
                     <Link
-                      to="/signup"
+                      to="/register"
                       className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out"
                     >
                       SignUp
