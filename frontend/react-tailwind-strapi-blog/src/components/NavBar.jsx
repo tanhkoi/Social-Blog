@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   const handleSignUpClick = () => {
-    navigate("/signup");
+    navigate("/register");
   };
 
   const handleNavClick = (path) => {
@@ -59,7 +59,9 @@ const Navbar = () => {
     localStorage.removeItem('username');
     localStorage.removeItem('profilePicture');
     setUser(null);
-    navigate("/");  // Điều hướng về trang chủ sau khi đăng xuất
+    window.location.reload();
+    navigate("/");
+      // Điều hướng về trang chủ sau khi đăng xuất
   };
 
   return (
