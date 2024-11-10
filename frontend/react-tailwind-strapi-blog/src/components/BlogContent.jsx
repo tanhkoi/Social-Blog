@@ -4,7 +4,7 @@ import { FaHeart } from "react-icons/fa";
 
 const BlogContent = () => {
   const { id } = useParams();
-  const [blog, setBlog] = useState(null);  // Khai báo state blog
+  const [blog, setBlog] = useState(null);  
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
 
@@ -59,6 +59,7 @@ const BlogContent = () => {
 
     fetchComments();
   }, [id]);
+
  // Xử lý việc gửi bình luận mới
   const handleCommentSubmit = async (e) => {
     const token = localStorage.getItem("token");
@@ -67,9 +68,7 @@ const BlogContent = () => {
       const newComment = {
         content: commentText
       };
-
       try {
-        
         const response = await fetch(`http://localhost:8080/api/comments/${id}`, {
           method: 'POST',
           headers: {
@@ -91,6 +90,8 @@ const BlogContent = () => {
       }
     }
   };
+
+
 
   // Xử lý tăng lượt thích cho bình luận
   const handleLike = (index) => {
@@ -139,7 +140,7 @@ const BlogContent = () => {
         </div>
 
         {/* Phần bình luận */}
-        <div className="mt-8 px-4">
+        <div className="mt-8 px-4 bg-gray-50 border border-gray-300 rounded-lg p-6">
           <h2 className="text-2xl font-bold">Comments</h2>
           <form onSubmit={handleCommentSubmit} className="mt-4">
             <input
@@ -156,13 +157,13 @@ const BlogContent = () => {
     Submit
   </button>
           </form>
-
           <div className="space-y-2 mt-4">
             {comments.map((comment, index) => (
               <div key={index} className="bg-gray-100 p-2 rounded-md flex justify-between items-center">
                 <div>
-                  <p>{comment.text}</p>
-                  <span className="text-sm text-gray-500">{comment.timestamp}</span>
+                <p className="text-lg font-bold text-blue-600">{comment.user.username}</p>
+                  <p>{comment.content}</p>
+                  <span className="text-sm text-gray-500">{comment.createdAt}</span>
                 </div>
                 <div
                   onClick={() => handleLike(index)}
