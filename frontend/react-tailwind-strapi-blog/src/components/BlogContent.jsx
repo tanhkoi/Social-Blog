@@ -4,7 +4,7 @@ import { FaHeart } from "react-icons/fa";
 
 const BlogContent = () => {
   const { id } = useParams();
-  const [blog, setBlog] = useState(null);  // Khai báo state blog
+  const [blog, setBlog] = useState(null);  
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
 
@@ -140,7 +140,7 @@ const BlogContent = () => {
         </div>
 
         {/* Phần bình luận */}
-        <div className="mt-8 px-4">
+        <div className="mt-8 px-4 bg-gray-50 border border-gray-300 rounded-lg p-6">
           <h2 className="text-2xl font-bold">Comments</h2>
           <form onSubmit={handleCommentSubmit} className="mt-4">
             <input
@@ -161,6 +161,7 @@ const BlogContent = () => {
             {comments.map((comment, index) => (
               <div key={index} className="bg-gray-100 p-2 rounded-md flex justify-between items-center">
                 <div>
+                <p className="text-lg font-bold text-blue-600">{comment.user.username}</p>
                   <p>{comment.content}</p>
                   <span className="text-sm text-gray-500">{comment.createdAt}</span>
                 </div>
