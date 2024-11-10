@@ -6,7 +6,6 @@ import com.javaproject.socialblog.springboot.security.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,6 +65,14 @@ public class PostController {
     public ResponseEntity<Void> deletePost(@PathVariable String id) {
 
         postService.deletePost(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // delete null comments
+    @PostMapping("/null/{postId}")
+    @Operation(tags = "Comment Service")
+    public ResponseEntity<Void> deleteNullComment(@PathVariable String postId) {
+        postService.deleteNullComment(postId);
         return ResponseEntity.noContent().build();
     }
 

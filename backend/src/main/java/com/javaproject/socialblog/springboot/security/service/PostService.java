@@ -18,5 +18,6 @@ public interface PostService {
 
     void deletePost(String id);
 
+    void deleteNullComment(String id);
 }
 

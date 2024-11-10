@@ -1,5 +1,6 @@
 package com.javaproject.socialblog.springboot.security.service.Impl;
 
+import com.javaproject.socialblog.springboot.model.Comment;
 import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
@@ -11,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -79,6 +77,15 @@ public class PostServiceImpl implements PostService {
     public void deletePost(String id) {
 
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteNullComment(String id) {
+        Post post = postRepository.findById(id).get();
+        List<Comment> list = post.getComments();
+        list.removeIf(c -> c.getContent() == null);
+        post.setComments(list);
+        postRepository.save(post);
     }
 
 }
