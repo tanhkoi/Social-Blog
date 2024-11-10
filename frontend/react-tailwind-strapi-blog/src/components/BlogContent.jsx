@@ -4,29 +4,94 @@ import { FaHeart } from "react-icons/fa";
 
 const BlogContent = () => {
   const { id } = useParams();
-  const [blog, setBlog] = useState(null);  // Khai báo state blog
+  const [blog, setBlog] = useState(null);  
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
 
   // Lấy bài viết từ localStorage khi component mount
   useEffect(() => {
-    const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
-    const foundBlog = blogs.find((b) => b.id.toString() === id); // Tìm blog theo id
-    setBlog(foundBlog); // Cập nhật blog vào state
+    const fetchBlogData = async () => {
+      try {
+        const token = localStorage.getItem("token");  // Lấy token từ localStorage
+        const response = await fetch(`http://localhost:8080/api/posts/${id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,  // Gửi token trong header
+          },
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch blog data');
+        }
+        const blogData = await response.json();
+        setBlog(blogData);  // Cập nhật blog vào state
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchBlogData();
   }, [id]);
 
-  // Lấy bình luận từ localStorage khi component mount
+  // Lấy bình luận từ API khi component mount
   useEffect(() => {
-    const savedComments = JSON.parse(localStorage.getItem(`comments-${id}`)) || [];
-    setComments(savedComments);
+    const fetchComments = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await fetch(`http://localhost:8080/api/comments/${id}`,{
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,  // Gửi token trong header
+          },
+        });
+
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch comments');
+        }
+
+        const commentsData = await response.json();
+        setComments(commentsData);  // Cập nhật bình luận vào state
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchComments();
   }, [id]);
 
-  // Lưu bình luận vào localStorage khi có sự thay đổi
-  useEffect(() => {
-    if (comments.length > 0) {
-      localStorage.setItem(`comments-${id}`, JSON.stringify(comments));
+ // Xử lý việc gửi bình luận mới
+  const handleCommentSubmit = async (e) => {
+    const token = localStorage.getItem("token");
+    e.preventDefault();
+    if (commentText.trim()) {
+      const newComment = {
+        content: commentText
+      };
+      try {
+        const response = await fetch(`http://localhost:8080/api/comments/${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, 
+          },
+          body: JSON.stringify(newComment),
+        });
+        console.log(newComment)
+        if (response.ok) {
+          const savedComment = await response.json();
+          setComments([...comments, savedComment]);
+          setCommentText("");  // Reset input sau khi gửi bình luận
+        } else {
+          throw new Error('Failed to post comment');
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }, [comments, id]);
+  };
+
+
 
   // Xử lý tăng lượt thích cho bình luận
   const handleLike = (index) => {
@@ -36,20 +101,7 @@ const BlogContent = () => {
     setComments(updatedComments);
   };
 
-  // Xử lý việc gửi bình luận mới
-  const handleCommentSubmit = (e) => {
-    e.preventDefault();
-    if (commentText.trim()) {
-      const newComment = {
-        text: commentText,
-        timestamp: new Date().toLocaleString(),
-        likes: 0,
-      };
-      setComments([...comments, newComment]);
-      setCommentText("");
-    }
-  };
-
+ 
   // Nếu blog chưa được tải, hiển thị loading
   if (!blog) {
     return <div>Loading...</div>;
@@ -88,7 +140,7 @@ const BlogContent = () => {
         </div>
 
         {/* Phần bình luận */}
-        <div className="mt-8 px-4">
+        <div className="mt-8 px-4 bg-gray-50 border border-gray-300 rounded-lg p-6">
           <h2 className="text-2xl font-bold">Comments</h2>
           <form onSubmit={handleCommentSubmit} className="mt-4">
             <input
@@ -98,14 +150,20 @@ const BlogContent = () => {
               placeholder="Add a comment"
               className="w-full p-2 border border-gray-300 rounded-md"
             />
+            <button
+    type="submit"
+    className="hidden" // Ẩn nút submit (tùy chọn)
+  >
+    Submit
+  </button>
           </form>
-
           <div className="space-y-2 mt-4">
             {comments.map((comment, index) => (
               <div key={index} className="bg-gray-100 p-2 rounded-md flex justify-between items-center">
                 <div>
-                  <p>{comment.text}</p>
-                  <span className="text-sm text-gray-500">{comment.timestamp}</span>
+                <p className="text-lg font-bold text-blue-600">{comment.user.username}</p>
+                  <p>{comment.content}</p>
+                  <span className="text-sm text-gray-500">{comment.createdAt}</span>
                 </div>
                 <div
                   onClick={() => handleLike(index)}
