@@ -6,18 +6,19 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 const Homepage = () => {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (localStorage.getItem("loginSuccess") === "true") {
       setShowMessage(true);
       localStorage.removeItem("loginSuccess");
     }
-  }, []); 
+  }, []);
 
   return (
     <div>
       <header>
-        <NavBar />
+        <NavBar setSearchTerm={setSearchTerm} />
       </header>
       <main>
         <div className="flex">
@@ -44,7 +45,7 @@ const Homepage = () => {
                 Login successfully!
               </div>
             )}
-            <Blogs />
+            <Blogs searchTerm={searchTerm} />
           </div>
         </div>
       </main>

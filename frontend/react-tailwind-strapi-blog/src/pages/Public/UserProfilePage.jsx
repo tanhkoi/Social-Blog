@@ -1,11 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
+import { FaTimes } from 'react-icons/fa';  
 
 const UserProfilePage = () => {
+  const navigate = useNavigate();  
+  const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
+  const profilePicture = localStorage.getItem('profilePicture');
+  
   const [user, setUser] = useState({
     avatar: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    name: "John Doe",
+    name: username,
     email: "johndoe@example.com",
-    phone: "123-456-7890",
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -34,8 +40,21 @@ const UserProfilePage = () => {
     }
   };
 
+  const handleGoHome = () => {
+    navigate("/");  // Điều hướng về trang chính
+  };
+
   return (
     <div className="p-6 max-w-md mx-auto bg-white rounded-lg shadow-lg">
+       <div className="flex justify-between items-center mb-6">
+      {/* Nút "Exit" với biểu tượng "X" */}
+      <button
+        onClick={handleGoHome}
+        className="bg-blue-500 text-white px-4 py-2 rounded ml-auto flex items-center"
+      >
+        <FaTimes className="h-6 w-6" />
+      </button>
+    </div>
       <div className="text-center mb-6">
         <img
           src={user.avatar}

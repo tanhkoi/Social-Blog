@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
-  const navigate = useNavigate();  // Điều hướng sau khi đăng nhập thành công
+
+  const navigate = useNavigate();
+
+  // Kiểm tra token và điều hướng nếu đã đăng nhập
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate("/");  // Redirect to home page if token exists
+    }
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,8 +32,12 @@ const Login = () => {
       }
 
       const data = await response.json();
-      // Lưu token hoặc xử lý dữ liệu sau khi đăng nhập thành công
       localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+      if (data.profilePicture) {
+        localStorage.setItem('profilePicture', data.profilePicture);
+      }
+
       toast.success("Login successful!", {
         position: "top-right",
         autoClose: 3000,
@@ -33,7 +47,8 @@ const Login = () => {
         draggable: true,
         progress: undefined,
       });
-      navigate("/");  // Điều hướng về trang chủ sau khi đăng nhập thành công
+
+      navigate("/");
     } catch (err) {
       setError(err.message);
       toast.error(err.message, {
@@ -64,22 +79,22 @@ const Login = () => {
               <form onSubmit={handleLogin}>
                 <div className="mb-6">
                   <input
-                    onChange={(e) => setUsername(e.target.value)}  // Gán giá trị username
+                    onChange={(e) => setUsername(e.target.value)}
                     type="text"
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     placeholder="Username"
                     required
-                    value={username}  // Liên kết với state username
+                    value={username}
                   />
                 </div>
                 <div className="mb-6">
                   <input
-                    onChange={(e) => setPassword(e.target.value)}  // Gán giá trị password
+                    onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     placeholder="Password"
                     required
-                    value={password}  // Liên kết với state password
+                    value={password}
                   />
                 </div>
                 <div className="text-center lg:text-left">
@@ -92,7 +107,7 @@ const Login = () => {
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                     Don’t have an account?{" "}
                     <Link
-                      to="/signup"
+                      to="/register"
                       className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out"
                     >
                       SignUp
