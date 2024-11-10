@@ -59,6 +59,7 @@ const BlogContent = () => {
 
     fetchComments();
   }, [id]);
+
  // Xử lý việc gửi bình luận mới
   const handleCommentSubmit = async (e) => {
     const token = localStorage.getItem("token");
@@ -67,9 +68,7 @@ const BlogContent = () => {
       const newComment = {
         content: commentText
       };
-
       try {
-        
         const response = await fetch(`http://localhost:8080/api/comments/${id}`, {
           method: 'POST',
           headers: {
@@ -91,6 +90,8 @@ const BlogContent = () => {
       }
     }
   };
+
+
 
   // Xử lý tăng lượt thích cho bình luận
   const handleLike = (index) => {
@@ -156,13 +157,12 @@ const BlogContent = () => {
     Submit
   </button>
           </form>
-
           <div className="space-y-2 mt-4">
             {comments.map((comment, index) => (
               <div key={index} className="bg-gray-100 p-2 rounded-md flex justify-between items-center">
                 <div>
-                  <p>{comment.text}</p>
-                  <span className="text-sm text-gray-500">{comment.timestamp}</span>
+                  <p>{comment.content}</p>
+                  <span className="text-sm text-gray-500">{comment.createdAt}</span>
                 </div>
                 <div
                   onClick={() => handleLike(index)}
