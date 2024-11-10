@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { menu, close, logo } from "../assets";
 import { useNavigate, Link } from "react-router-dom";
 
+
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [user, setUser] = useState(null);
-
+  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,6 +51,14 @@ const Navbar = () => {
     localStorage.removeItem('profilePicture');
     setUser(null);
     navigate("/");  // Điều hướng về trang chủ sau khi đăng xuất
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown((prev) => !prev); // Đổi trạng thái showDropdown khi nhấn vào username
+  };
+
+  const handleNewPost = () => {
+    navigate("/new-post"); // Điều hướng tới trang tạo bài viết mới
   };
 
   return (
@@ -112,29 +121,29 @@ const Navbar = () => {
               placeholder="Search blog..."
               className="border border-gray-300 rounded px-4 py-2 pl-10 pr-4"
             />
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-              <svg
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                viewBox="0 0 451 451"
-                className="h-5 w-5"
-              >
-                <g>
-                  <path d="M447.05,428l-109.6-109.6c29.4-33.8,47.2-77.9,47.2-126.1C384.65,86.2,298.35,0,192.35,0C86.25,0,0.05,86.3,0.05,192.3 s86.3,192.3,192.3,192.3c48.2,0,92.3-17.8,126.1-47.2L428.05,447c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4 C452.25,441.8,452.25,433.2,447.05,428z M26.95,192.3c0-91.2,74.2-165.3,165.3-165.3c91.2,0,165.3,74.2,165.3,165.3 s-74.1,165.4-165.3,165.4C101.15,357.7,26.95,283.5,26.95,192.3z" />
-                </g>
-              </svg>
-            </span>
           </div>
           <button type="submit" className="hidden">
             Search
           </button>
         </form>
 
-        <div className="hidden md:flex sm:mr-10 md:mr-10">
+        <div className="hidden md:flex sm:mr-10 md:mr-10 relative">
+         
+          {user && (
+            <button
+              onClick={handleNewPost}
+              className="border-none bg-blue-500 text-white px-6 py-3 rounded-full ml-4"
+            >
+              New Post
+            </button>
+          )}
+
           {user ? (
             <>
-              <div className="flex items-center mr-4">
+              <div
+                className="flex items-center ml-10 cursor-pointer"
+                onClick={toggleDropdown}
+              >
                 {user.profilePicture && (
                   <img
                     src={user.profilePicture}
@@ -144,7 +153,29 @@ const Navbar = () => {
                 )}
                 <span>{user.username}</span>
               </div>
-              <button onClick={handleLogout} className="px-4 py-2">Logout</button>
+
+              {showDropdown && (
+                <div   className="absolute right-0 mt-12 w-48 bg-blue-600 text-white rounded-lg shadow-lg z-20 transform translate-x-4">
+                  <button
+                    onClick={() => navigate("/profile")}
+                    className="block px-4 py-2 text-left w-full hover:bg-blue-700"
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={() => navigate("/account-detail")}
+                    className="block px-4 py-2 text-left w-full hover:bg-blue-700"
+                  >
+                    Account Detail
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="block px-4 py-2 text-left w-full hover:bg-blue-700"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </>
           ) : (
             <>
