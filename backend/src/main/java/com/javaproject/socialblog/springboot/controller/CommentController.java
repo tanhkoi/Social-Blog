@@ -1,6 +1,7 @@
 package com.javaproject.socialblog.springboot.controller;
 
 import com.javaproject.socialblog.springboot.model.Comment;
+import com.javaproject.socialblog.springboot.security.dto.CommentRequest;
 import com.javaproject.socialblog.springboot.security.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class CommentController {
     // create
     @PostMapping("/{postId}")
     @Operation(tags = "Comment Service")
-    public ResponseEntity<Comment> createComment(@PathVariable String postId, @RequestBody Comment comment) {
+    public ResponseEntity<Comment> createComment(@PathVariable String postId, @RequestBody CommentRequest comment) {
 
         return ResponseEntity.ok(commentService.createComment(comment, postId));
     }

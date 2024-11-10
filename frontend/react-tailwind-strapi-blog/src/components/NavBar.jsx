@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { menu, close, logo } from "../assets";
-import { useNavigate, Link  } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Kiểm tra nếu đã có token trong localStorage
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    const profilePicture = localStorage.getItem('profilePicture');
+    
+    if (token && username) {
+      setUser({ username, profilePicture });
+    }
+  }, []);
 
   const handleLoginClick = () => {
     navigate("/login");
@@ -41,7 +53,14 @@ const Navbar = () => {
     navigate("/");
   };
 
-
+  const handleLogout = () => {
+    // Xóa token và thông tin người dùng khỏi localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('profilePicture');
+    setUser(null);
+    navigate("/");  // Điều hướng về trang chủ sau khi đăng xuất
+  };
 
   return (
     <div className="w-full h-[80px] z-10 bg-white drop-shadow-lg fixed">
@@ -123,17 +142,33 @@ const Navbar = () => {
         </form>
 
         <div className="hidden md:flex sm:mr-10 md:mr-10">
-        <button onClick={() => navigate("/newpost")}>New Post</button>
-
-          <button
-            className="border-none bg-transparent text-black mr-4"
-            onClick={handleLoginClick}
-          >
-            Login
-          </button>
-          <button className="px-8 py-3" onClick={handleSignUpClick}>
-            Sign Up
-          </button>
+          {user ? (
+            <>
+              <div className="flex items-center mr-4">
+                {user.profilePicture && (
+                  <img
+                    src={user.profilePicture}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
+                )}
+                <span>{user.username}</span>
+              </div>
+              <button onClick={handleLogout} className="px-4 py-2">Logout</button>
+            </>
+          ) : (
+            <>
+              <button
+                className="border-none bg-transparent text-black mr-4"
+                onClick={handleLoginClick}
+              >
+                Login
+              </button>
+              <button className="px-8 py-3" onClick={handleSignUpClick}>
+                Sign Up
+              </button>
+            </>
+          )}
         </div>
 
         <div className="md:hidden" onClick={() => setToggle(!toggle)}>
