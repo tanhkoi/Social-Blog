@@ -11,4 +11,9 @@ public class LoginResponse {
 
     private String token;
 
+    private String username;
+
+    private String profilePicture;
+
+    private boolean enabled;
 }

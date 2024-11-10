@@ -21,12 +21,15 @@ public class JwtTokenManager {
 
         final String username = user.getUsername();
         final UserRole userRole = user.getUserRole();
+        final String userId = user.getId();
+        final boolean enable = user.isEnabled();
 
         //@formatter:off
 		return JWT.create()
 				.withSubject(username)
-				.withIssuer(jwtProperties.getIssuer())
-				.withClaim("role", userRole.name())
+                .withClaim("userId", userId)
+                .withClaim("role", userRole.name())
+                .withClaim("enable", enable)
 				.withIssuedAt(new Date())
 				.withExpiresAt(new Date(System.currentTimeMillis() + jwtProperties.getExpirationMinute() * 60 * 1000))
 				.sign(Algorithm.HMAC256(jwtProperties.getSecretKey().getBytes()));
@@ -38,6 +41,24 @@ public class JwtTokenManager {
         final DecodedJWT decodedJWT = getDecodedJWT(token);
 
         return decodedJWT.getSubject();
+    }
+
+    public String getUserIdFromToken(String token) {
+        final DecodedJWT decodedJWT = getDecodedJWT(token);
+
+        return decodedJWT.getClaim("userId").asString();
+    }
+
+    public String getUserRoleFromToken(String token) {
+        final DecodedJWT decodedJWT = getDecodedJWT(token);
+
+        return decodedJWT.getClaim("role").asString();
+    }
+
+    public boolean isUserEnable(String token) {
+        final DecodedJWT decodedJWT = getDecodedJWT(token);
+
+        return decodedJWT.getClaim("enable").asBoolean();
     }
 
     public boolean validateToken(String token, String authenticatedUsername) {
