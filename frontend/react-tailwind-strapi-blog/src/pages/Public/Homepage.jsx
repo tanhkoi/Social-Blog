@@ -6,9 +6,10 @@ const Homepage = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    if (localStorage.getItem("loginSuccess") === "true") {
+    const loginSuccess = localStorage.getItem("loginSuccess");
+    if (loginSuccess === "true") {
       setShowMessage(true);
-      localStorage.removeItem("loginSuccess");
+      localStorage.removeItem("loginSuccess"); 
     }
   }, []);
 
@@ -22,7 +23,7 @@ const Homepage = () => {
           <div className="w-60">
             <SideBar />
           </div>
-          <div className={`w-full flex-grow ml-4 }`}>
+          <div className={`w-full flex-grow ml-4`}>
             {showMessage && (
               <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
                 Login successfully!

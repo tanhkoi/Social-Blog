@@ -45,11 +45,9 @@ const BlogContent = () => {
           },
         });
 
-
         if (!response.ok) {
           throw new Error('Failed to fetch comments');
         }
-
         const commentsData = await response.json();
         setComments(commentsData);  // Cập nhật bình luận vào state
       } catch (error) {
@@ -90,9 +88,6 @@ const BlogContent = () => {
       }
     }
   };
-
-
-
   // Xử lý tăng lượt thích cho bình luận
   const handleLike = (index) => {
     const updatedComments = comments.map((comment, i) =>
@@ -101,12 +96,10 @@ const BlogContent = () => {
     setComments(updatedComments);
   };
 
- 
   // Nếu blog chưa được tải, hiển thị loading
   if (!blog) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="w-full pb-10 bg-zinc-950 text- mt-10">
       <div className="max-w-[1240px] mx-auto">
@@ -148,7 +141,7 @@ const BlogContent = () => {
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               placeholder="Add a comment"
-              className="w-full p-2 bg-zinc-900 border border-gray-300 rounded-md"
+              className="w-full p-2 bg-zinc-900 text-white border border-gray-300 rounded-md"
             />
             <button
     type="submit"

@@ -18,6 +18,8 @@ const Navbar = () => {
     
     if (token && username) {
       setUser({ username, profilePicture });
+    }else {
+      setUser(null);
     }
   }, []);
 
@@ -60,7 +62,6 @@ const Navbar = () => {
     localStorage.removeItem('username');
     localStorage.removeItem('profilePicture');
     setUser(null);
-    window.location.reload();
     navigate("/");
       // Điều hướng về trang chủ sau khi đăng xuất
   };
@@ -192,7 +193,7 @@ const Navbar = () => {
           ) : (
             <>
               <button
-                className="border-none bg-transparent text-black mr-4"
+                className="border-none bg-transparent text-white mr-4"
                 onClick={handleLoginClick}
               >
                 Login
