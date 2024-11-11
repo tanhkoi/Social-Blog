@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { FaTimes } from 'react-icons/fa';  
 
-const UserProfilePage = () => {
+const AccountDetailPage = () => {
   const navigate = useNavigate();  
+  // eslint-disable-next-line no-unused-vars
   const token = localStorage.getItem('token');
   const username = localStorage.getItem('username');
+  // eslint-disable-next-line no-unused-vars
   const profilePicture = localStorage.getItem('profilePicture');
   
   const [user, setUser] = useState({
@@ -130,4 +132,4 @@ const UserProfilePage = () => {
   );
 };
 
-export default UserProfilePage;
+export default AccountDetailPage;

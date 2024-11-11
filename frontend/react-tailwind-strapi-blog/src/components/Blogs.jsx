@@ -31,7 +31,7 @@ const Blogs = () => {
 
 
   return (
-    <div className="w-full bg-[#f9f9f9] py-[50px] mt-10">
+    <div className="w-full bg-zinc-950 py-[50px] mt-10">
       <div className="max-w-[1240px] mx-auto">
         <BlogList blogs={blogs} setBlogs={setBlogs} />
       </div>

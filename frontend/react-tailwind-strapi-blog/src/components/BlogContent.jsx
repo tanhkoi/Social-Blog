@@ -108,10 +108,10 @@ const BlogContent = () => {
   }
 
   return (
-    <div className="w-full pb-10 bg-[#f9f9f9] mt-10">
+    <div className="w-full pb-10 bg-zinc-950 text- mt-10">
       <div className="max-w-[1240px] mx-auto">
         <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 ss:grid-cols-1 md:gap-x-8 sm:gap-y-8 ss:gap-y-8 px-4 sm:pt-20 md:mt-0 ss:pt-20 text-black">
-          <div className="col-span-2">
+          <div className="col-span-2 text-white">
             <img
               className="h-56 w-full object-cover"
               src={blog.coverImg}
@@ -122,17 +122,17 @@ const BlogContent = () => {
               <p>{blog.content}</p>
             </div>
           </div>
-          <div className="items-center w-full bg-white rounded-xl drop-shadow-md py-5 max-h-[250px]">
+          <div className="items-center w-full bg-zinc-900 rounded-xl drop-shadow-md py-5 max-h-[250px]">
             <div>
               <img
                 className="p-2 w-32 h-32 rounded-full mx-auto object-cover"
                 src={blog.authorImg}
                 alt="Author"
               />
-              <h1 className="font-bold text-2xl text-center text-gray-900 pt-3">
+              <h1 className="font-bold text-2xl text-center text-white pt-3">
                 {blog.authorName}
               </h1>
-              <p className="text-center text-gray-900 font-medium">
+              <p className="text-center text-white font-medium">
                 {blog.authorDesc}
               </p>
             </div>
@@ -140,15 +140,15 @@ const BlogContent = () => {
         </div>
 
         {/* Phần bình luận */}
-        <div className="mt-8 px-4 bg-gray-50 border border-gray-300 rounded-lg p-6">
-          <h2 className="text-2xl font-bold">Comments</h2>
+        <div className="mt-8 px-4 bg-zinc-950 border border-zinc-900 rounded-lg p-6">
+          <h2 className="text-2xl text-white font-bold">Comments</h2>
           <form onSubmit={handleCommentSubmit} className="mt-4">
             <input
               type="text"
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               placeholder="Add a comment"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-2 bg-zinc-900 border border-gray-300 rounded-md"
             />
             <button
     type="submit"
@@ -159,11 +159,11 @@ const BlogContent = () => {
           </form>
           <div className="space-y-2 mt-4">
             {comments.map((comment, index) => (
-              <div key={index} className="bg-gray-100 p-2 rounded-md flex justify-between items-center">
+              <div key={index} className="bg-zinc-900 text-white p-2 rounded-md flex justify-between items-center">
                 <div>
-                <p className="text-lg font-bold text-blue-600">{comment.user.username}</p>
+                <p className="text-lg font-bold text-white">{comment.user.username}</p>
                   <p>{comment.content}</p>
-                  <span className="text-sm text-gray-500">{comment.createdAt}</span>
+                  <span className="text-sm text-white">{comment.createdAt}</span>
                 </div>
                 <div
                   onClick={() => handleLike(index)}

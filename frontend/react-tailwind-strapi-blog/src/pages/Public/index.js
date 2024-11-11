@@ -6,7 +6,7 @@ import Aboutpage from "./Aboutpage";
 import NotFoundPage from "./NotFoundPage";
 import SupportPage from "./SupportPage";
 import HistoryPage from "./HistoryPage";
-import UserProfilePage from "./UserProfilePage";
+import AccountDetailPage from "./AccountDetailPage";
 import NewPostPage from "./NewPostPage";
 import SavedBlogsPage from "./SavedBlogsPage";
 
@@ -21,7 +21,7 @@ export {
     NotFoundPage,
     SupportPage,
     HistoryPage,
-    UserProfilePage,
+    AccountDetailPage,
     NewPostPage,
     SavedBlogsPage,
 

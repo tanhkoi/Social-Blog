@@ -28,11 +28,11 @@ const BlogItem = ({ blog, setBlogs }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden drop-shadow-md">
+    <div className="bg-zinc-900 rounded-xl overflow-hidden drop-shadow-md">
       <Link to={`/blog/${blog.id}`}>
         <img className="h-56 w-full object-cover" src={blog.coverImg} alt="Blog cover" />
         <div className="p-4">
-          <h3 className="font-bold text-2xl my-1">{blog.title}</h3>
+          <h3 className="text-white font-bold text-2xl my-1">{blog.title}</h3>
           <p className="text-gray-600 text-xl">{blog.desc}</p>
         </div>
       </Link>

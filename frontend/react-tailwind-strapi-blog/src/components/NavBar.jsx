@@ -70,11 +70,11 @@ const Navbar = () => {
   };
 
   const handleNewPost = () => {
-    navigate("/new-post"); // Điều hướng tới trang tạo bài viết mới
+    navigate("/newpost"); // Điều hướng tới trang tạo bài viết mới
   };
 
   return (
-    <div className="w-full h-[80px] z-10 bg-white drop-shadow-lg fixed">
+    <div className="w-full h-[80px] z-10 bg-black text-white drop-shadow-lg fixed">
       <div className="flex justify-between items-center w-full h-full md:max-w-[1240px] m-auto">
         <div className="flex items-center">
           <Link to="/">
@@ -86,34 +86,34 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center text-white">
           <ul className="hidden md:flex">
             <button
-              className="border-none bg-transparent text-black mr-4"
+              className="border-none bg-transparent mr-4"
               onClick={() => handleNavClick("/")}
             >
               Home
             </button>
             <button
-              className="border-none bg-transparent text-black mr-4"
+              className="border-none bg-transparent mr-4"
               onClick={() => handleNavClick("/about")}
             >
               About
             </button>
             <button
-              className="border-none bg-transparent text-black mr-4"
+              className="border-none bg-transparent  mr-4"
               onClick={() => handleNavClick("/support")}
             >
               Support
             </button>
             <button
-              className="border-none bg-transparent text-black mr-4"
+              className="border-none bg-transparent  mr-4"
               onClick={() => handleNavClick("/saved")}
             >
               Bookmarks
             </button>
             <button
-              className="border-none bg-transparent text-black mr-4"
+              className="border-none bg-transparent  mr-4"
               onClick={() => handleNavClick("/history")}
             >
               History
@@ -131,7 +131,7 @@ const Navbar = () => {
               value={searchTerm}
               onChange={handleSearchChange}
               placeholder="Search blog..."
-              className="border border-gray-300 rounded px-4 py-2 pl-10 pr-4"
+              className=" bg-zinc-900 rounded px-4 py-2 pl-10 pr-4"
             />
           </div>
           <button type="submit" className="hidden">
@@ -144,7 +144,7 @@ const Navbar = () => {
           {user && (
             <button
               onClick={handleNewPost}
-              className="border-none bg-blue-500 text-white px-6 py-3 rounded-full ml-4"
+              className="border-none bg-white text-black px-6 py-3 rounded-full ml-4"
             >
               New Post
             </button>
@@ -153,36 +153,36 @@ const Navbar = () => {
           {user ? (
             <>
               <div
-                className="flex items-center ml-10 cursor-pointer"
+                className="flex items-center  ml-10 cursor-pointer"
                 onClick={toggleDropdown}
               >
                 {user.profilePicture && (
                   <img
                     src={user.profilePicture}
                     alt="Profile"
-                    className="w-8 h-8 rounded-full mr-2"
+                    className="w-8 h-8 rounded-lg mr-2"
                   />
                 )}
                 <span>{user.username}</span>
               </div>
 
               {showDropdown && (
-                <div   className="absolute right-0 mt-12 w-48 bg-blue-600 text-white rounded-lg shadow-lg z-20 transform translate-x-4">
+                <div   className="absolute right-0 mt-12 w-48 rounded-lg shadow-lg z-20 transform translate-x-4">
                   <button
                     onClick={() => navigate("/profile")}
-                    className="block px-4 py-2 text-left w-full hover:bg-blue-700"
+                    className="block px-4 py-2 text-left w-full rounded bg-white text-black  border-white hover:bg-gray-200"
                   >
                     Profile
                   </button>
                   <button
-                    onClick={() => navigate("/account-detail")}
-                    className="block px-4 py-2 text-left w-full hover:bg-blue-700"
+                    onClick={() => navigate("/account")}
+                    className="block px-4 py-2 text-left w-full rounded bg-white text-black  border-white hover:bg-gray-200"
                   >
                     Account Detail
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="block px-4 py-2 text-left w-full hover:bg-blue-700"
+                    className="block px-4 py-2 text-left w-full rounded bg-white text-black  border-white hover:bg-gray-200"
                   >
                     Logout
                   </button>

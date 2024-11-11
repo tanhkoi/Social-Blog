@@ -14,7 +14,7 @@ import {
   NotFoundPage,
   SupportPage,
   HistoryPage,
-  UserProfilePage,
+  AccountDetailPage,
   NewPostPage,
   SavedBlogsPage,
 } from "./pages/Public";
@@ -67,7 +67,7 @@ const App = () => {
         <Route path="/support" element={<SupportPage />} />
         <Route path="/admin/*" element={<AdminLayout />} />
         <Route path="/history" element={<HistoryPage />} />
-        <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="/account" element={<AccountDetailPage />} />
         <Route path="/newpost" element={<NewPostPage />} />
         <Route path="/saved" element={<SavedBlogsPage />} />
         <Route path="*" element={<NotFoundPage />} />
