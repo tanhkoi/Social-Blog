@@ -42,4 +42,14 @@ public class ResponseUtil {
         return new ResponseEntity<>(response, status);
     }
 
+    public static <T> ResponseEntity<ApiResponse<T>> error(HttpStatus status, String message) {
+        ApiResponse<T> response = new ApiResponse<>(
+                status.value(),
+                message,
+                LocalDateTime.now(),
+                null
+        );
+        return new ResponseEntity<>(response, status);
+    }
+
 }
