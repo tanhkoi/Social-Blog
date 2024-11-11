@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { NavBar, SideBar } from "../../components";
-import { Link } from "react-router-dom";
+import  NavBar  from "../../../components/Header/NavBar";
+import  SideBar  from "../../../components/Sidebar/SideBar";
+import  { Link }  from "react-router-dom";
 
 const SavedBlogsPage = () => {
   const [savedBlogs, setSavedBlogs] = useState([]);

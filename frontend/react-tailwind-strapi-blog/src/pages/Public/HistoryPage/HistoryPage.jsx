@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { NavBar, SideBar } from "../../components";
+import  NavBar  from "../../../components/Header/NavBar";
+import  SideBar  from "../../../components/Sidebar/SideBar";
 
 const blogs = [
   {

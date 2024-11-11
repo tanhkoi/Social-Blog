@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { menu, close, logo } from "../assets";
+import { menu, close, logo } from "../../assets";
 import { useNavigate, Link } from "react-router-dom";
 
 

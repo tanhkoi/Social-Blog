@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { NavBar, SideBar } from "../../components";
+import  NavBar  from "../../../components/Header/NavBar";
+import  SideBar  from "../../../components/Sidebar/SideBar";
 
 const NewPostPage = () => {
   const [title, setTitle] = useState("");
@@ -9,7 +10,6 @@ const NewPostPage = () => {
   const [content, setContent] = useState("");
   const [previewImg, setPreviewImg] = useState(null);
   const [imageCloudUrl, setImageCloudUrl] = useState("");
-  const [isSidebarVisible] = useState(true);
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
@@ -65,11 +65,9 @@ const NewPostPage = () => {
         <NavBar setSearchTerm={() => {}} />
       </header>
       <main className="flex">
-        {isSidebarVisible && (
           <aside className="w-60">
             <SideBar />
           </aside>
-        )}
         <div className="w-full flex-grow p-4 mt-10">
           <div className="w-full max-w-md mx-auto mt-10 p-4 bg-zinc-900 rounded">
             <h1 className="text-2xl font-bold">Create New Post</h1>

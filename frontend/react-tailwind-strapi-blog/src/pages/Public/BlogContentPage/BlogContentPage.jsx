@@ -1,4 +1,6 @@
-import { NavBar, BlogContent, SideBar } from "../../components";
+import  NavBar  from "../../../components/Header/NavBar";
+import  SideBar  from "../../../components/Sidebar/SideBar";
+import  BlogContent  from "../../../components/Blog/BlogContent";
 
 const BlogContentPage = () => {
   return (

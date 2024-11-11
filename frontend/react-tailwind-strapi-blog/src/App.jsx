@@ -5,19 +5,19 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from "./pages/Admin/Header";
 import Sidebar from "./pages/Admin/Sidebar";
 import Home from "./pages/Admin/Home";
-import {
-  Homepage,
-  BlogContentPage,
-  SignUpPage,
-  LoginPage,
-  Aboutpage,
-  NotFoundPage,
-  SupportPage,
-  HistoryPage,
-  AccountDetailPage,
-  NewPostPage,
-  SavedBlogsPage,
-} from "./pages/Public";
+import Homepage from "./pages/Public/HomePage/Homepage";
+import BlogContentPage from "./pages/Public/BlogContentPage/BlogContentPage";
+import SignUpPage from "./pages/Public/AuthPage/SignUpPage";
+import LoginPage from "./pages/Public/AuthPage/LoginPage";
+import Aboutpage from "./pages/Public/AboutPage/Aboutpage";
+import NotFoundPage from "./pages/Public/NotFoundPage/NotFoundPage";
+import SupportPage from "./pages/Public/SupportPage/SupportPage";
+import HistoryPage from "./pages/Public/HistoryPage/HistoryPage";
+import AccountDetailPage from "./pages/Public/AccountPage/AccountDetailPage";
+import NewPostPage from "./pages/Public/NewPostPage/NewPostPage";
+import SavedBlogsPage from "./pages/Public/SavedBlogsPage/SavedBlogsPage";
+
+
 import {
   CategoriesPage,
   BlogPage,

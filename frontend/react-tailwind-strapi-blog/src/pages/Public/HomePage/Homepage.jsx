@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { NavBar, Blogs, SideBar } from "../../components";
+import  NavBar  from "../../../components/Header/NavBar";
+import  SideBar  from "../../../components/Sidebar/SideBar";
+import Blogs  from "../../../components/Blog/Blogs";
 
 const Homepage = () => {
   const [showMessage, setShowMessage] = useState(false);
