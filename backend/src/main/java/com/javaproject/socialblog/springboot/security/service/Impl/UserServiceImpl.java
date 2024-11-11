@@ -88,4 +88,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean checkAccountEnabled(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (Boolean.FALSE.equals(user.isEnabled())) {
+            return false;
+        }
+        return true;
+    }
+
 }

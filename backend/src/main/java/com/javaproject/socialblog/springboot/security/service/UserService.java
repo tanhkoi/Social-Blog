@@ -15,4 +15,6 @@ public interface UserService {
 
     boolean verify(String verificationCode);
 
+    boolean checkAccountEnabled(String id);
+
 }
