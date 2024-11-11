@@ -1,14 +1,66 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  // eslint-disable-next-line no-unused-vars
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  // Kiểm tra token và điều hướng nếu đã đăng nhập
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate("/");  // Redirect to home page if token exists
+    }
+  }, [navigate]);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Logging in with:", email);
-    navigate("/");
+    try {
+      const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+      if (data.profilePicture) {
+        localStorage.setItem('profilePicture', data.profilePicture);
+      }
+
+      toast.success("Login successful!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+      toast.error(err.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   return (
@@ -27,19 +79,22 @@ const Login = () => {
               <form onSubmit={handleLogin}>
                 <div className="mb-6">
                   <input
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="email"
+                    onChange={(e) => setUsername(e.target.value)}
+                    type="text"
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    placeholder="Email address"
+                    placeholder="Username"
                     required
+                    value={username}
                   />
                 </div>
                 <div className="mb-6">
                   <input
+                    onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     placeholder="Password"
                     required
+                    value={password}
                   />
                 </div>
                 <div className="text-center lg:text-left">
@@ -52,7 +107,7 @@ const Login = () => {
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
                     Don’t have an account?{" "}
                     <Link
-                      to="/signup" // Adjust the path to your signup route
+                      to="/register"
                       className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out"
                     >
                       SignUp

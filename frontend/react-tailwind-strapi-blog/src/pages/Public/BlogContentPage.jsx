@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { NavBar, Footer, BlogContent, SideBar } from "../components";
+import { useState } from "react";
+import { NavBar, BlogContent, SideBar } from "../../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const BlogContentPage = () => {
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true); // Trạng thái kiểm soát Sidebar
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true); 
 
   return (
     <div>
@@ -35,17 +35,11 @@ const BlogContentPage = () => {
               )}
             </button>
           </div>
-          {/* BlogContent tự động mở rộng khi Sidebar ẩn */}
           <div className={`flex-grow ${isSidebarVisible ? "ml-4" : ""}`}>
             <BlogContent />
           </div>
         </div>
       </main>
-
-      {/* <footer>
-        <Footer />
-      </footer> */}
-      {/* <Footer /> */}
     </div>
   );
 };
