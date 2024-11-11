@@ -57,7 +57,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(WHITE_LIST_APIS)
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/posts", "/api/posts/{id}")
+                        .requestMatchers(HttpMethod.GET, "/api/posts",
+                                "/api/posts/{id}",
+                                "/api/comments/{postId}")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
