@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
         final User user = UserMapper.INSTANCE.convertToUser(registrationRequest);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setUserRole(UserRole.USER);
+        user.setProfilePicture("https://img.freepik.com/premium-psd/3d-male-cute-cartoon-character-avatar-isolated-illustration_530669-1708.jpg");
 
         String randomCode = RandomString.make(64);
         user.setVerificationCode(randomCode);
