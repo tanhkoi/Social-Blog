@@ -6,6 +6,7 @@ import com.javaproject.socialblog.springboot.repository.UserRepository;
 import com.javaproject.socialblog.springboot.security.dto.AuthenticatedUserDto;
 import com.javaproject.socialblog.springboot.security.dto.RegistrationRequest;
 import com.javaproject.socialblog.springboot.security.dto.RegistrationResponse;
+import com.javaproject.socialblog.springboot.security.dto.UserRequest;
 import com.javaproject.socialblog.springboot.security.mapper.UserMapper;
 import com.javaproject.socialblog.springboot.security.service.EmailService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
@@ -14,6 +15,7 @@ import com.javaproject.socialblog.springboot.utils.GeneralMessageAccessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,8 @@ public class UserServiceImpl implements UserService {
 
     private final EmailService emailService;
 
+    private final ModelMapper modelMapper;
+
     @Override
     public User findByUsername(String username) {
 
@@ -48,6 +52,7 @@ public class UserServiceImpl implements UserService {
         final User user = UserMapper.INSTANCE.convertToUser(registrationRequest);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setUserRole(UserRole.USER);
+        user.setProfilePicture("https://img.freepik.com/premium-psd/3d-male-cute-cartoon-character-avatar-isolated-illustration_530669-1708.jpg");
 
         String randomCode = RandomString.make(64);
         user.setVerificationCode(randomCode);
@@ -97,6 +102,22 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public User updateUser(String id, UserRequest userRequest) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (userRequest.getPassword() == null) {
+            userRequest.setPassword(user.getPassword());
+        }else{
+            userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
+        }
+
+        modelMapper.map(userRequest, user);
+        userRepository.save(user);
+        return user;
     }
 
 }

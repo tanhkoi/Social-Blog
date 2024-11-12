@@ -6,7 +6,6 @@ import com.javaproject.socialblog.springboot.security.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class CommentController {
     // create
     @PostMapping("/{postId}")
     @Operation(tags = "Comment Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Comment> createComment(@PathVariable String postId, @RequestBody CommentRequest comment) {
 
         return ResponseEntity.ok(commentService.createComment(comment, postId));
@@ -38,7 +37,7 @@ public class CommentController {
     // delete
     @DeleteMapping("/{id}")
     @Operation(tags = "Comment Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Void> deleteComment(@PathVariable String id) {
 
         commentService.deleteComment(id);

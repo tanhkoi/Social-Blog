@@ -6,7 +6,6 @@ import com.javaproject.socialblog.springboot.security.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class PostController {
     // create
     @PostMapping
     @Operation(tags = "Post Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasAuthority('ROLE_USER') and authentication.principal.enabled")
     public ResponseEntity<Post> createPost(@RequestBody PostRequest post) {
 
         return ResponseEntity.ok(postService.createPost(post));
@@ -48,7 +47,7 @@ public class PostController {
     // update
     @PutMapping("/{id}")
     @Operation(tags = "Post Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody PostRequest postDetails) {
 
         try {
@@ -65,7 +64,7 @@ public class PostController {
     // delete
     @DeleteMapping("/{id}")
     @Operation(tags = "Post Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Void> deletePost(@PathVariable String id) {
 
         postService.deletePost(id);
