@@ -4,7 +4,6 @@ import com.javaproject.socialblog.springboot.security.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +15,7 @@ public class LikeController {
 
     @PostMapping("/post/{postId}")
     @Operation(tags = "Like Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Void> likePost(@RequestParam String userId, @PathVariable String postId) {
 
         likeService.likePost(userId, postId);
@@ -27,7 +26,7 @@ public class LikeController {
 
     @DeleteMapping("/post/{postId}")
     @Operation(tags = "Like Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Void> unlikePost(@RequestParam String userId, @PathVariable String postId) {
 
         likeService.unlikePost(userId, postId);
@@ -38,7 +37,7 @@ public class LikeController {
 
     @PostMapping("/comment/{commentId}")
     @Operation(tags = "Like Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Void> likeComment(@RequestParam String userId, @PathVariable String commentId) {
 
         likeService.likeComment(userId, commentId);
@@ -49,7 +48,7 @@ public class LikeController {
 
     @DeleteMapping("/comment/{commentId}")
     @Operation(tags = "Like Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Void> unlikeComment(@RequestParam String userId, @PathVariable String commentId) {
 
         likeService.unlikeComment(userId, commentId);
@@ -60,7 +59,7 @@ public class LikeController {
 
     @GetMapping("/post/{postId}/count")
     @Operation(tags = "Like Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Long> getPostLikeCount(@PathVariable String postId) {
 
         return ResponseEntity.ok(likeService.getPostLikeCount(postId));
@@ -69,7 +68,7 @@ public class LikeController {
 
     @GetMapping("/comment/{commentId}/count")
     @Operation(tags = "Like Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Long> getCommentLikeCount(@PathVariable String commentId) {
 
         return ResponseEntity.ok(likeService.getCommentLikeCount(commentId));

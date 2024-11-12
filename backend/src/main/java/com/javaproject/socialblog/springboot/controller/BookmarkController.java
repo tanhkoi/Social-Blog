@@ -5,7 +5,6 @@ import com.javaproject.socialblog.springboot.security.service.BookmarkService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class BookmarkController {
 
     @PostMapping("/post/{postId}")
     @Operation(tags = "Bookmark Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Void> bookmarkPost(@RequestParam String userId, @PathVariable String postId) {
 
         bookmarkService.bookmarkPost(userId, postId);
@@ -29,7 +28,7 @@ public class BookmarkController {
 
     @DeleteMapping("/post/{postId}")
     @Operation(tags = "Bookmark Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Void> removeBookmark(@RequestParam String userId, @PathVariable String postId) {
 
         bookmarkService.removeBookmark(userId, postId);
@@ -39,7 +38,7 @@ public class BookmarkController {
 
     @GetMapping("/{userId}")
     @Operation(tags = "Bookmark Service")
-    @PreAuthorize("hasRole('USER') and #user.enabled")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<List<Bookmark>> getUserBookmarks(@PathVariable String userId) {
 
         return ResponseEntity.ok(bookmarkService.getUserBookmarks(userId));
