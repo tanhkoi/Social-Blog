@@ -12,6 +12,8 @@ public interface PostService {
 
     Optional<Post> getPostById(String id);
 
+    List<Post> getMyPosts();
+
     Post createPost(PostRequest post);
 
     Post updatePost(String id, PostRequest postDetails);
@@ -19,5 +21,6 @@ public interface PostService {
     void deletePost(String id);
 
     void deleteNullComment(String id);
+
 }
 
