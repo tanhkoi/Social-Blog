@@ -16,6 +16,8 @@ import HistoryPage from "./pages/Public/HistoryPage/HistoryPage";
 import AccountDetailPage from "./pages/Public/AccountPage/AccountDetailPage";
 import NewPostPage from "./pages/Public/NewPostPage/NewPostPage";
 import SavedBlogsPage from "./pages/Public/SavedBlogsPage/SavedBlogsPage";
+import ProfilePage from "./pages/Public/AccountPage/ProfilePage";
+
 
 
 import {
@@ -70,6 +72,7 @@ const App = () => {
         <Route path="/account" element={<AccountDetailPage />} />
         <Route path="/newpost" element={<NewPostPage />} />
         <Route path="/saved" element={<SavedBlogsPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

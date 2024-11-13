@@ -1,57 +1,64 @@
+// SavedBlogsPage.jsx
 import { useEffect, useState } from "react";
-import  NavBar  from "../../../components/Header/NavBar";
-import  SideBar  from "../../../components/Sidebar/SideBar";
-import  { Link }  from "react-router-dom";
+import BlogList from "../../../components/Blog/BlogList ";
+import NavBar from "../../../components/Header/NavBar";  // Import NavBar
+import SideBar from "../../../components/Sidebar/SideBar";  // Import Sidebar
 
 const SavedBlogsPage = () => {
   const [savedBlogs, setSavedBlogs] = useState([]);
+  const userId = localStorage.getItem("userId"); // Lấy userId từ localStorage
 
   useEffect(() => {
-    const blogs = JSON.parse(localStorage.getItem("savedBlogs")) || [];
-    setSavedBlogs(blogs);
-  }, []);
+    const fetchSavedBlogs = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("Bạn cần đăng nhập để xem bài viết đã lưu.");
+        return;
+      }
+
+
+      try {
+        // Sử dụng userId thay cho blog.id trong URL để lấy danh sách blog đã lưu của người dùng
+        const response = await fetch(`http://localhost:8080/bookmarks/${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Gửi token trong header
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setSavedBlogs(data); // Gán danh sách blog đã lưu
+        } else {
+          const errorData = await response.json();
+          console.error("Lỗi khi lấy blog:", errorData.message);
+        }
+      } catch (error) {
+        console.error("Lỗi khi kết nối đến API:", error);
+      }
+    };
+
+    fetchSavedBlogs();
+  }, [userId]);
 
   return (
-    <div className="bg-zinc-900 min-h-screen text-white">
+    <div className="bg-zinc-950 min-h-screen text-white">
       <header>
         <NavBar />
       </header>
-      <main>
-        <div className="flex">
-          <div className="w-60">
-            <SideBar />
-          </div>
-          <div className="w-full flex-grow ml-4">
-            <div className="max-w-[1240px] mx-auto py-[50px] mt-10">
-              <h2 className="text-2xl font-bold mb-4">Saved Blogs</h2>
-              {savedBlogs.length > 0 ? (
-                <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 ss:grid-cols-1 gap-8 px-4">
-                  {savedBlogs.map((blog) => (
-                    <div
-                      key={blog.id}
-                      className="bg-white rounded-xl overflow-hidden drop-shadow-md"
-                    >
-                      <Link to={`/blog/${blog.id}`}>
-                        <img
-                          className="h-56 w-full object-cover"
-                          src={blog.coverImg}
-                          alt="Blog cover"
-                        />
-                        <div className="p-4">
-                          <h3 className="font-bold text-2xl my-1 text-black">
-                            {blog.title}
-                          </h3>
-                          <p className="text-gray-600 text-xl">{blog.desc}</p>
-                        </div>
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p>No saved blogs yet.</p>
-              )}
-            </div>
-          </div>
+      <main className="flex">
+        <aside className="w-60">
+          <SideBar />
+        </aside>
+        <div className="flex-grow p-4 ml-4">
+          <h1 className="text-3xl font-bold mb-5 mt-20">Saved Blogs</h1>
+          {savedBlogs.length > 0 ? (
+            <BlogList blogs={savedBlogs} setBlogs={setSavedBlogs} />
+          ) : (
+            <p className="text-gray-400">Bạn chưa lưu blog nào.</p>
+          )}
         </div>
       </main>
     </div>

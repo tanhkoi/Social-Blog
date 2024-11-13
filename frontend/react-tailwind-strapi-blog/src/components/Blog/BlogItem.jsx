@@ -1,11 +1,12 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaHeart, FaComment, FaBookmark } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { useState } from "react";
+import SaveButton from "../Button/SaveButton"; 
 
 const BlogItem = ({ blog, setBlogs }) => {
   const [likes, setLikes] = useState(blog.likes || 110);
-  const [isSaved, setIsSaved] = useState(blog.isSaved || false);
+  const { isSaved, handleSavePost, handleDeletePost } = SaveButton(blog, setBlogs);
 
   const handleLike = (e) => {
     e.stopPropagation();
@@ -19,12 +20,11 @@ const BlogItem = ({ blog, setBlogs }) => {
 
   const handleSave = (e) => {
     e.stopPropagation();
-    const newIsSaved = !isSaved;
-    setIsSaved(newIsSaved);
-
-    setBlogs((prevBlogs) =>
-      prevBlogs.map((b) => (b.id === blog.id ? { ...b, isSaved: newIsSaved } : b))
-    );
+    if (isSaved) {
+      handleDeletePost(e);
+    } else {
+      handleSavePost(e);
+    }
   };
 
   return (
@@ -56,10 +56,10 @@ const BlogItem = ({ blog, setBlogs }) => {
 
 BlogItem.propTypes = {
   blog: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     title: PropTypes.string.isRequired,
-    desc: PropTypes.string.isRequired,
-    coverImg: PropTypes.string.isRequired,
+    desc: PropTypes.string,
+    coverImg: PropTypes.string,
     likes: PropTypes.number,
     isSaved: PropTypes.bool,
   }).isRequired,
