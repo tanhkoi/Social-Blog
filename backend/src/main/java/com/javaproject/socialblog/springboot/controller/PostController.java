@@ -5,11 +5,13 @@ import com.javaproject.socialblog.springboot.security.dto.PostRequest;
 import com.javaproject.socialblog.springboot.security.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
@@ -33,6 +35,14 @@ public class PostController {
         return postService.getPostById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    // get my posts
+    @GetMapping("/myPosts")
+    @Operation(tags = "Post Service")
+    public ResponseEntity<List<Post>> getMyPosts() {
+
+        return ResponseEntity.ok(postService.getMyPosts());
     }
 
     // create

@@ -8,12 +8,14 @@ import com.javaproject.socialblog.springboot.security.dto.PostRequest;
 import com.javaproject.socialblog.springboot.security.service.PostService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
@@ -26,12 +28,14 @@ public class PostServiceImpl implements PostService {
     public List<Post> getAllPosts() {
 
         return postRepository.findAll();
+
     }
 
     @Override
     public Optional<Post> getPostById(String id) {
 
         return postRepository.findById(id);
+
     }
 
     @Override
@@ -47,6 +51,7 @@ public class PostServiceImpl implements PostService {
         post.setTitle(postDetail.getTitle());
         post.setTags(postDetail.getTags());
         post.setCategory(postDetail.getCategory());
+
         if (postDetail.getImageCloudUrl() != null)
             post.setImageCloudUrl(postDetail.getImageCloudUrl());
         else
@@ -54,38 +59,65 @@ public class PostServiceImpl implements PostService {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
+
         User currUser = userService.findByUsername(username);
         post.setAuthor(currUser); // Set curr user
 
         return postRepository.save(post);
+
     }
 
     @Override
     public Post updatePost(String id, PostRequest postDetails) {
 
         return postRepository.findById(id).map(post -> {
+
             post.setTitle(postDetails.getTitle());
             post.setCategory(postDetails.getCategory());
             post.setTags(postDetails.getTags());
             post.setContent(postDetails.getContent());
             post.setCreatedAt(new Date());  // Sets the updated date to now
+
             return postRepository.save(post);
+
         }).orElseThrow(() -> new RuntimeException("Post not found with id " + id));
+
     }
 
     @Override
     public void deletePost(String id) {
 
         postRepository.deleteById(id);
+
     }
 
     @Override
     public void deleteNullComment(String id) {
+
         Post post = postRepository.findById(id).get();
+
         List<Comment> list = post.getComments();
         list.removeIf(c -> c.getContent() == null);
+
         post.setComments(list);
         postRepository.save(post);
+
+    }
+
+    @Override
+    public List<Post> getMyPosts() {
+
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+        User currUser = userService.findByUsername(username);
+
+        List<Post> posts = postRepository.findAll()
+                .stream()
+                .filter(post -> post.getAuthor().getId().equals(currUser.getId()))
+                .toList();
+
+        return posts;
+
     }
 
 }
