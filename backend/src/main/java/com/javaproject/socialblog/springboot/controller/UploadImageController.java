@@ -20,6 +20,7 @@ public class UploadImageController {
 
     @PostMapping
     @Operation(tags = "Upload Service")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) {
 
         final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB

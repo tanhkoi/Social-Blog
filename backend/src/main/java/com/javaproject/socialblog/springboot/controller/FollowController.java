@@ -18,6 +18,7 @@ public class FollowController {
 
     @GetMapping("/{id}/followers")
     @Operation(tags = "Follow Service")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Set<Follow>> getFollowers(@PathVariable String id) {
 
         return ResponseEntity.ok(followService.getFollowers(id) != null ? followService.getFollowers(id) : null);
@@ -26,6 +27,7 @@ public class FollowController {
 
     @GetMapping("/{id}/following")
     @Operation(tags = "Follow Service")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Set<Follow>> getFollowing(@PathVariable String id) {
 
         return ResponseEntity.ok(followService.getFollowing(id));
@@ -34,6 +36,7 @@ public class FollowController {
 
     @PostMapping("/{id1}/{id2}")
     @Operation(tags = "Follow Service")
+//    @PreAuthorize("hasRole('USER') and #user.enabled")
     public ResponseEntity<Void> getFollowing(@PathVariable String id1, @PathVariable String id2) {
 
         followService.followUser(id1, id2);
