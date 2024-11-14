@@ -1,42 +1,82 @@
 import { FaHeart } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const LikeButton = ({ initialLikes, blogId, setBlogs }) => {
   const [likes, setLikes] = useState(initialLikes || 110);
+  const [isLiked, setIsLiked] = useState(false); // Trạng thái thích
 
-  const handleLike = async (e) => {
+  // Kiểm tra trạng thái thích từ API khi render
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/likes/post/${blogId}/count`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setLikes(data.likes); // Cập nhật số lượt thích
+        }
+      } catch (error) {
+        console.error("Error fetching like status:", error);
+      }
+    };
+
+    fetchLikeStatus();
+  }, [blogId]);
+
+  const handleLikeToggle = async (e) => {
     e.stopPropagation();
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Bạn cần đăng nhập.");
+      return;
+    }
+
+    const url = `http://localhost:8080/api/likes/post/${blogId}`;
+    const method = isLiked ? "DELETE" : "POST";
+
     try {
-      // Gửi yêu cầu POST tới API để tăng số lượng like
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8080/api/likes/post/${blogId}`, {
-        method: 'POST',
+      const response = await fetch(url, {
+        method,
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
       if (!response.ok) {
-        throw new Error('Failed to like the post');
+        throw new Error(isLiked ? "Failed to unlike the post" : "Failed to like the post");
       }
 
-      // Nếu thành công, tăng số lượng like trong trạng thái cục bộ
-      const newLikes = likes + 1;
+      const newLikes = isLiked ? likes - 1 : likes + 1;
       setLikes(newLikes);
+      setIsLiked(!isLiked); // Cập nhật trạng thái thích
 
-      // Cập nhật lại blog trong danh sách sau khi tăng like
+      // Cập nhật lại danh sách blog
       setBlogs((prevBlogs) =>
-        prevBlogs.map((b) => (b.id === blogId ? { ...b, likes: newLikes } : b))
+        prevBlogs.map((b) =>
+          b.id === blogId ? { ...b, likes: newLikes, isLiked: !isLiked } : b
+        )
       );
     } catch (error) {
-      console.error('Error liking post:', error);
+      console.error(isLiked ? "Error unliking post:" : "Error liking post:", error);
     }
   };
 
   return (
-    <div onClick={handleLike} className="flex items-center space-x-1 cursor-pointer hover:text-red-500">
+    <div
+      onClick={handleLikeToggle}
+      className={`flex items-center space-x-1 cursor-pointer ${
+        isLiked ? "text-red-500" : "hover:text-red-500"
+      }`}
+    >
       <FaHeart />
       <span>{likes}</span>
     </div>

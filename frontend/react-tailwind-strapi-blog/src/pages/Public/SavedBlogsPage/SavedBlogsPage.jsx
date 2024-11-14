@@ -6,7 +6,6 @@ import SideBar from "../../../components/Sidebar/SideBar";  // Import Sidebar
 
 const SavedBlogsPage = () => {
   const [savedBlogs, setSavedBlogs] = useState([]);
-  const userId = localStorage.getItem("userId"); // Lấy userId từ localStorage
 
   useEffect(() => {
     const fetchSavedBlogs = async () => {
@@ -20,7 +19,7 @@ const SavedBlogsPage = () => {
 
       try {
         // Sử dụng userId thay cho blog.id trong URL để lấy danh sách blog đã lưu của người dùng
-        const response = await fetch(`http://localhost:8080/bookmarks/${userId}`, {
+        const response = await fetch(`http://localhost:8080/bookmarks`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -41,7 +40,7 @@ const SavedBlogsPage = () => {
     };
 
     fetchSavedBlogs();
-  }, [userId]);
+  });
 
   return (
     <div className="bg-zinc-950 min-h-screen text-white">
