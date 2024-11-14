@@ -18,6 +18,6 @@ public interface UserService {
 
     boolean checkAccountEnabled(String id);
 
-    User updateUser(String id, UserRequest userRequest);
+    User updateUser(UserRequest userRequest);
 
 }
