@@ -1,6 +1,6 @@
 package com.javaproject.socialblog.springboot.controller;
 
-import com.javaproject.socialblog.springboot.model.Bookmark;
+import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.security.service.BookmarkService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +19,9 @@ public class BookmarkController {
     @PostMapping("/post/{postId}")
     @Operation(tags = "Bookmark Service")
 //    @PreAuthorize("hasRole('USER') and #user.enabled")
-    public ResponseEntity<Void> bookmarkPost(@RequestParam String userId, @PathVariable String postId) {
+    public ResponseEntity<Void> bookmarkPost(@PathVariable String postId) {
 
-        bookmarkService.bookmarkPost(userId, postId);
+        bookmarkService.bookmarkPost(postId);
 
         return ResponseEntity.noContent().build();
     }
@@ -29,19 +29,19 @@ public class BookmarkController {
     @DeleteMapping("/post/{postId}")
     @Operation(tags = "Bookmark Service")
 //    @PreAuthorize("hasRole('USER') and #user.enabled")
-    public ResponseEntity<Void> removeBookmark(@RequestParam String userId, @PathVariable String postId) {
+    public ResponseEntity<Void> removeBookmark(@PathVariable String postId) {
 
-        bookmarkService.removeBookmark(userId, postId);
+        bookmarkService.removeBookmark(postId);
 
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping()
     @Operation(tags = "Bookmark Service")
 //    @PreAuthorize("hasRole('USER') and #user.enabled")
-    public ResponseEntity<List<Bookmark>> getUserBookmarks(@PathVariable String userId) {
+    public ResponseEntity<List<Post>> getUserBookmarks() {
 
-        return ResponseEntity.ok(bookmarkService.getUserBookmarks(userId));
+        return ResponseEntity.ok(bookmarkService.getUserBookmarks());
     }
 
 }
