@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -105,19 +107,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(String id, UserRequest userRequest) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public User updateUser(UserRequest userRequest) {
+
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+
+        User user = this.findByUsername(username);
 
         if (userRequest.getPassword() == null) {
             userRequest.setPassword(user.getPassword());
-        }else{
+        } else {
             userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
         }
 
         modelMapper.map(userRequest, user);
         userRepository.save(user);
+
         return user;
+
     }
 
 }

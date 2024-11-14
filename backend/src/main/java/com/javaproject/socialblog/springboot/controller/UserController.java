@@ -30,10 +30,10 @@ public class UserController {
 
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping()
     @Operation(tags = "User Service")
-    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody UserRequest userRequest){
+    public ResponseEntity<User> updateUser(@RequestBody UserRequest userRequest){
 
-        return ResponseEntity.ok(userService.updateUser(id, userRequest));
+        return ResponseEntity.ok(userService.updateUser(userRequest));
     }
 }
