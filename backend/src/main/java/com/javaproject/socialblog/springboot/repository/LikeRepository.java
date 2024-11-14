@@ -1,24 +1,23 @@
 package com.javaproject.socialblog.springboot.repository;
 
 import com.javaproject.socialblog.springboot.model.Like;
+import com.javaproject.socialblog.springboot.model.LikeType;
 import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.List;
 
 public interface LikeRepository extends MongoRepository<Like, String> {
 
-//    List<Like> findByPostId(String postId);
+    // Find likes by contentId and LikeType (e.g., POST or COMMENT)
+    List<Like> findByContentIdAndType(String contentId, LikeType type);
 
-//    List<Like> findByCommentId(String commentId);
+    // Count likes by contentId and LikeType
+    long countByContentIdAndType(String contentId, LikeType type);
 
-//    long countByPostId(String postId);
+    // Check if a like exists for a specific user, contentId, and LikeType
+    boolean existsByUserIdAndContentIdAndType(String userId, String contentId, LikeType type);
 
-//    long countByCommentId(String commentId);
-
-//    boolean existsByUserIdAndPostId(String userId, String postId);
-
-//    boolean existsByUserIdAndCommentId(String userId, String commentId);
-
-//    void deleteByUserIdAndPostId(String userId, String postId);
-
-//    void deleteByUserIdAndCommentId(String userId, String commentId);
+    // Delete a like by userId, contentId, and LikeType
+    void deleteByUserIdAndContentIdAndType(String userId, String contentId, LikeType type);
 
 }
