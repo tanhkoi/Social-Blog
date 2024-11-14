@@ -25,6 +25,7 @@ public class Like {
     private String userId;
 
     private String contentId; // This can represent either a postId or commentId
+
     private LikeType type; // Enum to specify if it's a POST or COMMENT like
 
     private LocalDateTime likedAt = LocalDateTime.now();
@@ -36,4 +37,5 @@ public class Like {
         this.type = type;
         this.likedAt = LocalDateTime.now();
     }
+
 }

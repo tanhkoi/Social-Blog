@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class CommentServiceImpl implements CommentService {
         newComment.setPostId(postId);
         newComment.setCreatedAt(new Date());
         newComment.setContent(comment.getContent());
+        newComment.setLikes(new ArrayList<>());
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();

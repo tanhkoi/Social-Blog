@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
 
         post.setCreatedAt(new Date());  // Sets the created date to now
         post.setComments(new ArrayList<>()); // Just init the post, so it doesn't have any comments and interactions yet
-        post.setInteractions(new ArrayList<>());
+        post.setLikes(new ArrayList<>());
 
         post.setContent(postDetail.getContent());
         post.setTitle(postDetail.getTitle());

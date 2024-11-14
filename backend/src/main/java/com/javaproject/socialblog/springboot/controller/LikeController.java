@@ -16,9 +16,9 @@ public class LikeController {
     @PostMapping("/post/{postId}")
     @Operation(tags = "Like Service")
 //    @PreAuthorize("hasRole('USER') and #user.enabled")
-    public ResponseEntity<Void> likePost(@RequestParam String userId, @PathVariable String postId) {
+    public ResponseEntity<Void> likePost(@PathVariable String postId) {
 
-        likeService.likePost(userId, postId);
+        likeService.likePost(postId);
 
         return ResponseEntity.noContent().build();
 
@@ -27,9 +27,9 @@ public class LikeController {
     @DeleteMapping("/post/{postId}")
     @Operation(tags = "Like Service")
 //    @PreAuthorize("hasRole('USER') and #user.enabled")
-    public ResponseEntity<Void> unlikePost(@RequestParam String userId, @PathVariable String postId) {
+    public ResponseEntity<Void> unlikePost(@PathVariable String postId) {
 
-        likeService.unlikePost(userId, postId);
+        likeService.unlikePost(postId);
 
         return ResponseEntity.noContent().build();
 
@@ -38,9 +38,9 @@ public class LikeController {
     @PostMapping("/comment/{commentId}")
     @Operation(tags = "Like Service")
 //    @PreAuthorize("hasRole('USER') and #user.enabled")
-    public ResponseEntity<Void> likeComment(@RequestParam String userId, @PathVariable String commentId) {
+    public ResponseEntity<Void> likeComment(@PathVariable String commentId) {
 
-        likeService.likeComment(userId, commentId);
+        likeService.likeComment(commentId);
 
         return ResponseEntity.noContent().build();
 
@@ -49,9 +49,9 @@ public class LikeController {
     @DeleteMapping("/comment/{commentId}")
     @Operation(tags = "Like Service")
 //    @PreAuthorize("hasRole('USER') and #user.enabled")
-    public ResponseEntity<Void> unlikeComment(@RequestParam String userId, @PathVariable String commentId) {
+    public ResponseEntity<Void> unlikeComment(@PathVariable String commentId) {
 
-        likeService.unlikeComment(userId, commentId);
+        likeService.unlikeComment(commentId);
 
         return ResponseEntity.noContent().build();
 
