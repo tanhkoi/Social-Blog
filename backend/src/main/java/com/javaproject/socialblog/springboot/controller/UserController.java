@@ -30,7 +30,7 @@ public class UserController {
 
     }
 
-    @PutMapping()
+    @PutMapping
     @Operation(tags = "User Service")
     public ResponseEntity<User> updateUser(@RequestBody UserRequest userRequest){
 

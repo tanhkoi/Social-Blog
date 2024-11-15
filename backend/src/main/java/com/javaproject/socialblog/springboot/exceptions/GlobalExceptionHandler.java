@@ -43,6 +43,11 @@ public class GlobalExceptionHandler {
         return ResponseUtil.error(HttpStatus.NOT_FOUND, ex.getMessage(), (Object) null);
     }
 
+    @ExceptionHandler(UserNotEnabledException.class)
+    public ResponseEntity<ApiResponse<Object>> handleUserNotEnabledException(UserNotEnabledException ex) {
+        return ResponseUtil.error(HttpStatus.UNAUTHORIZED, ex.getMessage(), (Object) null);
+    }
+
     @ExceptionHandler({
             BadCredentialsException.class,
             AccountStatusException.class,

@@ -1,5 +1,6 @@
 package com.javaproject.socialblog.springboot.controller;
 
+import com.javaproject.socialblog.springboot.annotation.CheckUserEnabled;
 import com.javaproject.socialblog.springboot.model.Follow;
 import com.javaproject.socialblog.springboot.security.service.FollowService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +19,7 @@ public class FollowController {
 
     @GetMapping("/{id}/followers")
     @Operation(tags = "Follow Service")
-//    @PreAuthorize("hasRole('USER') and #user.enabled")
+    @CheckUserEnabled
     public ResponseEntity<Set<Follow>> getFollowers(@PathVariable String id) {
 
         return ResponseEntity.ok(followService.getFollowers(id) != null ? followService.getFollowers(id) : null);
@@ -27,7 +28,7 @@ public class FollowController {
 
     @GetMapping("/{id}/following")
     @Operation(tags = "Follow Service")
-//    @PreAuthorize("hasRole('USER') and #user.enabled")
+    @CheckUserEnabled
     public ResponseEntity<Set<Follow>> getFollowing(@PathVariable String id) {
 
         return ResponseEntity.ok(followService.getFollowing(id));
@@ -36,7 +37,7 @@ public class FollowController {
 
     @PostMapping("/{id1}/{id2}")
     @Operation(tags = "Follow Service")
-//    @PreAuthorize("hasRole('USER') and #user.enabled")
+    @CheckUserEnabled
     public ResponseEntity<Void> getFollowing(@PathVariable String id1, @PathVariable String id2) {
 
         followService.followUser(id1, id2);

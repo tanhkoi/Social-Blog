@@ -1,5 +1,6 @@
 package com.javaproject.socialblog.springboot.controller;
 
+import com.javaproject.socialblog.springboot.annotation.CheckUserEnabled;
 import com.javaproject.socialblog.springboot.security.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class LikeController {
 
     @PostMapping("/post/{postId}")
     @Operation(tags = "Like Service")
-//    @PreAuthorize("hasRole('USER') and #user.enabled")
+    @CheckUserEnabled
     public ResponseEntity<Void> likePost(@PathVariable String postId) {
 
         likeService.likePost(postId);

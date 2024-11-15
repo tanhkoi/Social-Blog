@@ -1,5 +1,6 @@
 package com.javaproject.socialblog.springboot.controller;
 
+import com.javaproject.socialblog.springboot.annotation.CheckUserEnabled;
 import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.security.dto.PostRequest;
 import com.javaproject.socialblog.springboot.security.dto.PostResponse;
@@ -47,7 +48,7 @@ public class PostController {
     // create
     @PostMapping
     @Operation(tags = "Post Service")
-//    @PreAuthorize("hasAuthority('ROLE_USER') and authentication.principal.enabled")
+    @CheckUserEnabled
     public ResponseEntity<Post> createPost(@RequestBody PostRequest post) {
 
         return ResponseEntity.ok(postService.createPost(post));
@@ -56,7 +57,7 @@ public class PostController {
     // update
     @PutMapping("/{id}")
     @Operation(tags = "Post Service")
-//    @PreAuthorize("hasRole('USER') and #user.enabled")
+    @CheckUserEnabled
     public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody PostRequest postDetails) {
 
         try {
@@ -73,7 +74,7 @@ public class PostController {
     // delete
     @DeleteMapping("/{id}")
     @Operation(tags = "Post Service")
-//    @PreAuthorize("hasRole('USER') and #user.enabled")
+    @CheckUserEnabled
     public ResponseEntity<Void> deletePost(@PathVariable String id) {
 
         postService.deletePost(id);
