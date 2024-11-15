@@ -2,17 +2,17 @@ package com.javaproject.socialblog.springboot.security.service;
 
 import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.security.dto.PostRequest;
+import com.javaproject.socialblog.springboot.security.dto.PostResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PostService {
 
-    List<Post> getAllPosts();
+    List<PostResponse> getAllPosts();
 
-    Optional<Post> getPostById(String id);
+    Post getPostById(String id);
 
-    List<Post> getMyPosts();
+    List<PostResponse> getMyPosts();
 
     Post createPost(PostRequest post);
 

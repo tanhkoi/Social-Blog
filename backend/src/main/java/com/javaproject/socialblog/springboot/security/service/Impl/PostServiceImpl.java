@@ -5,10 +5,13 @@ import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.dto.PostRequest;
+import com.javaproject.socialblog.springboot.security.dto.PostResponse;
+import com.javaproject.socialblog.springboot.security.service.LikeService;
 import com.javaproject.socialblog.springboot.security.service.PostService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,17 +27,32 @@ public class PostServiceImpl implements PostService {
 
     private final UserService userService;
 
-    @Override
-    public List<Post> getAllPosts() {
+    private final ModelMapper modelMapper;
 
-        return postRepository.findAll();
+    private final LikeService likeService;
+
+    @Override
+    public List<PostResponse> getAllPosts() {
+
+        List<Post> posts = postRepository.findAll();
+
+        List<PostResponse> postResponses = new ArrayList<>();
+
+        for (Post post : posts) {
+            PostResponse postResponse = new PostResponse();
+            modelMapper.map(post, postResponse);
+            postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
+            postResponses.add(postResponse);
+        }
+
+        return postResponses;
 
     }
 
     @Override
-    public Optional<Post> getPostById(String id) {
+    public Post getPostById(String id) {
 
-        return postRepository.findById(id);
+        return postRepository.findById(id).orElseThrow();
 
     }
 
@@ -94,7 +112,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deleteNullComment(String id) {
 
-        Post post = postRepository.findById(id).get();
+        Post post = postRepository.findById(id).orElseThrow();
 
         List<Comment> list = post.getComments();
         list.removeIf(c -> c.getContent() == null);
@@ -105,7 +123,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getMyPosts() {
+    public List<PostResponse> getMyPosts() {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -116,7 +134,15 @@ public class PostServiceImpl implements PostService {
                 .filter(post -> post.getAuthor().getId().equals(currUser.getId()))
                 .toList();
 
-        return posts;
+        List<PostResponse> postResponses = new ArrayList<>();
+
+        modelMapper.map(posts, postResponses);
+
+        for (var item : postResponses) {
+            item.setLikeCnt(likeService.getPostLikeCount(item.getId()));
+        }
+
+        return postResponses;
 
     }
 
