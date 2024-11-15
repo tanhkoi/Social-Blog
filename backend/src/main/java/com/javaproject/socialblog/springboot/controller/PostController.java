@@ -2,6 +2,7 @@ package com.javaproject.socialblog.springboot.controller;
 
 import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.security.dto.PostRequest;
+import com.javaproject.socialblog.springboot.security.dto.PostResponse;
 import com.javaproject.socialblog.springboot.security.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class PostController {
     // get all
     @GetMapping
     @Operation(tags = "Post Service")
-    public ResponseEntity<List<Post>> getAllPosts() {
+    public ResponseEntity<List<PostResponse>> getAllPosts() {
 
         return ResponseEntity.ok(postService.getAllPosts());
     }
@@ -32,15 +33,13 @@ public class PostController {
     @Operation(tags = "Post Service")
     public ResponseEntity<Post> getPostById(@PathVariable String id) {
 
-        return postService.getPostById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(postService.getPostById(id));
     }
 
     // get my posts
     @GetMapping("/myPosts")
     @Operation(tags = "Post Service")
-    public ResponseEntity<List<Post>> getMyPosts() {
+    public ResponseEntity<List<PostResponse>> getMyPosts() {
 
         return ResponseEntity.ok(postService.getMyPosts());
     }

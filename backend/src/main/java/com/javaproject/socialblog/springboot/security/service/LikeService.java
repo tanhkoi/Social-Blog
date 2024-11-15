@@ -2,13 +2,13 @@ package com.javaproject.socialblog.springboot.security.service;
 
 public interface LikeService {
 
-    void likePost(String postId);
+    long likePost(String postId);
 
-    void unlikePost(String postId);
+    long unlikePost(String postId);
 
-    void likeComment(String commentId);
+    long likeComment(String commentId);
 
-    void unlikeComment(String commentId);
+    long unlikeComment(String commentId);
 
     long getPostLikeCount(String postId);
 
