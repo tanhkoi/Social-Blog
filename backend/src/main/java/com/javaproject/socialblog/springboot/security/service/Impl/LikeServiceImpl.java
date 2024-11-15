@@ -26,7 +26,7 @@ public class LikeServiceImpl implements LikeService {
     private final UserService userService;
 
     @Override
-    public void likePost(String postId) {
+    public long likePost(String postId) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -44,10 +44,11 @@ public class LikeServiceImpl implements LikeService {
             postRepository.save(post);
         }
 
+        return this.getPostLikeCount(postId);
     }
 
     @Override
-    public void unlikePost(String postId) {
+    public long unlikePost(String postId) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -62,10 +63,13 @@ public class LikeServiceImpl implements LikeService {
         post.getLikes().removeIf(like -> like.getUserId().equals(currUser.getId()));
 
         postRepository.save(post);
+
+        return this.getPostLikeCount(postId);
+
     }
 
     @Override
-    public void likeComment(String commentId) {
+    public long likeComment(String commentId) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -95,10 +99,12 @@ public class LikeServiceImpl implements LikeService {
             postRepository.save(post);
         }
 
+        return this.getCommentLikeCount(commentId);
+
     }
 
     @Override
-    public void unlikeComment(String commentId) {
+    public long unlikeComment(String commentId) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -125,6 +131,9 @@ public class LikeServiceImpl implements LikeService {
         }
 
         postRepository.save(post);
+
+        return this.getCommentLikeCount(commentId);
+
     }
 
     @Override
