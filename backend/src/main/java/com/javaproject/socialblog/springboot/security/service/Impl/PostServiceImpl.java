@@ -136,6 +136,13 @@ public class PostServiceImpl implements PostService {
 
         List<PostResponse> postResponses = new ArrayList<>();
 
+        for (Post post : posts) {
+            PostResponse postResponse = new PostResponse();
+            modelMapper.map(post, postResponse);
+            postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
+            postResponses.add(postResponse);
+        }
+
         modelMapper.map(posts, postResponses);
 
         for (var item : postResponses) {
