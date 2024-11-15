@@ -29,6 +29,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserDetailsServiceImpl userDetailsService;
 
+//    private final UserService userService;
+//
+//    private static final Map<String, List<String>> WHITE_LIST_API = Map.of(
+//            "/bookmarks/post", Arrays.asList("POST"),
+//            "/another-protected-api", Arrays.asList("GET"),
+//            "/yet-another-api", Arrays.asList("DELETE")
+//    );
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -66,6 +74,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
+
+//        String requestURI = request.getRequestURI();
+//        String httpMethod = request.getMethod();
+//        log.info(requestURI);
+//        log.info(httpMethod);
+//        final boolean enable = userService.findByUsername(username).isEnabled();
+//        log.info(String.valueOf(enable));
+//
+//        if (WHITE_LIST_API.containsKey(requestURI) && WHITE_LIST_API.get(requestURI).contains(httpMethod)) {
+//            log.info("1");
+//            if (!enable) {
+//                log.info("2");
+//                throw new AccessDeniedException("Access denied: Account not enabled");
+//            }
+//        }
 
         final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

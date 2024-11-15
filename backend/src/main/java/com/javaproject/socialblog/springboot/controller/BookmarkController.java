@@ -1,5 +1,6 @@
 package com.javaproject.socialblog.springboot.controller;
 
+import com.javaproject.socialblog.springboot.annotation.CheckUserEnabled;
 import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.security.service.BookmarkService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +19,7 @@ public class BookmarkController {
 
     @PostMapping("/post/{postId}")
     @Operation(tags = "Bookmark Service")
-//    @PreAuthorize("hasRole('USER') and #user.enabled")
+    @CheckUserEnabled
     public ResponseEntity<Void> bookmarkPost(@PathVariable String postId) {
 
         bookmarkService.bookmarkPost(postId);
@@ -28,7 +29,7 @@ public class BookmarkController {
 
     @DeleteMapping("/post/{postId}")
     @Operation(tags = "Bookmark Service")
-//    @PreAuthorize("hasRole('USER') and #user.enabled")
+    @CheckUserEnabled
     public ResponseEntity<Void> removeBookmark(@PathVariable String postId) {
 
         bookmarkService.removeBookmark(postId);
@@ -38,7 +39,7 @@ public class BookmarkController {
 
     @GetMapping()
     @Operation(tags = "Bookmark Service")
-//    @PreAuthorize("hasRole('USER') and #user.enabled")
+    @CheckUserEnabled
     public ResponseEntity<List<Post>> getUserBookmarks() {
 
         return ResponseEntity.ok(bookmarkService.getUserBookmarks());
