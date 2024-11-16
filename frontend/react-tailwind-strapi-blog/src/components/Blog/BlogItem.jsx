@@ -10,7 +10,7 @@ const BlogItem = ({ blog, setBlogs }) => {
       <Link to={`/blog/${blog.id}`}>
         <img
           className="h-56 w-full object-cover"
-          src={blog.imvageCloudUrl}
+          src={blog.imageCloudUrl}
           alt="Blog cover"
         />
         <div className="p-4">
