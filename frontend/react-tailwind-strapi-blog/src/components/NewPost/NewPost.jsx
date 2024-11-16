@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const NewPost = ({ token }) => {
   const [title, setTitle] = useState("");
@@ -108,12 +110,14 @@ const NewPost = ({ token }) => {
         value={tags}
         onChange={(e) => setTags(e.target.value)}
       />
-      <textarea
-        className="w-full mt-4 p-2 bg-zinc-800 text-white border rounded"
-        placeholder="Content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
+       <div className="mt-4">
+        <ReactQuill
+          value={content}
+          onChange={setContent} // Set content to editor value
+          className="bg-zinc-800 text-white border rounded"
+          placeholder="Content"
+        />
+      </div>
       <input
         type="file"
         className="w-full mt-4 p-2 bg-zinc-800 text-white border rounded"

@@ -59,6 +59,7 @@ const Navbar = () => {
   const handleLogout = () => {
     // Xóa token và thông tin người dùng khỏi localStorage
     localStorage.removeItem('token');
+    localStorage.removeItem('savedPosts');
     localStorage.removeItem('username');
     localStorage.removeItem('profilePicture');
     setUser(null);

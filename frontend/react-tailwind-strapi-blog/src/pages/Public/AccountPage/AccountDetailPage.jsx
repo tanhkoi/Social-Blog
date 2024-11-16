@@ -29,7 +29,7 @@ const AccountDetailPage = () => {
     const fetchUserData = async () => {
       try {
         const response = await fetch("http://localhost:8080/api/users", {
-          method: "GET",
+          method: "PUT",
           headers: {
             "Authorization": `Bearer ${token}`,
           },

@@ -1,3 +1,4 @@
+import { FaHeart } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
@@ -59,6 +60,51 @@ const CommentButton = ({ blogId }) => {
     }
   };
 
+  // Xử lý like comment
+  const handleToggleLike = async (commentId, isLiked, likes) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Bạn cần đăng nhập.");
+      return;
+    }
+
+    const url = `http://localhost:8080/api/likes/comment/${commentId}`;
+    const method = isLiked ? "DELETE" : "POST";
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(isLiked ? "Failed to unlike the comment" : "Failed to like the comment");
+      }
+
+      const newLikes = isLiked ? likes - 1 : likes + 1;
+
+      // Cập nhật lại danh sách bình luận
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? { ...comment, likes: newLikes, isLiked: !isLiked }
+            : comment
+        )
+      );
+
+      // Cập nhật lại mảng likedComments trong localStorage
+      const likedComments = JSON.parse(localStorage.getItem("likedComments")) || [];
+      const updatedLikedComments = likedComments.filter((comment) => comment.id !== commentId);
+      updatedLikedComments.push({ id: commentId, isLiked: !isLiked, likes: newLikes });
+      localStorage.setItem("likedComments", JSON.stringify(updatedLikedComments));
+      
+    } catch (error) {
+      console.error(isLiked ? "Error unliking comment:" : "Error liking comment:", error);
+    }
+  };
+
   return (
     <div className="mt-8 px-4 bg-zinc-950 border border-zinc-900 rounded-lg p-6">
       <h2 className="text-2xl text-white font-bold">Comments</h2>
@@ -80,6 +126,13 @@ const CommentButton = ({ blogId }) => {
               <p className="text-lg font-bold text-white">{comment.user.username}</p>
               <p>{comment.content}</p>
               <span className="text-sm text-white">{comment.createdAt}</span>
+            </div>
+            <div
+              onClick={() => handleToggleLike(comment.id, comment.isLiked, comment.likes)}
+              className={`flex items-center space-x-1 cursor-pointer ${comment.isLiked ? "text-red-500" : "hover:text-red-500"}`}
+            >
+              <FaHeart />
+              <span>{comment.likes}</span>
             </div>
           </div>
         ))}

@@ -2,36 +2,25 @@ import { FaHeart } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const LikeButton = ({ initialLikes, blogId, setBlogs }) => {
-  const [likes, setLikes] = useState(initialLikes || 110);
+const LikeButton = ({ blog, setBlogs }) => {
   const [isLiked, setIsLiked] = useState(false); // Trạng thái thích
+  const [likes, setLikes] = useState(10); // Số lượt thích mặc định là 10
 
-  // Kiểm tra trạng thái thích từ API khi render
+  // Khi component được render, lấy trạng thái và số lượt like từ localStorage
   useEffect(() => {
-    const fetchLikeStatus = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+    const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || [];
+    const likedBlog = likedPosts.find((post) => post.id === blog.id);
 
-      try {
-        const response = await fetch(`http://localhost:8080/api/likes/post/${blogId}/count`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    if (likedBlog) {
+      setIsLiked(likedBlog.isLiked);
+      setLikes(likedBlog.likes); // Lấy số lượt like từ localStorage
+    } else {
+      setIsLiked(false);
+      setLikes(10); // Nếu không có bài viết trong localStorage, khởi tạo lại
+    }
+  }, [blog.id]);
 
-        if (response.ok) {
-          const data = await response.json();
-          setLikes(data.likes); // Cập nhật số lượt thích
-        }
-      } catch (error) {
-        console.error("Error fetching like status:", error);
-      }
-    };
-
-    fetchLikeStatus();
-  }, [blogId]);
-
-  const handleLikeToggle = async (e) => {
+  const handleToggleLike = async (e) => {
     e.stopPropagation();
 
     const token = localStorage.getItem("token");
@@ -40,7 +29,7 @@ const LikeButton = ({ initialLikes, blogId, setBlogs }) => {
       return;
     }
 
-    const url = `http://localhost:8080/api/likes/post/${blogId}`;
+    const url = `http://localhost:8080/api/likes/post/${blog.id}`;
     const method = isLiked ? "DELETE" : "POST";
 
     try {
@@ -62,9 +51,20 @@ const LikeButton = ({ initialLikes, blogId, setBlogs }) => {
       // Cập nhật lại danh sách blog
       setBlogs((prevBlogs) =>
         prevBlogs.map((b) =>
-          b.id === blogId ? { ...b, likes: newLikes, isLiked: !isLiked } : b
+          b.id === blog.id ? { ...b, likes: newLikes, isLiked: !isLiked } : b
         )
       );
+
+      // Cập nhật lại mảng likedPosts trong localStorage
+      const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || [];
+
+      // Tìm bài viết đã được like và cập nhật nó
+      const updatedLikedPosts = likedPosts.filter((post) => post.id !== blog.id); // Loại bỏ bài viết cũ nếu có
+      updatedLikedPosts.push({ id: blog.id, isLiked: !isLiked, likes: newLikes }); // Thêm hoặc cập nhật bài viết mới
+
+      // Lưu lại mảng likedPosts vào localStorage
+      localStorage.setItem("likedPosts", JSON.stringify(updatedLikedPosts));
+
     } catch (error) {
       console.error(isLiked ? "Error unliking post:" : "Error liking post:", error);
     }
@@ -72,10 +72,8 @@ const LikeButton = ({ initialLikes, blogId, setBlogs }) => {
 
   return (
     <div
-      onClick={handleLikeToggle}
-      className={`flex items-center space-x-1 cursor-pointer ${
-        isLiked ? "text-red-500" : "hover:text-red-500"
-      }`}
+      onClick={handleToggleLike}
+      className={`flex items-center space-x-1 cursor-pointer ${isLiked ? "text-red-500" : "hover:text-red-500"}`}
     >
       <FaHeart />
       <span>{likes}</span>
@@ -84,8 +82,11 @@ const LikeButton = ({ initialLikes, blogId, setBlogs }) => {
 };
 
 LikeButton.propTypes = {
-  initialLikes: PropTypes.number,
-  blogId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  blog: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    isLiked: PropTypes.bool,
+    likes: PropTypes.number,
+  }).isRequired,
   setBlogs: PropTypes.func.isRequired,
 };
 

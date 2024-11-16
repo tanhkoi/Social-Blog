@@ -16,9 +16,10 @@ BlogList.propTypes = {
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       title: PropTypes.string.isRequired, 
-      desc: PropTypes.string, 
-      coverImg: PropTypes.string, 
+      content: PropTypes.string, 
+      imageCloudUrl: PropTypes.string, 
       likes: PropTypes.number, 
+      isLiked: PropTypes.bool,
       isSaved: PropTypes.bool, 
     })
   ).isRequired,

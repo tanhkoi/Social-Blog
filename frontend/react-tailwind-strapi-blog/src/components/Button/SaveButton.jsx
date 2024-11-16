@@ -76,7 +76,7 @@ const SaveButton = ({ blog, setBlogs }) => {
   return (
     <div
       onClick={handleToggleSavePost}
-      className="flex items-center space-x-1 cursor-pointer hover:text-yellow-500"
+      className={`flex items-center space-x-1 cursor-pointer ${isSaved ? "text-yellow-500" : "hover:text-yellow-500"}`}
     >
       <FaBookmark />
       <span>{isSaved ? "Saved" : "Save"}</span>
