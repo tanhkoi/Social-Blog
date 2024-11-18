@@ -3,36 +3,36 @@ import React from "react";
 
 const About = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="bg-white rounded-lg shadow-lg p-8 max-w-3xl text-left ">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-900 p-4">
+      <div className="bg-zinc-900 rounded-lg shadow-lg p-8 max-w-3xl text-left ">
         <h1 className="text-4xl font-bold text-blue-500 mb-6 mt-10">About SocialBlog</h1>
         
-        <p className="text-lg text-gray-700 mb-8">
+        <p className="text-lg text-white mb-8">
           Welcome to <span className="font-bold">SocialBlog</span> — a place where stories connect us. We believe that everyone has a voice, and through SocialBlog, you can share your journey, opinions, and passions with a growing community of like-minded individuals.
         </p>
 
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Our Mission</h2>
-        <p className="text-md text-gray-600 mb-6">
+        <p className="text-md text-white mb-6">
           Our mission is to create a space for meaningful conversations, where people can share personal experiences, creative ideas, and inspire others. Whether you’re an aspiring writer, a passionate creator, or just someone looking to connect, SocialBlog is the platform for you.
         </p>
 
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">What We Offer</h2>
-        <p className="text-md text-gray-600 mb-6">
+        <p className="text-md text-white mb-6">
           SocialBlog provides a simple and intuitive way to write and publish your thoughts, connect with a diverse community, and engage with content that matters. Here, you can:
         </p>
-        <ul className="list-disc list-inside text-left text-md text-gray-600 mb-8">
+        <ul className="list-disc list-inside text-left text-md text-white mb-8">
           <li>Create and share blog posts on topics you’re passionate about.</li>
           <li>Follow and interact with other users’ stories and discussions.</li>
           <li>Engage in meaningful conversations and build lasting connections.</li>
         </ul>
 
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Why Join Us?</h2>
-        <p className="text-md text-gray-600 mb-6">
+        <p className="text-md text-white mb-6">
           At SocialBlog, we believe in the power of community and authentic connection. By joining, you’ll be part of a platform that celebrates diversity of thought and fosters collaboration. Share your unique perspective and inspire others through the art of storytelling.
         </p>
 
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Be Part of Our Community</h2>
-        <p className="text-md text-gray-600 mb-8">
+        <p className="text-md text-white mb-8">
           Thank you for being here! Whether you’re here to write, read, or simply explore, we hope you find value and connection through SocialBlog. Join us today and become part of a growing community that is shaping the future of digital conversations.
         </p>
 
