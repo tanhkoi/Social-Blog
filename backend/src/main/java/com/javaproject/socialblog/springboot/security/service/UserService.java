@@ -20,4 +20,6 @@ public interface UserService {
 
     User updateUser(UserRequest userRequest);
 
+    User authenticateWithGoogle(String token);
+
 }

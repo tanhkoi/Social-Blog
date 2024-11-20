@@ -39,7 +39,8 @@ public class SecurityConfiguration {
             "/register",
             "/login",
             "/verify",
-            "/api/posts/null/{postId}"
+            "/api/posts/null/{postId}",
+            "/api/auth/google"
     };
 
     @Bean
