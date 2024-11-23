@@ -6,7 +6,7 @@ const NewPostPage = () => {
   const token = localStorage.getItem("token"); 
 
   return (
-    <div className="bg-zinc-950 min-h-screen text-white">
+    <div className="bg-[#0E1217] min-h-screen text-white">
       <header>
         <NavBar setSearchTerm={() => {}} />
       </header>

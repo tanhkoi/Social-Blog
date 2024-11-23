@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { menu, close, logo } from "../../assets";
 import { useNavigate, Link } from "react-router-dom";
 
-
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,14 +10,13 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Kiểm tra nếu đã có token trong localStorage
-    const token = localStorage.getItem('token');
-    const username = localStorage.getItem('username');
-    const profilePicture = localStorage.getItem('profilePicture');
-    
+    const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username");
+    const profilePicture = localStorage.getItem("profilePicture");
+
     if (token && username) {
       setUser({ username, profilePicture });
-    }else {
+    } else {
       setUser(null);
     }
   }, []);
@@ -42,41 +40,34 @@ const Navbar = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    
     const allBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
     const filteredBlogs = allBlogs.filter((blog) =>
       blog.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  
-    // Lưu kết quả tìm kiếm vào localStorage hoặc context
     localStorage.setItem("searchResults", JSON.stringify(filteredBlogs));
-  
-    // Chuyển hướng tới trang kết quả
     setSearchTerm("");
     navigate("/");
   };
 
   const handleLogout = () => {
-    // Xóa token và thông tin người dùng khỏi localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('savedPosts');
-    localStorage.removeItem('username');
-    localStorage.removeItem('profilePicture');
+    localStorage.removeItem("token");
+    localStorage.removeItem("savedPosts");
+    localStorage.removeItem("username");
+    localStorage.removeItem("profilePicture");
     setUser(null);
     navigate("/");
-      // Điều hướng về trang chủ sau khi đăng xuất
   };
 
   const toggleDropdown = () => {
-    setShowDropdown((prev) => !prev); // Đổi trạng thái showDropdown khi nhấn vào username
+    setShowDropdown((prev) => !prev);
   };
 
   const handleNewPost = () => {
-    navigate("/newpost"); // Điều hướng tới trang tạo bài viết mới
+    navigate("/newpost");
   };
 
   return (
-    <div className="w-full h-[80px] z-10 bg-black text-white drop-shadow-lg fixed">
+    <div className="w-full h-[80px] z-10 bg-[#0E1217] text-white drop-shadow-lg fixed border-b border-gray-600">
       <div className="flex justify-between items-center w-full h-full md:max-w-[1240px] m-auto">
         <div className="flex items-center">
           <Link to="/">
@@ -87,7 +78,6 @@ const Navbar = () => {
             />
           </Link>
         </div>
-
         <div className="flex items-center text-white">
           <ul className="hidden md:flex">
             <button
@@ -122,27 +112,24 @@ const Navbar = () => {
             </button>
           </ul>
         </div>
-
         <form
           onSubmit={handleSearchSubmit}
-          className="hidden md:flex items-center"
+          className="hidden md:flex items-center "
         >
-          <div className="relative">
+          <div className="relative ">
             <input
               type="text"
               value={searchTerm}
               onChange={handleSearchChange}
               placeholder="Search blog..."
-              className=" bg-zinc-900 rounded px-4 py-2 pl-10 pr-4"
+              className="bg-zinc-900  px-4 py-2 pl-10 pr-4 rounded-full border border-gray-600"
             />
           </div>
           <button type="submit" className="hidden">
             Search
           </button>
         </form>
-
         <div className="hidden md:flex sm:mr-10 md:mr-10 relative">
-         
           {user && (
             <button
               onClick={handleNewPost}
@@ -151,11 +138,10 @@ const Navbar = () => {
               New Post
             </button>
           )}
-
           {user ? (
             <>
               <div
-                className="flex items-center  ml-10 cursor-pointer"
+                className="flex items-center ml-10 cursor-pointer"
                 onClick={toggleDropdown}
               >
                 {user.profilePicture && (
@@ -167,24 +153,23 @@ const Navbar = () => {
                 )}
                 <span>{user.username}</span>
               </div>
-
               {showDropdown && (
-                <div   className="absolute right-0 mt-12 w-48 rounded-lg shadow-lg z-20 transform translate-x-4">
+                <div className="absolute right-0 mt-12 w-48 rounded-lg shadow-lg z-20 transform translate-x-4">
                   <button
                     onClick={() => navigate("/profile")}
-                    className="block px-4 py-2 text-left w-full rounded bg-white text-black  border-white hover:bg-gray-200"
+                    className="block px-4 py-2 text-left w-full rounded bg-white text-black border-white hover:bg-gray-200"
                   >
                     Profile
                   </button>
                   <button
                     onClick={() => navigate("/account")}
-                    className="block px-4 py-2 text-left w-full rounded bg-white text-black  border-white hover:bg-gray-200"
+                    className="block px-4 py-2 text-left w-full rounded bg-white text-black border-white hover:bg-gray-200"
                   >
                     Account Detail
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="block px-4 py-2 text-left w-full rounded bg-white text-black  border-white hover:bg-gray-200"
+                    className="block px-4 py-2 text-left w-full rounded bg-white text-black border-white hover:bg-gray-200"
                   >
                     Logout
                   </button>
@@ -205,7 +190,6 @@ const Navbar = () => {
             </>
           )}
         </div>
-
         <div className="md:hidden" onClick={() => setToggle(!toggle)}>
           <img
             src={!toggle ? menu : close}

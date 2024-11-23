@@ -6,7 +6,7 @@ import LikeButton from "../Button/LikeButton";
 
 const BlogItem = ({ blog, setBlogs }) => {
   return (
-    <div className="bg-zinc-900 rounded-xl overflow-hidden drop-shadow-md">
+    <div className="bg-[#1c1f26] rounded-xl overflow-hidden drop-shadow-md border border-gray-600">
       <Link to={`/blog/${blog.id}`}>
         <img
           className="h-56 w-full object-cover"

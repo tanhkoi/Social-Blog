@@ -13,7 +13,7 @@ const NewPost = ({ token }) => {
   const navigate = useNavigate();
 
   const handleImageChange = async (e) => {
-    const imageFile = e.target.files[0]; // Get selected file from input
+    const imageFile = e.target.files[0];
 
     if (!imageFile) {
       alert("Vui lòng chọn một tệp ảnh.");
@@ -27,9 +27,9 @@ const NewPost = ({ token }) => {
       const response = await fetch("http://localhost:8080/cloudinary/upload", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`, // Send token in header
+          Authorization: `Bearer ${token}`,
         },
-        body: formData, // Send image as form data
+        body: formData,
       });
 
       if (!response.ok) {
@@ -38,9 +38,8 @@ const NewPost = ({ token }) => {
         return;
       }
 
-      // Lấy URL ảnh từ phản hồi (dự đoán là chuỗi)
-      const imageUrl = await response.text(); // Nhận URL ảnh từ API dưới dạng chuỗi
-      setImageCloudUrl(imageUrl); // Lưu URL ảnh vào state
+      const imageUrl = await response.text();
+      setImageCloudUrl(imageUrl);
       alert("Tải ảnh lên thành công!");
     } catch (error) {
       console.error("Lỗi khi tải ảnh lên:", error);
@@ -87,49 +86,52 @@ const NewPost = ({ token }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mt-10 p-4 bg-zinc-900 rounded">
-      <h1 className="text-2xl font-bold">Create New Post</h1>
+    <div className="w-full max-w-5xl mx-auto mt-10 p-6  rounded-lg">
+      <h1 className="text-3xl font-bold mb-6">Create New Post</h1>
       <input
         type="text"
-        className="w-full mt-4 p-2 bg-zinc-800 text-white border rounded"
+        className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <input
         type="text"
-        className="w-full mt-4 p-2 bg-zinc-800 text-white border rounded"
+        className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
         placeholder="Category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
       />
       <input
         type="text"
-        className="w-full mt-4 p-2 bg-zinc-800 text-white border rounded"
+        className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
         placeholder="Tags (ngăn cách bằng dấu phẩy)"
         value={tags}
         onChange={(e) => setTags(e.target.value)}
       />
-       <div className="mt-4">
+      <div className="mt-6">
         <ReactQuill
           value={content}
-          onChange={setContent} // Set content to editor value
-          className="bg-zinc-800 text-white border rounded"
+          onChange={setContent}
+          className="bg-[#1c1f26] text-white border border-gray-600 rounded-xl"
           placeholder="Content"
+          style={{ height: "300px", marginBottom: "20px" }}
         />
       </div>
       <input
         type="file"
-        className="w-full mt-4 p-2 bg-zinc-800 text-white border rounded"
+        className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
         onChange={handleImageChange}
         accept="image/*"
       />
-      <button
-        className="w-full mt-4 bg-white text-black py-2 rounded"
-        onClick={handlePost}
-      >
-        Post
-      </button>
+      <div className="flex justify-end">
+        <button
+          className="w-1/6 h-14 mt-6 bg-white text-black text-lg font-semibold py-2 rounded-xl hover:bg-gray-200 transition duration-200"
+          onClick={handlePost}
+        >
+          Post
+        </button>
+      </div>
     </div>
   );
 };

@@ -21,11 +21,11 @@ const Homepage = () => {
         <NavBar setSearchTerm={setSearchTerm} />
       </header>
       <main>
-        <div className="flex">
+        <div className="flex ">
           <div className="w-60">
             <SideBar />
           </div>
-          <div className={`w-full flex-grow ml-4`}>
+          <div className={`w-full bg-[#0E1217] flex-grow ml-4 p-5 px-10`}>
             {showMessage && (
               <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
                 Login successfully!

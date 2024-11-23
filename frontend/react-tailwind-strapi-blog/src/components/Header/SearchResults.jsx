@@ -21,8 +21,8 @@ const SearchResults = ({ blogs }) => {
   }, [location.search, blogs]);
 
   return (
-    <div className="w-full bg-[#f9f9f9] py-[50px] mt-10">
-      <div className="max-w-[1240px] mx-auto">
+    <div className="w-full bg-[#1C1F26] py-[50px] mt-10  ">
+      <div className="max-w-[1240px] mx-auto ">
         <h1 className="text-3xl font-bold mb-6">Kết quả tìm kiếm</h1>
         {filteredBlogs.length > 0 ? (
           <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 ss:grid-cols-1 gap-8 px-4 text-black">
