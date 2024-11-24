@@ -1,4 +1,4 @@
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaEllipsisV } from "react-icons/fa"; // Thêm biểu tượng ellipsis
 import { useState, useEffect, useRef } from "react";
 import PropTypes, { string } from "prop-types";
 
@@ -134,7 +134,7 @@ const CommentButton = ({ blogId }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/comment/${commentId}`, {
+      const response = await fetch(`http://localhost:8080/api/comments/${commentId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -146,7 +146,7 @@ const CommentButton = ({ blogId }) => {
       }
 
       setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
-      setActiveCommentId(null);
+      setActiveCommentId(null); // Close the dropdown after deletion
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
@@ -202,14 +202,20 @@ const CommentButton = ({ blogId }) => {
                 </button>
                 {activeCommentId === comment.id && (
                   <div
-                  ref={menuRef}
-                  className="absolute right-0 bg-gray-900 text-white border border-gray-700 rounded shadow-lg mt-2"
+                    ref={menuRef}
+                    className="absolute right-0 text-white mt-20 w-40 z-50"
                   >
-                    <button
+                  <div className="border border-gray-600 rounded-xl">
+                  <button
                       onClick={() => handleDeleteComment(comment.id)}
-                      className="px-4 py-2 text-sm hover:bg-gray-700 w-full text-left"
+                      className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
                     >
                       Delete comment
+                    </button>
+                    <button
+                      className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
+                    >
+                      Report comment
                     </button>
                   </div>
                 )}
