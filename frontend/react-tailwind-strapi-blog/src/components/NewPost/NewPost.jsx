@@ -118,12 +118,13 @@ const NewPost = ({ token }) => {
           style={{ height: "300px", marginBottom: "20px" }}
         />
       </div>
-      <input
-        type="file"
-        className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
-        onChange={handleImageChange}
-        accept="image/*"
-      />
+        <input
+          type="file"
+          id="fileInput"
+          className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
+          onChange={handleImageChange}
+          accept="image/*"
+        />
       <div className="flex justify-end">
         <button
           className="w-1/6 h-14 mt-6 bg-white text-black text-lg font-semibold py-2 rounded-xl hover:bg-gray-200 transition duration-200"
