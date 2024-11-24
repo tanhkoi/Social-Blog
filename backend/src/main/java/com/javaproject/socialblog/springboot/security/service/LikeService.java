@@ -14,4 +14,8 @@ public interface LikeService {
 
     long getCommentLikeCount(String commentId);
 
+    boolean checkIsLikedPost(String postId);
+
+    boolean checkIsLikedComment(String commentId);
+
 }
