@@ -1,12 +1,20 @@
 import { FaHeart } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { string } from "prop-types";
 
 const CommentButton = ({ blogId }) => {
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [activeCommentId, setActiveCommentId] = useState(null);
   const menuRef = useRef(null); // Dùng ref để theo dõi menu
+
+  const formatDate = (apiDate) => {
+    const date = new Date(apiDate);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`.toString();
+  };
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -23,7 +31,16 @@ const CommentButton = ({ blogId }) => {
           throw new Error("Failed to fetch comments");
         }
         const commentsData = await response.json();
-        setComments(commentsData);
+        console.log(commentsData);
+
+        // Assuming commentsData is an array
+        const formattedCommentsData = commentsData.map((item) => ({
+          ...item,
+          createdAt: formatDate(item.createdAt), // Apply the formatDate function
+        }));
+
+        setComments(formattedCommentsData);
+
       } catch (error) {
         console.error(error);
       }
@@ -148,51 +165,58 @@ const CommentButton = ({ blogId }) => {
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
           placeholder="Add a comment"
-          className="w-full p-2 bg-[#0E1217] text-white border border-gray-300 rounded-lg"
+          className="w-full p-2 bg-zinc-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
         />
         <button type="submit" className="hidden">
           Submit
         </button>
       </form>
-
-      <div className="space-y-2 mt-4">
+  
+      <div className="space-y-4 mt-6">
         {comments.map((comment) => (
-          <div key={comment.id} className="bg-[#0E1217] text-white p-2 rounded-md flex justify-between items-center">
-            <div>
-              <p className="text-lg font-bold text-white">{comment.user.username}</p>
-              <p>{comment.content}</p>
-              <span className="text-sm text-white">{comment.createdAt}</span>
-            </div>
-            <div className="flex space-x-4 items-center relative">
-              <div
-                onClick={() => handleToggleLike(comment.id, comment.isLiked, comment.likes)}
-                className={`flex items-center space-x-1 cursor-pointer ${
-                  comment.isLiked ? "text-red-500" : "hover:text-red-500"
-                }`}
-              >
-                <FaHeart />
-                <span>{comment.likes}</span>
+          <div
+            key={comment.id}
+            className="bg-zinc-800 text-white p-4 rounded-md border border-gray-700 shadow-sm"
+          >
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-lg font-bold">{comment.user.name}</p>
               </div>
-              <button
-                onClick={() => toggleMenu(comment.id)}
-                className="text-white bg-[#0E1217] border-gray-300 hover:text-gray-400 focus:outline-none"
-              >
-                ...
-              </button>
-              {activeCommentId === comment.id && (
+              <div className="flex space-x-4 items-center relative">
                 <div
-                  ref={menuRef} // Gắn ref vào menu
-                  className="absolute right-0 bg-gray-800 text-white border border-gray-700 rounded shadow-lg mt-2"
+                  onClick={() =>
+                    handleToggleLike(comment.id, comment.isLiked, comment.likes)
+                  }
+                  className={`flex items-center space-x-1 cursor-pointer ${
+                    comment.isLiked ? "text-red-500" : "hover:text-red-500"
+                  }`}
                 >
-                  <button
-                    onClick={() => handleDeleteComment(comment.id)}
-                    className="px-4 py-2 bg-[#0E1217] hover text-sm"
-                  >
-                    Delete comment
-                  </button>
+                  <FaHeart />
+                  <span>{comment.likes}</span>
                 </div>
-              )}
+                <button
+                  onClick={() => toggleMenu(comment.id)}
+                  className="text-white hover:text-gray-400 focus:outline-none"
+                >
+                  ...
+                </button>
+                {activeCommentId === comment.id && (
+                  <div
+                  ref={menuRef}
+                  className="absolute right-0 bg-gray-900 text-white border border-gray-700 rounded shadow-lg mt-2"
+                  >
+                    <button
+                      onClick={() => handleDeleteComment(comment.id)}
+                      className="px-4 py-2 text-sm hover:bg-gray-700 w-full text-left"
+                    >
+                      Delete comment
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
+            <p className="mt-2 text-gray-200">{comment.content}</p>
+            <p className="text-sm text-gray-300 text-right">{comment.createdAt}</p>
           </div>
         ))}
       </div>
