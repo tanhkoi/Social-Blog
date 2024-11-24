@@ -60,7 +60,10 @@ public class SecurityConfiguration {
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/posts",
                                 "/api/posts/{id}",
-                                "/api/comments/{postId}")
+                                "/api/comments/{postId}",
+                                "/api/likes/post/{postId}/count"
+                        )
+
                         .permitAll()
                         .anyRequest()
                         .authenticated())
