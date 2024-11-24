@@ -154,8 +154,14 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public boolean checkIsLikedPost(String postId) {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        // Check if the user is authenticated
+        if (loggedInUser == null || !loggedInUser.isAuthenticated() || "anonymousUser".equals(loggedInUser.getPrincipal())) {
+            // Return false or throw an exception if the user is not logged in
+            return false;
+        }
         String username = loggedInUser.getName();
         String currUserId = userService.findByUsername(username).getId();
+
 
         Like like = likeRepository.findAll().stream()
                 .filter(l -> l.getUserId().equals(currUserId)
@@ -171,6 +177,11 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public boolean checkIsLikedComment(String commentId) {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        // Check if the user is authenticated
+        if (loggedInUser == null || !loggedInUser.isAuthenticated() || "anonymousUser".equals(loggedInUser.getPrincipal())) {
+            // Return false or throw an exception if the user is not logged in
+            return false;
+        }
         String username = loggedInUser.getName();
         String currUserId = userService.findByUsername(username).getId();
 
