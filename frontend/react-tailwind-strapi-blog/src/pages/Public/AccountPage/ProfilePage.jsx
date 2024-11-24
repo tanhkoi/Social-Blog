@@ -1,34 +1,41 @@
 import { useEffect, useState } from "react";
 import BlogList from "../../../components/Blog/BlogList ";
-import NavBar from "../../../components/Header/NavBar";  
-import SideBar from "../../../components/Sidebar/SideBar";  
+import NavBar from "../../../components/Header/NavBar";
+import SideBar from "../../../components/Sidebar/SideBar";
 
 const ProfilePage = () => {
   const [myPosts, setMyPosts] = useState([]);
-  const [loading, setLoading] = useState(true); // Thêm state loading
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null); // Thêm state cho thông tin người dùng
 
   useEffect(() => {
-    const fetchMyPosts = async () => {
-      const token = localStorage.getItem("token");
+    // Lấy thông tin người dùng từ localStorage
+    const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username");
+    const profilePicture = localStorage.getItem("profilePicture");
 
+    if (token && username) {
+      setUser({ username, profilePicture });
+    }
+
+    const fetchMyPosts = async () => {
       if (!token) {
         alert("Bạn cần đăng nhập để xem bài viết của bạn.");
         return;
       }
 
       try {
-        // Lấy danh sách bài viết của người dùng từ API
         const response = await fetch(`http://localhost:8080/api/posts/myPosts`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Gửi token trong header
+            Authorization: `Bearer ${token}`,
           },
         });
 
         if (response.ok) {
           const data = await response.json();
-          setMyPosts(data); // Gán danh sách bài viết của người dùng
+          setMyPosts(data);
         } else {
           const errorData = await response.json();
           console.error("Lỗi khi lấy bài viết:", errorData.message);
@@ -36,12 +43,12 @@ const ProfilePage = () => {
       } catch (error) {
         console.error("Lỗi khi kết nối đến API:", error);
       } finally {
-        setLoading(false); // Khi đã lấy xong dữ liệu, set loading = false
+        setLoading(false);
       }
     };
 
     fetchMyPosts();
-  }, []); // Dùng [] thay vì không có dependency để tránh fetch lại liên tục
+  }, []);
 
   if (loading) {
     return (
@@ -61,12 +68,38 @@ const ProfilePage = () => {
           <SideBar />
         </aside>
         <div className="flex-grow p-4 ml-4">
-          <h1 className="text-3xl font-bold mb-5 mt-20">Trang cá nhân</h1>
-          {myPosts.length > 0 ? (
-            <BlogList blogs={myPosts} setBlogs={setMyPosts} />
-          ) : (
-            <p className="text-gray-400">Bạn chưa có bài viết nào.</p>
-          )}
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="lg:w-2/3">
+              <h2 className="text-3xl font-bold mb-5 mt-20">Posts</h2>
+              {myPosts.length > 0 ? (
+                <BlogList blogs={myPosts} setBlogs={setMyPosts} />
+              ) : (
+                <p className="text-gray-400">Bạn chưa có bài viết nào.</p>
+              )}
+            </div>
+            <div className="lg:w-1/3 bg-card p-4 rounded-lg border border-gray-600">
+              <h1 className="text-3xl font-bold mb-5 mt-20">Profile</h1>
+              <div className="flex flex-col items-start mt-2">
+                <div className="w-24 h-24 bg-zinc-300 rounded-full overflow-hidden mb-2">
+                  {user?.profilePicture ? (
+                    <img
+                      src={user.profilePicture}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 bg-gray-400 rounded-full" />
+                  )}
+                </div>
+                <p className="font-medium">{user?.username || "Guest"}</p>
+              </div>
+              <p className="mt-2">0 Followers • 0 Following</p>
+              <h4 className="mt-4 font-semibold">Invite friends</h4>
+              <p className="mt-2">
+                Invite other developers to discover how easy it is to stay updated with daily.dev.
+              </p>
+            </div>
+          </div>
         </div>
       </main>
     </div>

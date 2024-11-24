@@ -1,4 +1,4 @@
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaEllipsisV } from "react-icons/fa"; // Thêm biểu tượng ellipsis
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
@@ -7,6 +7,14 @@ const CommentButton = ({ blogId }) => {
   const [commentText, setCommentText] = useState("");
   const [activeCommentId, setActiveCommentId] = useState(null);
   const menuRef = useRef(null); // Dùng ref để theo dõi menu
+
+  const formatDate = (apiDate) => {
+    const date = new Date(apiDate);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`.toString();
+  };
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -23,7 +31,11 @@ const CommentButton = ({ blogId }) => {
           throw new Error("Failed to fetch comments");
         }
         const commentsData = await response.json();
-        setComments(commentsData);
+        const formattedCommentsData = commentsData.map((item) => ({
+          ...item,
+          createdAt: formatDate(item.createdAt), // Apply the formatDate function
+        }));
+        setComments(formattedCommentsData);
       } catch (error) {
         console.error(error);
       }
@@ -117,7 +129,7 @@ const CommentButton = ({ blogId }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/comment/${commentId}`, {
+      const response = await fetch(`http://localhost:8080/api/comments/${commentId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -129,7 +141,7 @@ const CommentButton = ({ blogId }) => {
       }
 
       setComments((prevComments) => prevComments.filter((comment) => comment.id !== commentId));
-      setActiveCommentId(null);
+      setActiveCommentId(null); // Close the dropdown after deletion
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
@@ -157,39 +169,44 @@ const CommentButton = ({ blogId }) => {
 
       <div className="space-y-2 mt-4">
         {comments.map((comment) => (
-          <div key={comment.id} className="bg-[#0E1217] text-white p-2 rounded-md flex justify-between items-center">
+          <div key={comment.id} className="text-white p-2 rounded-md flex justify-between items-center border border-gray-700 shadow-sm">
             <div>
-              <p className="text-lg font-bold text-white">{comment.user.username}</p>
-              <p>{comment.content}</p>
-              <span className="text-sm text-white">{comment.createdAt}</span>
+              <p className="text-lg font-bold text-white">{comment.user.name}</p>
+              <p className="text-justify mr-4">{comment.content}</p>
             </div>
             <div className="flex space-x-4 items-center relative">
+              <p className="text-sm text-white text-right">{comment.createdAt}</p>
               <div
                 onClick={() => handleToggleLike(comment.id, comment.isLiked, comment.likes)}
-                className={`flex items-center space-x-1 cursor-pointer ${
-                  comment.isLiked ? "text-red-500" : "hover:text-red-500"
-                }`}
+                className={`flex items-center space-x-1 cursor-pointer ${comment.isLiked ? "text-red-500" : "hover:text-red-500"}`}
               >
                 <FaHeart />
                 <span>{comment.likes}</span>
               </div>
               <button
                 onClick={() => toggleMenu(comment.id)}
-                className="text-white bg-[#0E1217] border-gray-300 hover:text-gray-400 focus:outline-none"
+                className="text-white bg-[#0E1217] border-[#0E1217] hover:text-gray-400 focus:outline-none"
               >
-                ...
+                <FaEllipsisV />
               </button>
               {activeCommentId === comment.id && (
                 <div
-                  ref={menuRef} // Gắn ref vào menu
-                  className="absolute right-0 bg-gray-800 text-white border border-gray-700 rounded shadow-lg mt-2"
+                ref={menuRef}
+                className="absolute right-0 text-white mt-20 w-40 z-50"
                 >
-                  <button
+                <div className="border border-gray-600 rounded-xl">
+                <button
                     onClick={() => handleDeleteComment(comment.id)}
-                    className="px-4 py-2 bg-[#0E1217] hover text-sm"
+                    className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
                   >
                     Delete comment
                   </button>
+                  <button
+                    className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
+                  >
+                    Report comment
+                  </button>
+                </div>    
                 </div>
               )}
             </div>

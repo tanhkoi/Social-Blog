@@ -42,15 +42,15 @@ const BlogContent = () => {
           <div className="col-span-2 text-white">
             <img className="h-56 w-full object-cover" src={blog.imageCloudUrl} alt="Blog cover" />
             <h1 className="font-bold text-2xl my-1 pt-5">{blog.title}</h1>
-            <div className="pt-5">
+            <div className="pt-5 text-justify">
               <p>{blog.content}</p>
             </div>
           </div>
           <div className="items-center w-full bg-zinc-900 rounded-xl drop-shadow-md py-5 max-h-[250px]">
             <div>
-              <img className="p-2 w-32 h-32 rounded-full mx-auto object-cover" src={blog.authorImg} alt="Author" />
-              <h1 className="font-bold text-2xl text-center text-white pt-3">{blog.authorName}</h1>
-              <p className="text-center text-white font-medium">{blog.authorDesc}</p>
+              <img className="p-2 w-32 h-32 rounded-full mx-auto object-cover text-justify" src={blog.author.profilePicture} alt="Author" />
+              <h1 className="font-bold text-2xl text-center text-white pt-3">{blog.author.name}</h1>
+              <p className="text-center text-white font-medium">{blog.author.email}</p>
             </div>
           </div>
         </div>

@@ -17,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService {
 
+
     private final LikeRepository likeRepository;
 
     private final PostRepository postRepository;
@@ -148,6 +149,40 @@ public class LikeServiceImpl implements LikeService {
 
         return likeRepository.countByContentIdAndType(commentId, LikeType.COMMENT);
 
+    }
+
+    @Override
+    public boolean checkIsLikedPost(String postId) {
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+        String currUserId = userService.findByUsername(username).getId();
+
+        Like like = likeRepository.findAll().stream()
+                .filter(l -> l.getUserId().equals(currUserId)
+                        && l.getType().equals(LikeType.POST)
+                        && l.getContentId().equals(postId)
+                )
+                .findFirst() // Extract the first match
+                .orElse(null); // Return null if no match is found
+
+        return like != null;
+    }
+
+    @Override
+    public boolean checkIsLikedComment(String commentId) {
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+        String currUserId = userService.findByUsername(username).getId();
+
+        Like like = likeRepository.findAll().stream()
+                .filter(l -> l.getUserId().equals(currUserId)
+                        && l.getType().equals(LikeType.POST)
+                        && l.getContentId().equals(commentId)
+                )
+                .findFirst() // Extract the first match
+                .orElse(null); // Return null if no match is found
+
+        return like != null;
     }
 
 }

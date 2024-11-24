@@ -42,6 +42,7 @@ public class PostServiceImpl implements PostService {
             PostResponse postResponse = new PostResponse();
             modelMapper.map(post, postResponse);
             postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
+            postResponse.setLiked(likeService.checkIsLikedPost(postResponse.getId()));
             postResponses.add(postResponse);
         }
 
@@ -140,13 +141,8 @@ public class PostServiceImpl implements PostService {
             PostResponse postResponse = new PostResponse();
             modelMapper.map(post, postResponse);
             postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
+            postResponse.setLiked(likeService.checkIsLikedPost(postResponse.getId()));
             postResponses.add(postResponse);
-        }
-
-        modelMapper.map(posts, postResponses);
-
-        for (var item : postResponses) {
-            item.setLikeCnt(likeService.getPostLikeCount(item.getId()));
         }
 
         return postResponses;
@@ -154,4 +150,3 @@ public class PostServiceImpl implements PostService {
     }
 
 }
-

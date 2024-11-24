@@ -154,22 +154,22 @@ const Navbar = () => {
                 <span>{user.username}</span>
               </div>
               {showDropdown && (
-                <div className="absolute right-0 mt-12 w-48 rounded-lg shadow-lg z-20 transform translate-x-4">
+                <div className="absolute right-0 mt-12 w-40 rounded-lg shadow-lg z-20 transform translate-x-6">
                   <button
                     onClick={() => navigate("/profile")}
-                    className="block px-4 py-2 text-left w-full rounded bg-white text-black border-white hover:bg-gray-200"
+                    className="block px-4 py-2 text-left w-full rounded-none bg-white text-black border-white hover:bg-gray-200"
                   >
                     Profile
                   </button>
                   <button
                     onClick={() => navigate("/account")}
-                    className="block px-4 py-2 text-left w-full rounded bg-white text-black border-white hover:bg-gray-200"
+                    className="block px-4 py-2 text-left w-full rounded-none bg-white text-black border-white hover:bg-gray-200"
                   >
                     Account Detail
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="block px-4 py-2 text-left w-full rounded bg-white text-black border-white hover:bg-gray-200"
+                    className="block px-4 py-2 text-left w-full rounded-none bg-white text-black border-white hover:bg-gray-200"
                   >
                     Logout
                   </button>
