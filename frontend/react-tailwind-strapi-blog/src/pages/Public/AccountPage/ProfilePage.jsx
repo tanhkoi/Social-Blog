@@ -5,6 +5,7 @@ import SideBar from "../../../components/Sidebar/SideBar";
 
 const ProfilePage = () => {
   const [myPosts, setMyPosts] = useState([]);
+  const [loading, setLoading] = useState(true); // Thêm state loading
 
   useEffect(() => {
     const fetchMyPosts = async () => {
@@ -34,14 +35,24 @@ const ProfilePage = () => {
         }
       } catch (error) {
         console.error("Lỗi khi kết nối đến API:", error);
+      } finally {
+        setLoading(false); // Khi đã lấy xong dữ liệu, set loading = false
       }
     };
 
     fetchMyPosts();
-  });
+  }, []); // Dùng [] thay vì không có dependency để tránh fetch lại liên tục
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-[#0E1217]">
+        <p className="text-white text-xl">Loading...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-zinc-950 min-h-screen text-white">
+    <div className="bg-[#0E1217] min-h-screen text-white">
       <header>
         <NavBar />
       </header>

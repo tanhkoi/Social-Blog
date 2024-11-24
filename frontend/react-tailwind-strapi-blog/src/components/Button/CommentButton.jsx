@@ -140,7 +140,7 @@ const CommentButton = ({ blogId }) => {
   };
 
   return (
-    <div className="mt-8 px-4 bg-zinc-950 border border-zinc-900 rounded-lg p-6">
+    <div className="mt-8 px-4 bg-[#0E1217] border border-zinc-900 rounded-lg p-6">
       <h2 className="text-2xl text-white font-bold">Comments</h2>
       <form onSubmit={handleCommentSubmit} className="mt-4">
         <input
@@ -148,7 +148,7 @@ const CommentButton = ({ blogId }) => {
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
           placeholder="Add a comment"
-          className="w-full p-2 bg-zinc-900 text-white border border-gray-300 rounded-md"
+          className="w-full p-2 bg-[#0E1217] text-white border border-gray-300 rounded-lg"
         />
         <button type="submit" className="hidden">
           Submit
@@ -157,7 +157,7 @@ const CommentButton = ({ blogId }) => {
 
       <div className="space-y-2 mt-4">
         {comments.map((comment) => (
-          <div key={comment.id} className="bg-zinc-900 text-white p-2 rounded-md flex justify-between items-center">
+          <div key={comment.id} className="bg-[#0E1217] text-white p-2 rounded-md flex justify-between items-center">
             <div>
               <p className="text-lg font-bold text-white">{comment.user.username}</p>
               <p>{comment.content}</p>
@@ -175,7 +175,7 @@ const CommentButton = ({ blogId }) => {
               </div>
               <button
                 onClick={() => toggleMenu(comment.id)}
-                className="text-white bg-zinc-900 border-gray-300 hover:text-gray-400 focus:outline-none"
+                className="text-white bg-[#0E1217] border-gray-300 hover:text-gray-400 focus:outline-none"
               >
                 ...
               </button>
@@ -186,7 +186,7 @@ const CommentButton = ({ blogId }) => {
                 >
                   <button
                     onClick={() => handleDeleteComment(comment.id)}
-                    className="px-4 py-2 bg-zinc-900 hover text-sm"
+                    className="px-4 py-2 bg-[#0E1217] hover text-sm"
                   >
                     Delete comment
                   </button>

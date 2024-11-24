@@ -36,7 +36,7 @@ const BlogContent = () => {
   }
 
   return (
-    <div className="w-full pb-10 bg-zinc-950 text- mt-10">
+    <div className="w-full pb-10 bg-[#0E1217] text- mt-10">
       <div className="max-w-[1240px] mx-auto">
         <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 ss:grid-cols-1 md:gap-x-8 sm:gap-y-8 ss:gap-y-8 px-4 sm:pt-20 md:mt-0 ss:pt-20 text-black">
           <div className="col-span-2 text-white">

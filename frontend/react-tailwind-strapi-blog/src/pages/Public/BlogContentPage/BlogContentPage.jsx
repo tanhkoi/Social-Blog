@@ -4,7 +4,7 @@ import  BlogContent  from "../../../components/Blog/BlogContent";
 
 const BlogContentPage = () => {
   return (
-    <div className="bg-zinc-950 min-h-screen text-white">
+    <div className="bg-[#0E1217] min-h-screen text-white">
       <header>
         <NavBar />
       </header>
