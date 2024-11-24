@@ -73,10 +73,7 @@ const Login = () => {
 			.then((data) => {
 				localStorage.setItem('token', data.token);
 				localStorage.setItem('username', data.username);
-				if (data.profilePicture) {
-					localStorage.setItem('profilePicture', data.profilePicture);
-				}
-
+				localStorage.setItem('profilePicture', data.profilePicture);
 				toast.success('Google login successful!', {
 					position: 'top-right',
 					autoClose: 3000,
