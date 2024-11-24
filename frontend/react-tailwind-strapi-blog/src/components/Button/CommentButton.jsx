@@ -1,6 +1,6 @@
 import { FaHeart, FaEllipsisV } from "react-icons/fa"; // Thêm biểu tượng ellipsis
 import { useState, useEffect, useRef } from "react";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 
 const CommentButton = ({ blogId }) => {
   const [comments, setComments] = useState([]);
@@ -31,16 +31,11 @@ const CommentButton = ({ blogId }) => {
           throw new Error("Failed to fetch comments");
         }
         const commentsData = await response.json();
-        console.log(commentsData);
-
-        // Assuming commentsData is an array
         const formattedCommentsData = commentsData.map((item) => ({
           ...item,
           createdAt: formatDate(item.createdAt), // Apply the formatDate function
         }));
-
         setComments(formattedCommentsData);
-
       } catch (error) {
         console.error(error);
       }
@@ -165,64 +160,56 @@ const CommentButton = ({ blogId }) => {
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
           placeholder="Add a comment"
-          className="w-full p-2 bg-zinc-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+          className="w-full p-2 bg-[#0E1217] text-white border border-gray-300 rounded-lg"
         />
         <button type="submit" className="hidden">
           Submit
         </button>
       </form>
-  
-      <div className="space-y-4 mt-6">
+
+      <div className="space-y-2 mt-4">
         {comments.map((comment) => (
-          <div
-            key={comment.id}
-            className="bg-zinc-800 text-white p-4 rounded-md border border-gray-700 shadow-sm"
-          >
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-lg font-bold">{comment.user.name}</p>
-              </div>
-              <div className="flex space-x-4 items-center relative">
-                <div
-                  onClick={() =>
-                    handleToggleLike(comment.id, comment.isLiked, comment.likes)
-                  }
-                  className={`flex items-center space-x-1 cursor-pointer ${
-                    comment.isLiked ? "text-red-500" : "hover:text-red-500"
-                  }`}
-                >
-                  <FaHeart />
-                  <span>{comment.likes}</span>
-                </div>
-                <button
-                  onClick={() => toggleMenu(comment.id)}
-                  className="text-white hover:text-gray-400 focus:outline-none"
-                >
-                  ...
-                </button>
-                {activeCommentId === comment.id && (
-                  <div
-                    ref={menuRef}
-                    className="absolute right-0 text-white mt-20 w-40 z-50"
-                  >
-                  <div className="border border-gray-600 rounded-xl">
-                  <button
-                      onClick={() => handleDeleteComment(comment.id)}
-                      className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
-                    >
-                      Delete comment
-                    </button>
-                    <button
-                      className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
-                    >
-                      Report comment
-                    </button>
-                  </div>
-                )}
-              </div>
+          <div key={comment.id} className="text-white p-2 rounded-md flex justify-between items-center border border-gray-700 shadow-sm">
+            <div>
+              <p className="text-lg font-bold text-white">{comment.user.name}</p>
+              <p className="text-justify mr-4">{comment.content}</p>
             </div>
-            <p className="mt-2 text-gray-200">{comment.content}</p>
-            <p className="text-sm text-gray-300 text-right">{comment.createdAt}</p>
+            <div className="flex space-x-4 items-center relative">
+              <p className="text-sm text-white text-right">{comment.createdAt}</p>
+              <div
+                onClick={() => handleToggleLike(comment.id, comment.isLiked, comment.likes)}
+                className={`flex items-center space-x-1 cursor-pointer ${comment.isLiked ? "text-red-500" : "hover:text-red-500"}`}
+              >
+                <FaHeart />
+                <span>{comment.likes}</span>
+              </div>
+              <button
+                onClick={() => toggleMenu(comment.id)}
+                className="text-white bg-[#0E1217] border-[#0E1217] hover:text-gray-400 focus:outline-none"
+              >
+                <FaEllipsisV />
+              </button>
+              {activeCommentId === comment.id && (
+                <div
+                ref={menuRef}
+                className="absolute right-0 text-white mt-20 w-40 z-50"
+                >
+                <div className="border border-gray-600 rounded-xl">
+                <button
+                    onClick={() => handleDeleteComment(comment.id)}
+                    className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
+                  >
+                    Delete comment
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
+                  >
+                    Report comment
+                  </button>
+                </div>    
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>
