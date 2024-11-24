@@ -3,20 +3,36 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const LikeButton = ({ blog, setBlogs }) => {
-  const [isLiked, setIsLiked] = useState(false); // Trạng thái thích
-  const [likes, setLikes] = useState(10); // Số lượt thích mặc định là 10
-
-  // Khi component được render, lấy trạng thái và số lượt like từ localStorage
+  const [isLiked, setIsLiked] = useState(false);
+  const [likes, setLikes] = useState(0);
+  const token = localStorage.getItem('token');
   useEffect(() => {
+    const fetchLikeCount = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/likes/post/${blog.id}/count`,
+         
+        );
+        if (response.ok) {
+          const count = await response.json();
+          setLikes(count);
+        } else {
+          console.error("Lỗi khi lấy số like");
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy số like:", error);
+      }
+    };
+
+    fetchLikeCount();
+
     const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || [];
     const likedBlog = likedPosts.find((post) => post.id === blog.id);
 
     if (likedBlog) {
       setIsLiked(likedBlog.isLiked);
-      setLikes(likedBlog.likes); // Lấy số lượt like từ localStorage
     } else {
       setIsLiked(false);
-      setLikes(10); // Nếu không có bài viết trong localStorage, khởi tạo lại
     }
   }, [blog.id]);
 
@@ -41,39 +57,44 @@ const LikeButton = ({ blog, setBlogs }) => {
       });
 
       if (!response.ok) {
-        throw new Error(isLiked ? "Failed to unlike the post" : "Failed to like the post");
+        const data = await response.json();
+        alert(data.message || "Lỗi khi like/unlike bài viết");
+        return;
       }
 
       const newLikes = isLiked ? likes - 1 : likes + 1;
       setLikes(newLikes);
-      setIsLiked(!isLiked); // Cập nhật trạng thái thích
+      setIsLiked(!isLiked);
 
-      // Cập nhật lại danh sách blog
       setBlogs((prevBlogs) =>
         prevBlogs.map((b) =>
-          b.id === blog.id ? { ...b, likes: newLikes, isLiked: !isLiked } : b
-        )
+          b.id === blog.id
+            ? { ...b, likes: newLikes, isLiked: !isLiked }
+            : b,
+        ),
       );
 
-      // Cập nhật lại mảng likedPosts trong localStorage
       const likedPosts = JSON.parse(localStorage.getItem("likedPosts")) || [];
-
-      // Tìm bài viết đã được like và cập nhật nó
-      const updatedLikedPosts = likedPosts.filter((post) => post.id !== blog.id); // Loại bỏ bài viết cũ nếu có
-      updatedLikedPosts.push({ id: blog.id, isLiked: !isLiked, likes: newLikes }); // Thêm hoặc cập nhật bài viết mới
-
-      // Lưu lại mảng likedPosts vào localStorage
+      const updatedLikedPosts = likedPosts.filter(
+        (post) => post.id !== blog.id,
+      );
+      updatedLikedPosts.push({
+        id: blog.id,
+        isLiked: !isLiked,
+        likes: newLikes,
+      });
       localStorage.setItem("likedPosts", JSON.stringify(updatedLikedPosts));
-
     } catch (error) {
-      console.error(isLiked ? "Error unliking post:" : "Error liking post:", error);
+      console.error("Lỗi khi like/unlike:", error);
     }
   };
 
   return (
     <div
       onClick={handleToggleLike}
-      className={`flex items-center space-x-1 cursor-pointer ${isLiked ? "text-red-500" : "hover:text-red-500"}`}
+      className={`flex items-center space-x-1 cursor-pointer ${
+        isLiked ? "text-red-500" : "hover:text-red-500"
+      }`}
     >
       <FaHeart />
       <span>{likes}</span>

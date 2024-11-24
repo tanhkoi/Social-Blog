@@ -35,9 +35,10 @@ const Login = () => {
 			const data = await response.json();
 			localStorage.setItem('token', data.token);
 			localStorage.setItem('username', data.username);
-			if (data.profilePicture) {
-				localStorage.setItem('profilePicture', data.profilePicture);
-			}
+			// console.log(data.profilePicture);
+			//  if (data.profilePicture!=null) {
+			 	localStorage.setItem('profilePicture', data.profilePicture);
+			//  }
 
 			toast.success('Login successful!', {
 				position: 'top-right',
