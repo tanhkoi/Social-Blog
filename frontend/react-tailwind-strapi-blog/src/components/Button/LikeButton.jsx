@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 const LikeButton = ({ blog, setBlogs }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(0);
-  const token = localStorage.getItem('token');
   useEffect(() => {
     const fetchLikeCount = async () => {
       try {

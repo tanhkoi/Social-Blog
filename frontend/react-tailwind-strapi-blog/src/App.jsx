@@ -47,7 +47,6 @@ const AdminLayout = () => {
           <Route path="products" element={<BlogPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="customers" element={<CustomerPage />} />
-          <Route path="inventory" element={<div>Inventory Page</div>} />
           <Route path="settings" element={<SettingPage />} />
         </Routes>
         <ToastContainer />

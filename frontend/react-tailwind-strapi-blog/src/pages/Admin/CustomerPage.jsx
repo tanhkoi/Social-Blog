@@ -1,23 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-const initialCustomers = [
-  { id: 1, name: "John Doe", email: "john@example.com", phone: "123-456-7890" },
-  { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "987-654-3210" },
-];
-
 const CustomerPage = () => {
-  const [customers, setCustomers] = useState(initialCustomers);
+  const [customers, setCustomers] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState({ id: null, name: "", email: "", phone: "" });
   const [showForm, setShowForm] = useState(false);
+
+  // Lấy dữ liệu khách hàng từ API
+  useEffect(() => {
+    fetch("http://localhost:8080/verify")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch customers");
+        }
+        return response.json();
+      })
+      .then((data) => setCustomers(data))
+      .catch((error) => console.error("Error fetching customers:", error));
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCurrentCustomer({ ...currentCustomer, [name]: value });
   };
-
 
   const handleEditCustomer = (customer) => {
     setCurrentCustomer(customer);
@@ -26,13 +33,13 @@ const CustomerPage = () => {
   };
 
   const handleDeleteCustomer = (id) => {
-    setCustomers(customers.filter(customer => customer.id !== id));
+    setCustomers(customers.filter((customer) => customer.id !== id));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isEditing) {
-      setCustomers(customers.map(cust => (cust.id === currentCustomer.id ? currentCustomer : cust)));
+      setCustomers(customers.map((cust) => (cust.id === currentCustomer.id ? currentCustomer : cust)));
     } else {
       setCustomers([...customers, { ...currentCustomer, id: customers.length + 1 }]);
     }
@@ -68,17 +75,6 @@ const CustomerPage = () => {
               className="border rounded w-full px-3 py-2"
             />
           </div>
-          <div className="mb-3">
-            <label className="block text-sm font-medium mb-1">Phone</label>
-            <input
-              type="text"
-              name="phone"
-              value={currentCustomer.phone}
-              onChange={handleInputChange}
-              required
-              className="border rounded w-full px-3 py-2"
-            />
-          </div>
           <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
             {isEditing ? "Update Customer" : "Add Customer"}
           </button>
@@ -94,7 +90,6 @@ const CustomerPage = () => {
             <th className="py-6 px-8 text-left">#</th>
             <th className="py-6 px-8 text-left">Name</th>
             <th className="py-6 px-8 text-left">Email</th>
-            <th className="py-6 px-8 text-left">Phone</th>
             <th className="py-6 px-8 text-left">Actions</th>
           </tr>
         </thead>
@@ -104,7 +99,6 @@ const CustomerPage = () => {
               <td className="py-6 px-8">{index + 1}</td>
               <td className="py-6 px-8">{customer.name}</td>
               <td className="py-6 px-8">{customer.email}</td>
-              <td className="py-6 px-8">{customer.phone}</td>
               <td className="py-6 px-8">
                 <button onClick={() => handleEditCustomer(customer)} className="text-blue-500 hover:text-blue-700 mx-1">
                   <FontAwesomeIcon icon={faEdit} />
