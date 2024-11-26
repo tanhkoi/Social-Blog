@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { FaTimes } from 'react-icons/fa';  
+import { toast } from 'react-toastify';
 
 const AccountDetailPage = () => {
   const navigate = useNavigate();  
   const token = localStorage.getItem('token');
   const username = localStorage.getItem('username');
   const profilePicture = localStorage.getItem('profilePicture');
-  
+
   const [user, setUser] = useState({
     avatar: profilePicture || "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    name: username,
+    name: name,
     email: "",
     password: "", // Add password to state
   });
@@ -58,17 +59,24 @@ const AccountDetailPage = () => {
     };
 
     fetchUserData();
-  });
+  },[token, user.avatar, user.name, username]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedUser({ ...editedUser, [name]: value });
   };
 
-
-
   const handleSaveChanges = async () => {
-    // Call API to update user info
+    const updatedUserInfo = {
+      name: editedUser.name,
+      email: editedUser.email,
+      profilePicture: editedUser.avatar,
+    };
+  
+    // Chỉ gửi mật khẩu mới nếu người dùng đã thay đổi mật khẩu
+    if (editedUser.password) {
+      updatedUserInfo.password = editedUser.password;
+    }
     try {
       const response = await fetch("http://localhost:8080/api/users", {
         method: "PUT",
@@ -76,25 +84,41 @@ const AccountDetailPage = () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          name: editedUser.name,
-          email: editedUser.email,
-          profilePicture: editedUser.avatar, // Send updated profile picture URL
-          password: editedUser.password, // Ensure password is sent if it is updated
-        }),
+        body: JSON.stringify(updatedUserInfo),
       });
-
+      
       if (response.ok) {
         const updatedUser = await response.json();
+        console.log("Updated user info:", updatedUser);
+        
         setUser({ ...updatedUser });
+  
+        // Cập nhật localStorage với các giá trị mới
+        localStorage.setItem('username', updatedUser.name);
+        localStorage.setItem('profilePicture', updatedUser.profilePicture);
+        localStorage.setItem('email', updatedUser.email);
+  
+        // Hiển thị thông báo thành công
+        toast.success('Account updated successfully!', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
       } else {
         const errorData = await response.json();
-        alert(`Lỗi: ${errorData.message}`);
+        console.error("Error response:", errorData);
+        alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      console.error("Lỗi khi cập nhật thông tin người dùng:", error);
+      console.error("Error updating user info:", error);
+      toast.error('Failed to update account', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
+    navigate('/');
   };
+  
+  
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -152,14 +176,13 @@ const AccountDetailPage = () => {
           </div>
           <div className="mb-3">
             <label className="block text-sm text-white font-medium mb-1">Avatar</label>
-            <input type="file" onChange={handleAvatarChange} className="border rounded w-full px-3 py-2" />
+            <input type="file" onChange={handleAvatarChange} className="border bg-white rounded w-full px-3 py-2" />
           </div>
           <div className="mb-3">
             <label className="block text-sm text-white font-medium mb-1">Password</label>
             <input
               type="password"
               name="password"
-
               value={editedUser.password}
               onChange={handleInputChange}
               className="border rounded w-full px-3 py-2"
@@ -168,11 +191,10 @@ const AccountDetailPage = () => {
           <div className="flex space-x-2">
             <button
               onClick={handleSaveChanges}
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className="bg-[#1c1f26] border border-gray-600 text-white px-4 py-2 rounded"
             >
               Save
             </button>
-
           </div>
         </div>
     </div>

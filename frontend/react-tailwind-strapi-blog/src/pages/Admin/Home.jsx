@@ -71,7 +71,7 @@ const Home = () => {
         );
       })
       .catch((error) => console.error("Error fetching data:", error));
-  }, []);
+  });
 
   return (
     <main className="p-5 bg-gray-100">
