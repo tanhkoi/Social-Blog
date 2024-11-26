@@ -63,8 +63,9 @@ public class SecurityConfiguration {
                                 "/api/comments/{postId}",
                                 "/api/likes/post/{postId}/count"
                         )
-
                         .permitAll()
+                        .requestMatchers("/api/admin/**")
+                        .hasAuthority("ADMIN")
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -6,6 +6,8 @@ import com.javaproject.socialblog.springboot.security.dto.RegistrationRequest;
 import com.javaproject.socialblog.springboot.security.dto.RegistrationResponse;
 import com.javaproject.socialblog.springboot.security.dto.UserRequest;
 
+import java.util.List;
+
 public interface UserService {
 
     User findByUsername(String username);
@@ -22,4 +24,5 @@ public interface UserService {
 
     User authenticateWithGoogle(String token);
 
+    List<User> getUsers();
 }

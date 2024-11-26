@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -177,6 +178,11 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("Invalid ID Token");
         }
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
 }
