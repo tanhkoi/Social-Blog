@@ -32,7 +32,7 @@ public class UserController {
 
     @PutMapping
     @Operation(tags = "User Service")
-    public ResponseEntity<User> updateUser(@RequestBody UserRequest userRequest){
+    public ResponseEntity<User> updateUser(@RequestBody UserRequest userRequest) {
 
         return ResponseEntity.ok(userService.updateUser(userRequest));
     }

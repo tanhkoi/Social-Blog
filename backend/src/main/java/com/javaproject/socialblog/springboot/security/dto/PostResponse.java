@@ -35,4 +35,6 @@ public class PostResponse {
 
     private long likeCnt;
 
+    private boolean isLiked = false;
+
 }

@@ -89,4 +89,14 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
+
+    // search
+    @GetMapping("/search")
+    @Operation(tags = "Post Service")
+    public ResponseEntity<List<PostResponse>> searchPosts(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "tags", required = false) List<String> tags
+    ) {
+        return ResponseEntity.ok(postService.searchPosts(keyword, tags));
+    }
 }
