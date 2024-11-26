@@ -16,7 +16,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -148,5 +151,35 @@ public class PostServiceImpl implements PostService {
         return postResponses;
 
     }
+
+    @Override
+    public List<PostResponse> searchPosts(String keyword, List<String> tags) {
+        List<Post> posts;
+
+        // Determine the query based on input parameters
+        if (keyword != null && !keyword.isEmpty() && (tags == null || tags.isEmpty())) {
+            posts = postRepository.findByTitleContainingIgnoreCase(keyword);
+        } else if (tags != null && !tags.isEmpty() && (keyword == null || keyword.isEmpty())) {
+            posts = postRepository.findByTagsIn(tags);
+        } else if (keyword != null && !keyword.isEmpty() && tags != null && !tags.isEmpty()) {
+            posts = postRepository.findByTitleContainingIgnoreCase(keyword);
+            posts.addAll(postRepository.findByTagsIn(tags));
+        } else {
+            posts = postRepository.findAll();
+        }
+
+        // Map posts to PostResponse
+        return posts.stream()
+                .distinct() // To remove duplicates when combining title and tag matches
+                .map(post -> {
+                    PostResponse postResponse = new PostResponse();
+                    modelMapper.map(post, postResponse);
+                    postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
+                    postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
+                    return postResponse;
+                })
+                .collect(Collectors.toList());
+    }
+
 
 }
