@@ -61,11 +61,11 @@ const SavedBlogsPage = () => {
           <SideBar />
         </aside>
         <div className="flex-grow p-4 ml-4">
-          <h1 className="text-3xl font-bold mb-5 mt-20">Saved Blogs</h1>
+          <h1 className="text-3xl font-bold mb-5 mt-20">Bookmarks</h1>
           {savedBlogs.length > 0 ? (
             <BlogList blogs={savedBlogs} setBlogs={setSavedBlogs} />
           ) : (
-            <p className="text-gray-400">Bạn chưa lưu blog nào.</p>
+            <p className="text-gray-400"></p>
           )}
         </div>
       </main>

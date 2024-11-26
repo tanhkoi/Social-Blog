@@ -67,14 +67,14 @@ const ProfilePage = () => {
         <aside className="w-60">
           <SideBar />
         </aside>
-        <div className="flex-grow p-4 ml-4">
+        <div className="flex-grow p-10 ml-10">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="lg:w-2/3">
               <h2 className="text-3xl font-bold mb-5 mt-20">Posts</h2>
               {myPosts.length > 0 ? (
                 <BlogList blogs={myPosts} setBlogs={setMyPosts} />
               ) : (
-                <p className="text-gray-400">Bạn chưa có bài viết nào.</p>
+                <p className="text-gray-400"></p>
               )}
             </div>
             <div className="lg:w-1/3 bg-card p-4 rounded-lg border border-gray-600">

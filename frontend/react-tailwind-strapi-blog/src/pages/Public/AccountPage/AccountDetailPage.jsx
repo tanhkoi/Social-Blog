@@ -1,21 +1,21 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { FaTimes } from 'react-icons/fa';  
+import { toast } from 'react-toastify';
 
 const AccountDetailPage = () => {
   const navigate = useNavigate();  
   const token = localStorage.getItem('token');
   const username = localStorage.getItem('username');
   const profilePicture = localStorage.getItem('profilePicture');
-  
+
   const [user, setUser] = useState({
     avatar: profilePicture || "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    name: username,
+    name: name,
     email: "",
     password: "", // Add password to state
   });
 
-  const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({ ...user });
 
   // Fetch user data when the component mounts
@@ -59,20 +59,24 @@ const AccountDetailPage = () => {
     };
 
     fetchUserData();
-  }, [token, username]);
+  },[token, user.avatar, user.name, username]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedUser({ ...editedUser, [name]: value });
   };
 
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing);
-    setEditedUser({ ...user });
-  };
-
   const handleSaveChanges = async () => {
-    // Call API to update user info
+    const updatedUserInfo = {
+      name: editedUser.name,
+      email: editedUser.email,
+      profilePicture: editedUser.avatar,
+    };
+  
+    // Chỉ gửi mật khẩu mới nếu người dùng đã thay đổi mật khẩu
+    if (editedUser.password) {
+      updatedUserInfo.password = editedUser.password;
+    }
     try {
       const response = await fetch("http://localhost:8080/api/users", {
         method: "PUT",
@@ -80,26 +84,41 @@ const AccountDetailPage = () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          name: editedUser.name,
-          email: editedUser.email,
-          profilePicture: editedUser.avatar, // Send updated profile picture URL
-          password: editedUser.password, // Ensure password is sent if it is updated
-        }),
+        body: JSON.stringify(updatedUserInfo),
       });
-
+      
       if (response.ok) {
         const updatedUser = await response.json();
+        console.log("Updated user info:", updatedUser);
+        
         setUser({ ...updatedUser });
-        setIsEditing(false);
+  
+        // Cập nhật localStorage với các giá trị mới
+        localStorage.setItem('username', updatedUser.name);
+        localStorage.setItem('profilePicture', updatedUser.profilePicture);
+        localStorage.setItem('email', updatedUser.email);
+  
+        // Hiển thị thông báo thành công
+        toast.success('Account updated successfully!', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
       } else {
         const errorData = await response.json();
-        alert(`Lỗi: ${errorData.message}`);
+        console.error("Error response:", errorData);
+        alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      console.error("Lỗi khi cập nhật thông tin người dùng:", error);
+      console.error("Error updating user info:", error);
+      toast.error('Failed to update account', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
     }
+    navigate('/');
   };
+  
+  
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -110,15 +129,16 @@ const AccountDetailPage = () => {
   };
 
   const handleGoHome = () => {
-    navigate("/");  // Điều hướng về trang chính
+    navigate("/");  
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto bg-white rounded-lg shadow-lg">
+   <div className="bg-[#0E1217]">
+     <div className="p-6 max-w-md mx-auto bg-[#1c1f26] rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
         <button
           onClick={handleGoHome}
-          className="bg-blue-500 text-white px-4 py-2 rounded ml-auto flex items-center"
+          className="bg-[#1c1f26] border-[#1c1f26] text-white px-4 py-2 rounded ml-auto flex items-center"
         >
           <FaTimes className="h-6 w-6" />
         </button>
@@ -129,15 +149,13 @@ const AccountDetailPage = () => {
           alt="User Avatar"
           className="w-32 h-32 rounded-full mx-auto border border-gray-200"
         />
-        <h2 className="text-2xl font-semibold mt-4">{user.name}</h2>
-        <p className="text-gray-600">{user.email}</p>
+        <h2 className="text-2xl text-white font-semibold mt-4">{user.name}</h2>
+        <p className="text-white">{user.email}</p>
       </div>
-
-      {isEditing ? (
         <div className="mb-4">
-          <h3 className="text-xl font-bold mb-3">Edit Profile</h3>
+          <h3 className="text-xl text-white font-bold mb-3">Edit Profile</h3>
           <div className="mb-3">
-            <label className="block text-sm font-medium mb-1">Name</label>
+            <label className=" text-sm text-white font-medium mb-1">Name</label>
             <input
               type="text"
               name="name"
@@ -147,7 +165,7 @@ const AccountDetailPage = () => {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label className="block text-sm text-white font-medium mb-1">Email</label>
             <input
               type="email"
               name="email"
@@ -157,11 +175,11 @@ const AccountDetailPage = () => {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium mb-1">Avatar</label>
-            <input type="file" onChange={handleAvatarChange} className="border rounded w-full px-3 py-2" />
+            <label className="block text-sm text-white font-medium mb-1">Avatar</label>
+            <input type="file" onChange={handleAvatarChange} className="border bg-white rounded w-full px-3 py-2" />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium mb-1">Password</label>
+            <label className="block text-sm text-white font-medium mb-1">Password</label>
             <input
               type="password"
               name="password"
@@ -173,27 +191,14 @@ const AccountDetailPage = () => {
           <div className="flex space-x-2">
             <button
               onClick={handleSaveChanges}
-              className="bg-green-500 text-white px-4 py-2 rounded"
+              className="bg-[#1c1f26] border border-gray-600 text-white px-4 py-2 rounded"
             >
               Save
             </button>
-            <button
-              onClick={handleEditToggle}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
-            >
-              Cancel
-            </button>
           </div>
         </div>
-      ) : (
-        <button
-          onClick={handleEditToggle}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Edit Profile
-        </button>
-      )}
     </div>
+   </div>
   );
 };
 

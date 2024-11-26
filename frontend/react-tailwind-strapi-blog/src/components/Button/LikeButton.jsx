@@ -47,6 +47,7 @@ const LikeButton = ({ blogId, likes, isLiked, setLikes, setIsLiked, setBlogs }) 
 			<span>{likes}</span>
 		</div>
 	);
+
 };
 
 LikeButton.propTypes = {

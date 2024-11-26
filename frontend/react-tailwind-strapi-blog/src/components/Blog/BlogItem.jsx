@@ -6,6 +6,7 @@ import LikeButton from '../Button/LikeButton';
 import { useState } from 'react';
 
 const BlogItem = ({ blog, setBlogs }) => {
+
 	// Local state for likes and isLiked
 	const [likes, setLikes] = useState(blog.likeCnt || 0);
 	const [isLiked, setIsLiked] = useState(blog.liked || false);

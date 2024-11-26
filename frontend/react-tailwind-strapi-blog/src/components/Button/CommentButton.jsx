@@ -147,12 +147,12 @@ const CommentButton = ({ blogId }) => {
     }
   };
 
-  const toggleMenu = (commentId) => {
+  const toggleDropdown = (commentId) => {
     setActiveCommentId((prev) => (prev === commentId ? null : commentId));
   };
 
   return (
-    <div className="mt-8 px-4 bg-[#0E1217] border border-zinc-900 rounded-lg p-6">
+    <div className="mt-8 px-4 bg-[#0E1217] border border-gray-600 rounded-lg p-6">
       <h2 className="text-2xl text-white font-bold">Comments</h2>
       <form onSubmit={handleCommentSubmit} className="mt-4">
         <input
@@ -184,7 +184,7 @@ const CommentButton = ({ blogId }) => {
                 <span>{comment.likes}</span>
               </div>
               <button
-                onClick={() => toggleMenu(comment.id)}
+                onClick={() => toggleDropdown(comment.id)}
                 className="text-white bg-[#0E1217] border-[#0E1217] hover:text-gray-400 focus:outline-none"
               >
                 <FaEllipsisV />
@@ -192,17 +192,17 @@ const CommentButton = ({ blogId }) => {
               {activeCommentId === comment.id && (
                 <div
                 ref={menuRef}
-                className="absolute right-0 text-white mt-20 w-40 z-50"
+                className="bg-[#0E1217] absolute right-0 text-white mt-20 w-40 z-50"
                 >
-                <div className="border border-gray-600 rounded-xl">
+                <div className="border border-gray-600 rounded-xl ">
                 <button
                     onClick={() => handleDeleteComment(comment.id)}
-                    className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
+                    className="mx-4 py-2 bg-[#0E1217]  border-[#0E1217] hover:bg-[#0E1217]"
                   >
                     Delete comment
                   </button>
                   <button
-                    className="px-4 py-2 bg-[#0E1217]  border-[#0E1217]"
+                    className="mx-4 py-2 bg-[#0E1217]  border-[#0E1217] hover:bg-[#0E1217]"
                   >
                     Report comment
                   </button>
