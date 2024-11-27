@@ -5,7 +5,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # Run stage
-FROM openjdk:22-jdk-slim
+FROM openjdk:22-jdk
 WORKDIR /app
 COPY --from=build /app/target/social-blog.jar social-blog.jar
 EXPOSE 8080
