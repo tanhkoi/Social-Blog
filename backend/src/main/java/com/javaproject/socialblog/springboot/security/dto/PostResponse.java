@@ -37,4 +37,6 @@ public class PostResponse {
 
     private boolean isLiked = false;
 
+    private boolean isSaved = false;
+
 }
