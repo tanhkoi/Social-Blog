@@ -6,10 +6,10 @@ import LikeButton from '../Button/LikeButton';
 import { useState } from 'react';
 
 const BlogItem = ({ blog, setBlogs }) => {
-
 	// Local state for likes and isLiked
 	const [likes, setLikes] = useState(blog.likeCnt || 0);
 	const [isLiked, setIsLiked] = useState(blog.liked || false);
+	const [isSaved, setIsSaved] = useState(blog.saved || false);
 
 	return (
 		<div className="bg-[#1c1f26] rounded-xl overflow-hidden drop-shadow-md border border-gray-600">
@@ -25,7 +25,7 @@ const BlogItem = ({ blog, setBlogs }) => {
 					<FaComment />
 					<span>comments</span>
 				</Link>
-				<SaveButton blog={blog} setBlogs={setBlogs} />
+				<SaveButton blog={blog} setBlogs={setBlogs} isSaved={isSaved} setIsSaved={setIsSaved} />
 			</div>
 		</div>
 	);
