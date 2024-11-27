@@ -1,11 +1,11 @@
 # Build stage
-FROM maven:3.8.5-openjdk-22 AS build
+FROM maven:3.9.4-eclipse-temurin-22 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
 # Run stage
-FROM openjdk:22-jdk
+FROM eclipse-temurin:22-jre
 WORKDIR /app
 COPY --from=build /app/target/social-blog.jar social-blog.jar
 EXPOSE 8080
