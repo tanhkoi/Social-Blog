@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import BlogList from "../Blog/BlogList ";
-import useFetch from "../../hooks/useFetch";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
-  const { loading } = useFetch("http://localhost:8080/api/posts");
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -23,6 +22,8 @@ const Blogs = () => {
         setBlogs(data);
       } catch (error) {
         console.error("Error fetching blogs:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -38,7 +39,7 @@ const Blogs = () => {
   }
 
   return (
-    <div className="w-full  bg-[#0E1217] py-[50px] mt-10">
+    <div className="w-full bg-[#0E1217] py-[50px] mt-10">
       <div className="w-full mx-auto min-h-screen">
         <BlogList blogs={blogs} setBlogs={setBlogs} />
       </div>
