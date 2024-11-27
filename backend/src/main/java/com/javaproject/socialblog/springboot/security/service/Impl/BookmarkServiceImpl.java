@@ -1,8 +1,6 @@
 package com.javaproject.socialblog.springboot.security.service.Impl;
 
-import com.javaproject.socialblog.springboot.model.Bookmark;
-import com.javaproject.socialblog.springboot.model.Post;
-import com.javaproject.socialblog.springboot.model.User;
+import com.javaproject.socialblog.springboot.model.*;
 import com.javaproject.socialblog.springboot.repository.BookmarkRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.service.BookmarkService;
@@ -71,5 +69,27 @@ public class BookmarkServiceImpl implements BookmarkService {
         return posts;
 
     }
+
+    @Override
+    public boolean checkIsSavedPost(String postId) {
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        // Check if the user is authenticated
+        if (loggedInUser == null || !loggedInUser.isAuthenticated() || "anonymousUser".equals(loggedInUser.getPrincipal())) {
+            // Return false or throw an exception if the user is not logged in
+            return false;
+        }
+        String username = loggedInUser.getName();
+        String currUserId = userService.findByUsername(username).getId();
+
+        Bookmark bookmark = bookmarkRepository.findAll().stream()
+                .filter(l -> l.getUserId().equals(currUserId)
+                        && l.getPostId().equals(postId)
+                )
+                .findFirst() // Extract the first match
+                .orElse(null); // Return null if no match is found
+
+        return bookmark != null;
+    }
+
 
 }

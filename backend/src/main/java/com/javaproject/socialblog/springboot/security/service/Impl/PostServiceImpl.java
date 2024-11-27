@@ -6,6 +6,7 @@ import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.dto.PostRequest;
 import com.javaproject.socialblog.springboot.security.dto.PostResponse;
+import com.javaproject.socialblog.springboot.security.service.BookmarkService;
 import com.javaproject.socialblog.springboot.security.service.LikeService;
 import com.javaproject.socialblog.springboot.security.service.PostService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
@@ -34,6 +35,8 @@ public class PostServiceImpl implements PostService {
 
     private final LikeService likeService;
 
+    private final BookmarkService bookmarkService;
+
     @Override
     public List<PostResponse> getAllPosts() {
 
@@ -45,7 +48,8 @@ public class PostServiceImpl implements PostService {
             PostResponse postResponse = new PostResponse();
             modelMapper.map(post, postResponse);
             postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
-            postResponse.setLiked(likeService.checkIsLikedPost(postResponse.getId()));
+            postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
+            postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
             postResponses.add(postResponse);
         }
 
@@ -74,9 +78,7 @@ public class PostServiceImpl implements PostService {
         post.setTags(postDetail.getTags());
         post.setCategory(postDetail.getCategory());
 
-        if (postDetail.getImageCloudUrl() != null)
-            post.setImageCloudUrl(postDetail.getImageCloudUrl());
-        else
+        if (postDetail.getImageCloudUrl().isBlank())
             post.setImageCloudUrl("https://img.freepik.com/free-vector/hand-drawn-flat-design-digital-detox-illustration_23-2149332264.jpg");
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
@@ -144,7 +146,8 @@ public class PostServiceImpl implements PostService {
             PostResponse postResponse = new PostResponse();
             modelMapper.map(post, postResponse);
             postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
-            postResponse.setLiked(likeService.checkIsLikedPost(postResponse.getId()));
+            postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
+            postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
             postResponses.add(postResponse);
         }
 
@@ -176,10 +179,10 @@ public class PostServiceImpl implements PostService {
                     modelMapper.map(post, postResponse);
                     postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
                     postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
+                    postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
                     return postResponse;
                 })
                 .collect(Collectors.toList());
     }
-
 
 }

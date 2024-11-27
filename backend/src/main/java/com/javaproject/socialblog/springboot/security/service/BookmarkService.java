@@ -12,4 +12,6 @@ public interface BookmarkService {
 
     void bookmarkPost(String postId);
 
+    boolean checkIsSavedPost(String postId);
+
 }
