@@ -5,6 +5,7 @@ import com.javaproject.socialblog.springboot.security.dto.AuthenticatedUserDto;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static final String USERNAME_OR_PASSWORD_INVALID = "Invalid username or password.";
 
     private final UserService userService;
+
+    public UserDetailsServiceImpl(@Lazy UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
