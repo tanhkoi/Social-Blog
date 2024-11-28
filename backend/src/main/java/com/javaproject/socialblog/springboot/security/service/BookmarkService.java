@@ -1,12 +1,12 @@
 package com.javaproject.socialblog.springboot.security.service;
 
-import com.javaproject.socialblog.springboot.model.Post;
+import com.javaproject.socialblog.springboot.security.dto.PostResponse;
 
 import java.util.List;
 
 public interface BookmarkService {
 
-    List<Post> getUserBookmarks();
+    List<PostResponse> getUserBookmarks();
 
     void removeBookmark(String postId);
 
