@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.Objects;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
