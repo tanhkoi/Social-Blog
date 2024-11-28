@@ -56,6 +56,8 @@ SaveButton.propTypes = {
 		id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 		isSaved: PropTypes.bool,
 	}).isRequired,
+	isSaved: PropTypes.bool,
+	setIsSaved:PropTypes.bool,
 	setBlogs: PropTypes.func.isRequired,
 };
 

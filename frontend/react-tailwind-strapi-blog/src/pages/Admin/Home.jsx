@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  LineChart,
-  Line,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 import {
   BsFillArchiveFill,
@@ -22,34 +23,48 @@ const Home = () => {
   const [blogsByMonth, setBlogsByMonth] = useState([]);
   const [blogsByCategory, setBlogsByCategory] = useState([]);
   const [blogsCount, setBlogsCount] = useState(0);
-  const [setData] = useState([]);
+  const [usersCount, setUsersCount] = useState(0); // State để lưu số lượng user
   const navigate = useNavigate();
 
+  const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#d84b4b", "#8dd1e1"];
+
   const handleNavigateToBlogPage = () => {
-    navigate("/admin/products"); 
+    navigate("/admin/products");
   };
   const handleNavigateToCustomerPage = () => {
-    navigate("/admin/customers"); 
+    navigate("/admin/customers");
   };
   const handleNavigateToCategoriesPage = () => {
-    navigate("/admin/categories");  
+    navigate("/admin/categories");
   };
 
   useEffect(() => {
+    // Fetch blogs
     fetch("http://localhost:8080/api/posts")
       .then((response) => response.json())
       .then((data) => {
-        setBlogsCount(data.length); 
-        const months = Array(12).fill(0);
-        data.forEach((blog) => {
-          const month = new Date(blog.createdAt).getMonth();
-          months[month]++;
+        setBlogsCount(data.length);
+        const filteredData = data.filter((blog) => {
+          const blogDate = new Date(blog.createdAt);
+          return blogDate.getMonth() === 10 || blogDate.getMonth() === 11;
         });
-        const blogsByMonthData = months.map((count, index) => ({
-          name: `Month ${index + 1}`,
-          count,
-        }));
-        setBlogsByMonth(blogsByMonthData);
+        const dailyCount = {};
+        filteredData.forEach((blog) => {
+          const blogDate = new Date(blog.createdAt);
+          const day = String(blogDate.getDate()).padStart(2, "0");
+          const month = String(blogDate.getMonth() + 1).padStart(2, "0");
+          const formattedDate = `${day}/${month}`;
+          dailyCount[formattedDate] = (dailyCount[formattedDate] || 0) + 1;
+        });
+
+        const blogsByDayData = Object.entries(dailyCount).map(
+          ([date, count]) => ({
+            name: date,
+            count,
+          })
+        );
+        setBlogsByMonth(blogsByDayData);
+
         const categoryCount = {};
         data.forEach((blog) => {
           const category = blog.category;
@@ -62,16 +77,35 @@ const Home = () => {
           })
         );
         setBlogsByCategory(blogsByCategoryData);
-        setData(
-          data.map((_, index) => ({
-            name: `Page ${String.fromCharCode(65 + index)}`,
-            uv: Math.floor(Math.random() * 4000) + 1000,
-            pv: Math.floor(Math.random() * 4000) + 1000,
-          }))
-        );
       })
-      .catch((error) => console.error("Error fetching data:", error));
-  });
+      .catch((error) => console.error("Error fetching blogs data:", error));
+
+    // Fetch users
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found");
+      return;
+    }
+
+    fetch("http://localhost:8080/api/admin/users", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Thêm token vào header
+      },
+    })
+      .then((response) => {
+        if (response.status === 401) {
+          throw new Error("Unauthorized: Invalid or expired token");
+        }
+        if (!response.ok) {
+          throw new Error("Failed to fetch users");
+        }
+        return response.json();
+      })
+      .then((data) => setUsersCount(data.length))
+      .catch((error) => console.error("Error fetching users data:", error));
+  }, []);
 
   return (
     <main className="p-5 bg-gray-100">
@@ -111,7 +145,7 @@ const Home = () => {
             <h3 className="text-lg text-[#263043]">USER</h3>
             <BsFillBellFill className="text-xl text-[#f39c12]" />
           </div>
-          <h1 className="text-4xl font-bold text-[#263043]">42</h1>
+          <h1 className="text-4xl font-bold text-[#263043]">{usersCount}</h1>
         </div>
       </div>
 
@@ -132,17 +166,23 @@ const Home = () => {
         </ResponsiveContainer>
 
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={blogsByCategory}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis tickFormatter={(tick) => Math.floor(tick)} />
+          <PieChart>
+            <Pie
+              data={blogsByCategory}
+              dataKey="count"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={150}
+              fill="#82ca9d"
+              label={(entry) => `${entry.name}: ${entry.count}`}
+            >
+              {blogsByCategory.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
             <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#82ca9d" />
-          </BarChart>
+          </PieChart>
         </ResponsiveContainer>
       </div>
     </main>
