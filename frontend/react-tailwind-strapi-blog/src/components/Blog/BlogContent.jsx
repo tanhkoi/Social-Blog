@@ -33,7 +33,7 @@ const BlogContent = ({ content }) => {
 
     fetchBlogData();
   }, [id]);
-
+ 
   if (!blog) {
     return <div>Loading...</div>;
   }
