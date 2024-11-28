@@ -3,9 +3,12 @@ package com.javaproject.socialblog.springboot.security.service.Impl;
 import com.javaproject.socialblog.springboot.model.*;
 import com.javaproject.socialblog.springboot.repository.BookmarkRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
+import com.javaproject.socialblog.springboot.security.dto.PostResponse;
 import com.javaproject.socialblog.springboot.security.service.BookmarkService;
+import com.javaproject.socialblog.springboot.security.service.LikeService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,10 @@ public class BookmarkServiceImpl implements BookmarkService {
     private final UserService userService;
 
     private final PostRepository postRepository;
+
+    private final ModelMapper modelMapper;
+
+    private final LikeService likeService;
 
     // Bookmark a post
     public void bookmarkPost(String postId) {
@@ -51,7 +58,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     // Get all bookmarks for a user
-    public List<Post> getUserBookmarks() {
+    public List<PostResponse> getUserBookmarks() {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -66,7 +73,18 @@ public class BookmarkServiceImpl implements BookmarkService {
             postRepository.findById(bookmark.getPostId()).ifPresent(posts::add);
         }
 
-        return posts;
+        List<PostResponse> postResponses = new ArrayList<>();
+
+        for (Post post : posts) {
+            PostResponse postResponse = new PostResponse();
+            modelMapper.map(post, postResponse);
+            postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
+            postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
+            postResponse.setSaved(this.checkIsSavedPost(post.getId()));
+            postResponses.add(postResponse);
+        }
+
+        return postResponses;
 
     }
 

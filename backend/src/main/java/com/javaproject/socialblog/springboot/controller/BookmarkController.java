@@ -1,7 +1,7 @@
 package com.javaproject.socialblog.springboot.controller;
 
 import com.javaproject.socialblog.springboot.annotation.CheckUserEnabled;
-import com.javaproject.socialblog.springboot.model.Post;
+import com.javaproject.socialblog.springboot.security.dto.PostResponse;
 import com.javaproject.socialblog.springboot.security.service.BookmarkService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class BookmarkController {
     @GetMapping()
     @Operation(tags = "Bookmark Service")
     @CheckUserEnabled
-    public ResponseEntity<List<Post>> getUserBookmarks() {
+    public ResponseEntity<List<PostResponse>> getUserBookmarks() {
 
         return ResponseEntity.ok(bookmarkService.getUserBookmarks());
     }

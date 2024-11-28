@@ -143,7 +143,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User authenticateWithGoogle(String token) {
 
-
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
                 .setAudience(Collections.singletonList(clientId))
                 .build();

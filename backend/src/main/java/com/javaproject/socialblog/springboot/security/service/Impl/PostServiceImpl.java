@@ -137,7 +137,7 @@ public class PostServiceImpl implements PostService {
 
         List<Post> posts = postRepository.findAll()
                 .stream()
-                .filter(post -> post.getAuthor().getId().equals(currUser.getId()))
+                .filter(post -> post.getAuthor() != null && post.getAuthor().getId().equals(currUser.getId()))
                 .toList();
 
         List<PostResponse> postResponses = new ArrayList<>();

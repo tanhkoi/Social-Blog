@@ -3,6 +3,7 @@ package com.javaproject.socialblog.springboot.repository;
 import com.javaproject.socialblog.springboot.model.Like;
 import com.javaproject.socialblog.springboot.model.LikeType;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
