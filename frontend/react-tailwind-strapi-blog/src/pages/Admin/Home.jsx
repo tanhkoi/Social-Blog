@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  LineChart,
-  Line,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 import {
   BsFillArchiveFill,
@@ -24,6 +25,8 @@ const Home = () => {
   const [blogsCount, setBlogsCount] = useState(0);
   const [usersCount, setUsersCount] = useState(0); // State để lưu số lượng user
   const navigate = useNavigate();
+
+  const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#d84b4b", "#8dd1e1"];
 
   const handleNavigateToBlogPage = () => {
     navigate("/admin/products");
@@ -48,9 +51,9 @@ const Home = () => {
         const dailyCount = {};
         filteredData.forEach((blog) => {
           const blogDate = new Date(blog.createdAt);
-          const day = String(blogDate.getDate()).padStart(2, "0"); 
-          const month = String(blogDate.getMonth() + 1).padStart(2, "0"); 
-          const formattedDate = `${day}/${month}`; 
+          const day = String(blogDate.getDate()).padStart(2, "0");
+          const month = String(blogDate.getMonth() + 1).padStart(2, "0");
+          const formattedDate = `${day}/${month}`;
           dailyCount[formattedDate] = (dailyCount[formattedDate] || 0) + 1;
         });
 
@@ -163,17 +166,23 @@ const Home = () => {
         </ResponsiveContainer>
 
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={blogsByCategory}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis tickFormatter={(tick) => Math.floor(tick)} />
+          <PieChart>
+            <Pie
+              data={blogsByCategory}
+              dataKey="count"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={150}
+              fill="#82ca9d"
+              label={(entry) => `${entry.name}: ${entry.count}`}
+            >
+              {blogsByCategory.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
             <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#82ca9d" />
-          </BarChart>
+          </PieChart>
         </ResponsiveContainer>
       </div>
     </main>
