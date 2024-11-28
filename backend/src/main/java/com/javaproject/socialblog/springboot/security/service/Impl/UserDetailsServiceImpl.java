@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.Objects;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final String USERNAME_OR_PASSWORD_INVALID = "Invalid username or password.";

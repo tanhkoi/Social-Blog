@@ -32,8 +32,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserServiceImpl implements UserService {
 
     private static final String REGISTRATION_SUCCESSFUL = "registration_successful";
@@ -142,7 +142,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User authenticateWithGoogle(String token) {
-
 
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
                 .setAudience(Collections.singletonList(clientId))
