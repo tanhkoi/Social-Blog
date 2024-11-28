@@ -47,4 +47,19 @@
   color: #888;
 }
 
+.searchResultsContainer {
+  position: absolute; /* Sử dụng absolute để điều chỉnh vị trí */
+  top: 100%; /* Đảm bảo kết quả xuất hiện dưới thanh tìm kiếm */
+  left: 0;
+  right: 0;
+  background-color: #1a202c;
+  padding: 1rem;
+  max-height: 400px; /* Giới hạn chiều cao để tránh tràn ra ngoài màn hình */
+  overflow-y: auto; /* Nếu kết quả quá nhiều, hiển thị thanh cuộn */
+  z-index: 10; /* Đảm bảo kết quả nằm trên các phần tử khác */
+}
+.searchBar {
+  margin-bottom: 1rem; /* Đảm bảo có khoảng cách dưới thanh tìm kiếm */
+}
+
 
