@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface BookmarkRepository extends MongoRepository<Bookmark, String> {
 
     List<Bookmark> findByUserId(String userId);

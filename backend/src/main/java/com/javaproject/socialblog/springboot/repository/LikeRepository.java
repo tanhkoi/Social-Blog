@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface LikeRepository extends MongoRepository<Like, String> {
 
     // Find likes by contentId and LikeType (e.g., POST or COMMENT)

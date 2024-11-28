@@ -32,8 +32,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private static final String REGISTRATION_SUCCESSFUL = "registration_successful";
