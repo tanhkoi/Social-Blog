@@ -60,6 +60,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(String id) {
+
+        return userRepository.findById(id).orElseThrow();
+    }
+
+    @Override
     public RegistrationResponse registration(RegistrationRequest registrationRequest) {
 
         userValidationService.validateUser(registrationRequest);
