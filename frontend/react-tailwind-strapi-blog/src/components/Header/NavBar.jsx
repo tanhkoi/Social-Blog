@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { menu, close, logo } from "../../assets";
 import { useNavigate, Link } from "react-router-dom";
 import SearchResults from "./SearchResults";
@@ -10,6 +10,7 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null); // Thêm ref cho dropdown
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -36,10 +37,6 @@ const Navbar = () => {
     setToggle(false);
   };
 
- 
-
- 
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("savedPosts");
@@ -56,6 +53,20 @@ const Navbar = () => {
   const handleNewPost = () => {
     navigate("/newpost");
   };
+
+  // useEffect để ẩn dropdown khi nhấn ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false); // Ẩn dropdown khi nhấn ra ngoài
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="w-full h-[80px] z-10 bg-[#0E1217] text-white drop-shadow-lg fixed border-b border-gray-600">
@@ -103,7 +114,7 @@ const Navbar = () => {
             </button>
           </ul>
         </div>
-          <SearchResults />        
+        <SearchResults />
         <div className="hidden md:flex sm:mr-10 md:mr-10 relative">
           {user && (
             <button
@@ -129,10 +140,13 @@ const Navbar = () => {
                 <span>{user.username}</span>
               </div>
               {showDropdown && (
-                <div className="absolute right-0 mt-12 w-40 rounded-xl bg-[#0E1217] border border-gray-600 shadow-lg z-20 transform translate-x-6">
+                <div
+                  ref={dropdownRef} // Gán ref vào dropdown
+                  className="absolute right-0 mt-12 w-40 rounded-xl bg-[#0E1217] border border-gray-600 shadow-lg z-20 transform translate-x-6"
+                >
                   <button
                     onClick={() => navigate("/profile")}
-                    className="block px-4 py-2 text-left w-full rounded-xl bg-[#0E1217]  text-white border-[#0E1217] hover:bg-[#0E1217]"
+                    className="block px-4 py-2 text-left w-full rounded-xl bg-[#0E1217] text-white border-[#0E1217] hover:bg-[#0E1217]"
                   >
                     Profile
                   </button>

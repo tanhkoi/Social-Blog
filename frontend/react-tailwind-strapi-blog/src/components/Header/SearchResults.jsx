@@ -10,6 +10,9 @@ function SearchResults() {
   const prevSearchTerm = useRef(searchTerm);
   const navigate = useNavigate();
 
+  // Tạo ref cho phần kết quả tìm kiếm
+  const searchResultsRef = useRef(null);
+
   useEffect(() => {
     const fetchData = async () => {
       if (searchTerm.trim() === "") {
@@ -29,6 +32,7 @@ function SearchResults() {
       }
       prevSearchTerm.current = searchTerm;
     };
+
     const delayDebounceFn = setTimeout(() => {
       fetchData();
     }, 2000);
@@ -44,9 +48,24 @@ function SearchResults() {
     navigate(`/blog/${id}`);
   };
 
+  // Thêm event listener để ẩn kết quả khi nhấn ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchResultsRef.current && !searchResultsRef.current.contains(event.target)) {
+        setShowResults(false); // Ẩn kết quả khi nhấn ra ngoài
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="relative ">
-      <div className="searchBar  ">
+    <div className="relative">
+      <div className="searchBar">
         <input
           type="text"
           placeholder="Search..."
@@ -57,7 +76,10 @@ function SearchResults() {
         />
       </div>
       {showResults && (
-        <div className="searchResultsContainer bg-[#1c1f26] border border-gray-700 ">
+        <div
+          ref={searchResultsRef} // Gán ref vào container kết quả
+          className="searchResultsContainer bg-[#1c1f26] border border-gray-700"
+        >
           {isLoading && <p>Loading results...</p>}
           {!isLoading && (
             <ul className="space-y-4">
