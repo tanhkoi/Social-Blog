@@ -187,7 +187,7 @@ public class LikeServiceImpl implements LikeService {
 
         Like like = likeRepository.findAll().stream()
                 .filter(l -> l.getUserId().equals(currUserId)
-                        && l.getType().equals(LikeType.POST)
+                        && l.getType().equals(LikeType.COMMENT)
                         && l.getContentId().equals(commentId)
                 )
                 .findFirst() // Extract the first match

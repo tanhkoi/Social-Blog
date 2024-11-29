@@ -1,4 +1,4 @@
-import { FaHeart, FaEllipsisV } from "react-icons/fa"; // Thêm biểu tượng ellipsis
+import { FaHeart, FaEllipsisV } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
@@ -6,14 +6,14 @@ const CommentButton = ({ blogId }) => {
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const [activeCommentId, setActiveCommentId] = useState(null);
-  const menuRef = useRef(null); // Dùng ref để theo dõi menu
+  const menuRef = useRef(null);
 
   const formatDate = (apiDate) => {
     const date = new Date(apiDate);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-    return `${day}/${month}/${year}`.toString();
+    return `${day}/${month}/${year}`;
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const CommentButton = ({ blogId }) => {
         const commentsData = await response.json();
         const formattedCommentsData = commentsData.map((item) => ({
           ...item,
-          createdAt: formatDate(item.createdAt), // Apply the formatDate function
+          createdAt: formatDate(item.createdAt),
         }));
         setComments(formattedCommentsData);
       } catch (error) {
@@ -47,7 +47,7 @@ const CommentButton = ({ blogId }) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setActiveCommentId(null); // Ẩn menu khi nhấn ra ngoài
+        setActiveCommentId(null);
       }
     };
 
@@ -85,7 +85,7 @@ const CommentButton = ({ blogId }) => {
     }
   };
 
-  const handleToggleLike = async (commentId, isLiked, likes) => {
+  const handleToggleLike = async (commentId, isLiked) => {
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Bạn cần đăng nhập.");
@@ -107,13 +107,9 @@ const CommentButton = ({ blogId }) => {
         throw new Error(isLiked ? "Failed to unlike the comment" : "Failed to like the comment");
       }
 
-      const newLikes = isLiked ? likes - 1 : likes + 1;
-
       setComments((prevComments) =>
         prevComments.map((comment) =>
-          comment.id === commentId
-            ? { ...comment, likes: newLikes, isLiked: !isLiked }
-            : comment
+          comment.id === commentId ? { ...comment, liked: !isLiked } : comment
         )
       );
     } catch (error) {
@@ -147,6 +143,7 @@ const CommentButton = ({ blogId }) => {
     }
   };
 
+
   const toggleDropdown = (commentId) => {
     setActiveCommentId((prev) => (prev === commentId ? null : commentId));
   };
@@ -169,7 +166,10 @@ const CommentButton = ({ blogId }) => {
 
       <div className="space-y-2 mt-4">
         {comments.map((comment) => (
-          <div key={comment.id} className="text-white p-2 rounded-md flex justify-between items-center border border-gray-700 shadow-sm">
+          <div
+            key={comment.id}
+            className="text-white p-2 rounded-md flex justify-between items-center border border-gray-700 shadow-sm"
+          >
             <div>
               <p className="text-lg font-bold text-white">{comment.user.name}</p>
               <p className="text-justify mr-4">{comment.content}</p>
@@ -177,11 +177,11 @@ const CommentButton = ({ blogId }) => {
             <div className="flex space-x-4 items-center relative">
               <p className="text-sm text-white text-right">{comment.createdAt}</p>
               <div
-                onClick={() => handleToggleLike(comment.id, comment.isLiked, comment.likes)}
-                className={`flex items-center space-x-1 cursor-pointer ${comment.isLiked ? "text-red-500" : "hover:text-red-500"}`}
+                onClick={() => handleToggleLike(comment.id, comment.liked)}
+                className={`flex items-center space-x-1 cursor-pointer ${comment.liked ? "text-red-500" : "hover:text-red-500"
+                  }`}
               >
                 <FaHeart />
-                <span>{comment.likes}</span>
               </div>
               <button
                 onClick={() => toggleDropdown(comment.id)}
@@ -191,22 +191,22 @@ const CommentButton = ({ blogId }) => {
               </button>
               {activeCommentId === comment.id && (
                 <div
-                ref={menuRef}
-                className="bg-[#0E1217] absolute right-0 text-white mt-20 w-40 z-50"
+                  ref={menuRef}
+                  className="bg-[#0E1217] absolute right-0 text-white mt-20 w-40 z-50"
                 >
-                <div className="border border-gray-600 rounded-xl ">
-                <button
-                    onClick={() => handleDeleteComment(comment.id)}
-                    className="mx-4 py-2 bg-[#0E1217]  border-[#0E1217] hover:bg-[#0E1217]"
-                  >
-                    Delete comment
-                  </button>
-                  <button
-                    className="mx-4 py-2 bg-[#0E1217]  border-[#0E1217] hover:bg-[#0E1217]"
-                  >
-                    Report comment
-                  </button>
-                </div>    
+                  <div className="border border-gray-600 rounded-xl ">
+                    <button
+                      onClick={() => handleDeleteComment(comment.id)}
+                      className="mx-4 py-2 bg-[#0E1217]  border-[#0E1217] hover:bg-[#0E1217]"
+                    >
+                      Delete comment
+                    </button>
+                    <button
+                      className="mx-4 py-2 bg-[#0E1217] border-[#0E1217] hover:bg-[#0E1217]"
+                    >
+                      Report comment
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

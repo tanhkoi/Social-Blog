@@ -1,5 +1,6 @@
 package com.javaproject.socialblog.springboot.security.dto;
 
+import com.javaproject.socialblog.springboot.model.Like;
 import com.javaproject.socialblog.springboot.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,29 +13,21 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostResponse {
+public class CommentResponse {
 
     private String id;
 
-    private String title;
+    private String postId;
 
-    private String category;
-
-    private List<String> tags;
+    @DBRef
+    private User user;
 
     private String content;
 
-    private String imageCloudUrl;
-
     private Date createdAt;
 
-    @DBRef
-    private User author;
-
-    private long likeCnt;
+    private List<Like> likes;
 
     private boolean isLiked = false;
-
-    private boolean isSaved = false;
 
 }
