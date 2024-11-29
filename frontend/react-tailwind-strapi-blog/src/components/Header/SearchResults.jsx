@@ -1,68 +1,120 @@
-import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import PropTypes from "prop-types"; 
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import "../.././App.css";
 
+function SearchResults() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const prevSearchTerm = useRef(searchTerm);
+  const navigate = useNavigate();
 
-const SearchResults = ({ blogs }) => {
-  const [filteredBlogs, setFilteredBlogs] = useState([]);
-  const location = useLocation();
+  // Tạo ref cho phần kết quả tìm kiếm
+  const searchResultsRef = useRef(null);
 
   useEffect(() => {
+    const fetchData = async () => {
+      if (searchTerm.trim() === "") {
+        setResults([]);
+        setShowResults(false);
+        return;
+      }
+      if (prevSearchTerm.current !== searchTerm) {
+        setIsLoading(true);
+        const response = await fetch(
+          `http://localhost:8080/api/posts/search?keyword=${searchTerm}`
+        );
+        const data = await response.json();
+        setResults(data);
+        setShowResults(true);
+        setIsLoading(false);
+      }
+      prevSearchTerm.current = searchTerm;
+    };
 
-    const query = new URLSearchParams(location.search).get("query");
-    if (query) {
+    const delayDebounceFn = setTimeout(() => {
+      fetchData();
+    }, 2000);
 
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
 
-      const results = blogs.filter((blog) =>
-        blog.title.toLowerCase().includes(query.toLowerCase())
-      );
-      setFilteredBlogs(results);
-    }
-  }, [location.search, blogs]);
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleClick = (id) => {
+    navigate(`/blog/${id}`);
+  };
+
+  // Thêm event listener để ẩn kết quả khi nhấn ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchResultsRef.current && !searchResultsRef.current.contains(event.target)) {
+        setShowResults(false); // Ẩn kết quả khi nhấn ra ngoài
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="w-full bg-[#1C1F26] py-[50px] mt-10  ">
-      <div className="max-w-[1240px] mx-auto ">
-        <h1 className="text-3xl font-bold mb-6">Kết quả tìm kiếm</h1>
-        {filteredBlogs.length > 0 ? (
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 ss:grid-cols-1 gap-8 px-4 text-black">
-            {filteredBlogs.map((blog) => (
-              <Link key={blog.id} to={`/blog/${blog.id}`}>
-                <div className="bg-white rounded-xl overflow-hidden drop-shadow-md">
-                  <img
-                    className="h-56 w-full object-cover"
-                    src={blog.coverImg}
-                    alt="Blog cover"
-                  />
-                  <div className="p-8">
-                    <h3 className="font-bold text-2xl my-1">{blog.title}</h3>
-                    <p className="text-gray-600 text-xl">{blog.desc}</p>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <p className="text-xl text-gray-600">Không tìm thấy kết quả nào.</p>
-        )}
+    <div className="relative">
+      <div className="searchBar">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleInputChange}
+          className="w-full p-3 text-white rounded-xl border border-gray-700 bg-[#1c1f26] focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+          aria-label="Search posts"
+        />
       </div>
+      {showResults && (
+        <div
+          ref={searchResultsRef} // Gán ref vào container kết quả
+          className="searchResultsContainer bg-[#1c1f26] border border-gray-700"
+        >
+          {isLoading && <p>Loading results...</p>}
+          {!isLoading && (
+            <ul className="space-y-4">
+              {results.slice(0, 5).map((result) => (
+                <li
+                  key={result.id}
+                  className="p-4 rounded-md bg-[#1c1f26] hover:bg-[#1A2027] cursor-pointer transition-transform transform hover:scale-105 flex items-center"
+                  onClick={() => handleClick(result.id)}
+                >
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-white">
+                      {result.title}
+                    </h3>
+                    <p className="text-sm text-gray-400">
+                      <strong>Category:</strong> {result.category}
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      <strong>Tags:</strong> {result.tags.join(", ")}
+                    </p>
+                  </div>
+                  {result.imageCloudUrl && (
+                    <img
+                      src={result.imageCloudUrl}
+                      alt={result.title}
+                      className="ml-4 h-16 w-16 object-cover rounded-md"
+                    />
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   );
-};
-
-SearchResults.propTypes = {
-    blogs: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        title: PropTypes.string.isRequired,
-        desc: PropTypes.string.isRequired,
-        coverImg: PropTypes.string.isRequired,
-        content: PropTypes.string,
-        authorName: PropTypes.string.isRequired,
-        authorImg: PropTypes.string,
-        authorDesc: PropTypes.string,
-      })
-    ),
-  };
+}
 
 export default SearchResults;
