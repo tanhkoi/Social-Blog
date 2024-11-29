@@ -15,7 +15,7 @@ import {
 import {
   BsFillArchiveFill,
   BsFillGrid3X3GapFill,
-  BsFillBellFill,
+  BsPeopleFill,
 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
@@ -143,7 +143,7 @@ const Home = () => {
         >
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg text-[#263043]">USER</h3>
-            <BsFillBellFill className="text-xl text-[#f39c12]" />
+            <BsPeopleFill className="text-xl text-[#f39c12]" />
           </div>
           <h1 className="text-4xl font-bold text-[#263043]">{usersCount}</h1>
         </div>
@@ -151,40 +151,47 @@ const Home = () => {
 
       {/* Biểu đồ */}
       <div className="grid grid-cols-2 gap-5 h-96">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={blogsByMonth}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line dataKey="count" fill="#8884d8" />
-          </LineChart>
-        </ResponsiveContainer>
+  <div className="flex flex-col items-center">
+    <ResponsiveContainer width="100%" height="100%">
+      <LineChart
+        data={blogsByMonth}
+        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line dataKey="count" fill="#8884d8" />
+      </LineChart>
+    </ResponsiveContainer>
+    <div className="mt-2 text-lg font-semibold">Blogs by Month</div>
+  </div>
 
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={blogsByCategory}
-              dataKey="count"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={150}
-              fill="#82ca9d"
-              label={(entry) => `${entry.name}: ${entry.count}`}
-            >
-              {blogsByCategory.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
+  <div className="flex flex-col items-center">
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart>
+        <Pie
+          data={blogsByCategory}
+          dataKey="count"
+          nameKey="name"
+          cx="50%"
+          cy="50%"
+          outerRadius={150}
+          fill="#82ca9d"
+          label={(entry) => `${entry.name}: ${entry.count}`}
+        >
+          {blogsByCategory.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip />
+      </PieChart>
+    </ResponsiveContainer>
+    <div className="mt-2 text-lg font-semibold">Blogs by Category</div>
+  </div>
+</div>
+
     </main>
   );
 };

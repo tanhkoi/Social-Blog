@@ -67,7 +67,7 @@ const Homepage = () => {
 					<aside className="w-60">
 						<SideBar />
 					</aside>
-					<div className="w-full flex-grow ml-4 p-5 px-10">
+					<div className="w-full flex-grow ml-4 p-5 px-10 mt-20">
 						{showMessage && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">Login successfully!</div>}
 						<BlogList blogs={filteredBlogs} setBlogs={setBlogs} />
 					</div>
