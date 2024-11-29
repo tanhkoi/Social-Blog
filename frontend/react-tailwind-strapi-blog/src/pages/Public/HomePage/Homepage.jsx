@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import NavBar from '../../../components/Header/NavBar';
 import SideBar from '../../../components/Sidebar/SideBar';
-import BlogList from '../../../components/Blog/BlogList ';
+import BlogList from '../../../components/Blog/BlogList';
 
 const Homepage = () => {
 	const [blogs, setBlogs] = useState([]);

@@ -23,32 +23,18 @@ const SaveButton = ({ blog, setBlogs, isSaved, setIsSaved }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-
       if (response.ok) {
         const updatedSaved = !isSaved;
-
-        // Update the state for this button
         setIsSaved(updatedSaved);
-
-        // Update the parent blogs list
         setBlogs((prevBlogs) => {
           if (updatedSaved) {
-            // Khi bài blog được lưu (POST), chỉ cập nhật trạng thái `isSaved`
             return prevBlogs.map((b) =>
               b.id === blog.id ? { ...b, isSaved: updatedSaved } : b
             );
           } else {
-            // Khi bài blog bị xóa khỏi bookmark (DELETE), loại bỏ bài khỏi danh sách
             return prevBlogs.filter((b) => b.id !== blog.id);
           }
         });
-      } else {
-        const errorData = await response.json();
-        console.error(
-          `Lỗi khi ${isSaved ? "xóa" : "lưu"} blog:`,
-          errorData.message || errorData
-        );
-        alert(`Lỗi: ${errorData.message || "Không thể xử lý blog"}`);
       }
     } catch (error) {
       console.error("Lỗi khi kết nối đến API:", error);
