@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import BlogList from "../../../components/Blog/BlogList ";
+import BlogList from "../../../components/Blog/BlogList";
 import NavBar from "../../../components/Header/NavBar";
 import SideBar from "../../../components/Sidebar/SideBar";
 

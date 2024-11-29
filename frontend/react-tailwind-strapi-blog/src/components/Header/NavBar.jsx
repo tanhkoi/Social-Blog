@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { menu, close, logo } from "../../assets";
 import { useNavigate, Link } from "react-router-dom";
+import SearchResults from "./SearchResults";
 
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
@@ -34,20 +36,9 @@ const Navbar = () => {
     setToggle(false);
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
+ 
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    const allBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
-    const filteredBlogs = allBlogs.filter((blog) =>
-      blog.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    localStorage.setItem("searchResults", JSON.stringify(filteredBlogs));
-    setSearchTerm("");
-    navigate("/");
-  };
+ 
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -112,23 +103,7 @@ const Navbar = () => {
             </button>
           </ul>
         </div>
-        <form
-          onSubmit={handleSearchSubmit}
-          className="hidden md:flex items-center "
-        >
-          <div className="relative ">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              placeholder="Search blog..."
-              className="bg-zinc-900  px-4 py-2 pl-10 pr-4 rounded-full border border-gray-600"
-            />
-          </div>
-          <button type="submit" className="hidden">
-            Search
-          </button>
-        </form>
+          <SearchResults />        
         <div className="hidden md:flex sm:mr-10 md:mr-10 relative">
           {user && (
             <button
