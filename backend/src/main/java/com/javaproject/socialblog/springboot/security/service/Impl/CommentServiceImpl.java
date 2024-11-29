@@ -6,9 +6,12 @@ import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.repository.CommentRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.dto.CommentRequest;
+import com.javaproject.socialblog.springboot.security.dto.CommentResponse;
 import com.javaproject.socialblog.springboot.security.service.CommentService;
+import com.javaproject.socialblog.springboot.security.service.LikeService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +31,27 @@ public class CommentServiceImpl implements CommentService {
 
     private final UserService userService;
 
-    @Override
-    public List<Comment> getCommentsByPost(String id) {
+    private final ModelMapper modelMapper;
 
-        return commentRepository.findByPostId(id);
+    private final LikeService likeService;
+
+    @Override
+    public List<CommentResponse> getCommentsByPost(String id) {
+        // Fetch comments by post ID
+        final List<Comment> comments = commentRepository.findByPostId(id);
+
+        // Transform to CommentResponse using Stream API
+        return comments.stream()
+                .map(comment -> {
+                    // Map Comment to CommentResponse
+                    CommentResponse response = modelMapper.map(comment, CommentResponse.class);
+                    // Set the 'liked' property
+                    response.setLiked(likeService.checkIsLikedComment(comment.getId()));
+                    return response;
+                })
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public Comment createComment(CommentRequest comment, String postId) {
