@@ -48,18 +48,69 @@
 }
 
 .searchResultsContainer {
-  position: absolute; /* Sử dụng absolute để điều chỉnh vị trí */
-  top: 100%; /* Đảm bảo kết quả xuất hiện dưới thanh tìm kiếm */
-  left: 0;
+  position: absolute; 
+  width: 190%;
+  top: 100%; 
+  left: -45%; 
   right: 0;
-  background-color: #1a202c;
   padding: 1rem;
-  max-height: 400px; /* Giới hạn chiều cao để tránh tràn ra ngoài màn hình */
-  overflow-y: auto; /* Nếu kết quả quá nhiều, hiển thị thanh cuộn */
-  z-index: 10; /* Đảm bảo kết quả nằm trên các phần tử khác */
+  max-height: 400px;
+  overflow-y: auto; 
+  z-index: 10; 
 }
 .searchBar {
-  margin-bottom: 1rem; /* Đảm bảo có khoảng cách dưới thanh tìm kiếm */
+  width: 190%;
+  position: relative; 
+  left: -45%; 
 }
 
+.searchBar input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #2d3748;
+  border-radius: 12px 12px 0 0; /* Bo góc trên */
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
 
+.searchBar input:focus {
+  border-color: #4fd1c5; /* Viền khi focus */
+}
+
+.searchResultsContainer ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.searchResultsContainer li {
+  padding: 1rem;
+  border-bottom: 1px solid #2d3748; /* Viền giữa các item */
+  transition: background-color 0.3s;
+}
+
+.searchResultsContainer li:hover {
+  background-color: #2d3748; /* Hiệu ứng hover */
+}
+
+.searchResultsContainer li:last-child {
+  border-bottom: none; /* Xóa viền ở item cuối */
+}
+
+.searchResultsContainer::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.searchResultsContainer::-webkit-scrollbar-thumb {
+  background-color: #2d3748; 
+  border-radius: 4px;
+}
+
+.searchResultsContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #4a5568; 
+}
+
+.searchResultsContainer::-webkit-scrollbar-track {
+  background-color: #1a202c; 
+}

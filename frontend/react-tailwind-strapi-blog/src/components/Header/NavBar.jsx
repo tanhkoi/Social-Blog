@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { menu, close, logo } from "../../assets";
 import { useNavigate, Link } from "react-router-dom";
@@ -102,9 +103,7 @@ const Navbar = () => {
             </button>
           </ul>
         </div>
-       {/* Add a container for search */}
-          <SearchResults /> {/* Render the SearchComponent */}
-        
+          <SearchResults />        
         <div className="hidden md:flex sm:mr-10 md:mr-10 relative">
           {user && (
             <button
