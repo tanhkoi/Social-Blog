@@ -14,6 +14,8 @@ public interface PostService {
 
     List<PostResponse> getMyPosts();
 
+    List<PostResponse> getUserPosts(String id);
+
     Post createPost(PostRequest post);
 
     Post updatePost(String id, PostRequest postDetails);
