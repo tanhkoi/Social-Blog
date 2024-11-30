@@ -25,16 +25,13 @@ const ProfilePage = () => {
       }
 
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/posts/myPosts`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`http://localhost:8080/api/posts/me`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.ok) {
           const data = await response.json();

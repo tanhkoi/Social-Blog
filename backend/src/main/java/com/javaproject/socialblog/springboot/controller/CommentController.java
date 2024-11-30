@@ -19,31 +19,39 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    // get by post id
-    @GetMapping("/{postId}")
-    @Operation(tags = "Comment Service")
-    public ResponseEntity<List<CommentResponse>> getCommentsByPost(@PathVariable String postId) {
-
-        return ResponseEntity.ok(commentService.getCommentsByPost(postId));
+    // Get comments by post ID
+    @GetMapping("/{id}")
+    @Operation(
+            summary = "Get comments for a post",
+            description = "Retrieve a list of comments associated with a specific post, identified by the post ID.",
+            tags = "Comment Service"
+    )
+    public ResponseEntity<List<CommentResponse>> getCommentsByPost(@PathVariable String id) {
+        return ResponseEntity.ok(commentService.getCommentsByPost(id));
     }
 
-    // create
-    @PostMapping("/{postId}")
-    @Operation(tags = "Comment Service")
+    // Create a comment for a post
+    @PostMapping("/{id}")
+    @Operation(
+            summary = "Create a comment for a post",
+            description = "Allows a logged-in user with an enabled account to add a comment to a specific post, identified by the post ID.",
+            tags = "Comment Service"
+    )
     @CheckUserEnabled
-    public ResponseEntity<Comment> createComment(@PathVariable String postId, @RequestBody CommentRequest comment) {
-
-        return ResponseEntity.ok(commentService.createComment(comment, postId));
+    public ResponseEntity<Comment> createComment(@PathVariable String id, @RequestBody CommentRequest comment) {
+        return ResponseEntity.ok(commentService.createComment(comment, id));
     }
 
-    // delete
+    // Delete a comment
     @DeleteMapping("/{id}")
-    @Operation(tags = "Comment Service")
+    @Operation(
+            summary = "Delete a comment",
+            description = "Allows a logged-in user with an enabled account to delete a specific comment by its ID.",
+            tags = "Comment Service"
+    )
     @CheckUserEnabled
     public ResponseEntity<Void> deleteComment(@PathVariable String id) {
-
         commentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
-
 }

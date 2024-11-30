@@ -5,6 +5,7 @@ import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.security.service.FollowService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +26,11 @@ public class FollowController {
             tags = "Follow Service"
     )
     public ResponseEntity<String> followUser(@PathVariable String id) {
-        followService.followUser(id);
+        if (followService.followUser(id))
+            return ResponseEntity.ok("You are now following the user with ID: " + id);
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't follow yourself");
 
-        return ResponseEntity.ok("You are now following the user with ID: " + id);
     }
 
     @DeleteMapping("/{id}")
