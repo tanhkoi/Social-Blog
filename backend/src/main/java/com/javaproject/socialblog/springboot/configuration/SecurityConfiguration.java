@@ -60,8 +60,9 @@ public class SecurityConfiguration {
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/posts",
                                 "/api/posts/{id}",
-                                "/api/comments/{postId}",
-                                "/api/likes/post/{postId}/count"
+                                "/api/comments/{id}",
+                                "/api/likes/post/{id}/count",
+                                "/api/users/{id}"
                         )
                         .permitAll()
                         .requestMatchers("/api/admin/**")
