@@ -114,3 +114,16 @@
 .searchResultsContainer::-webkit-scrollbar-track {
   background-color: #1a202c; 
 }
+
+.fixed {
+  position: fixed;
+}
+.inset-0 {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.bg-black {
+  background-color: rgba(0, 0, 0, 0.5); /* Đúng cách áp dụng độ mờ */
+}
