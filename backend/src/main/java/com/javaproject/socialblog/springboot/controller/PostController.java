@@ -54,11 +54,11 @@ public class PostController {
         return ResponseEntity.ok(postService.getMyPosts());
     }
 
-    // Get the logged-in user's posts
+    // Retrieve posts created by a specific user
     @GetMapping("/{id}-posts")
     @Operation(
-            summary = "Get user posts",
-            description = "Retrieve a list of posts created by user with provide id.",
+            summary = "Get User's Posts",
+            description = "Retrieve a list of posts authored by the user with the specified ID.",
             tags = "Post Service"
     )
     public ResponseEntity<List<PostResponse>> getUserPosts(String id) {
