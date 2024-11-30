@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import CommentButton from "../Button/CommentButton"; // Import CommentButton
 import DOMPurify from "dompurify";
 import PropTypes from "prop-types";
-import FollowButton from "../Button/FollowButton";
 
 const BlogContent = ({ content }) => {
   const { id } = useParams();
@@ -71,7 +70,6 @@ const BlogContent = ({ content }) => {
                 {blog.author.email}
               </p>
               <div className="text-center pt-4">
-              <FollowButton authorId={blog.author.id}  />
               </div>
             </div>
           </div>
