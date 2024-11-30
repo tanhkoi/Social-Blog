@@ -21,78 +21,100 @@ public class PostController {
 
     private final PostService postService;
 
-    // get all
+    // Get all posts
     @GetMapping
-    @Operation(tags = "Post Service")
+    @Operation(
+            summary = "Get all posts",
+            description = "Retrieve a list of all posts, including their details.",
+            tags = "Post Service"
+    )
     public ResponseEntity<List<PostResponse>> getAllPosts() {
-
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
-    // get by id
+    // Get a post by ID
     @GetMapping("/{id}")
-    @Operation(tags = "Post Service")
+    @Operation(
+            summary = "Get post by ID",
+            description = "Retrieve a specific post by its unique ID.",
+            tags = "Post Service"
+    )
     public ResponseEntity<Post> getPostById(@PathVariable String id) {
-
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
-    // get my posts
-    @GetMapping("/myPosts")
-    @Operation(tags = "Post Service")
+    // Get the logged-in user's posts
+    @GetMapping("/me")
+    @Operation(
+            summary = "Get my posts",
+            description = "Retrieve a list of posts created by the currently logged-in user.",
+            tags = "Post Service"
+    )
     public ResponseEntity<List<PostResponse>> getMyPosts() {
-
         return ResponseEntity.ok(postService.getMyPosts());
     }
 
-    // create
+    // Create a new post
     @PostMapping
-    @Operation(tags = "Post Service")
+    @Operation(
+            summary = "Create a post",
+            description = "Allows a logged-in user to create a new post. Requires account to be enabled.",
+            tags = "Post Service"
+    )
     @CheckUserEnabled
     public ResponseEntity<Post> createPost(@RequestBody PostRequest post) {
-
         return ResponseEntity.ok(postService.createPost(post));
     }
 
-    // update
+    // Update an existing post
     @PutMapping("/{id}")
-    @Operation(tags = "Post Service")
+    @Operation(
+            summary = "Update a post",
+            description = "Update the details of an existing post by its ID. Requires the user's account to be enabled.",
+            tags = "Post Service"
+    )
     @CheckUserEnabled
     public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody PostRequest postDetails) {
-
         try {
-
             Post updatedPost = postService.updatePost(id, postDetails);
             return ResponseEntity.ok(updatedPost);
-
         } catch (RuntimeException e) {
-
             return ResponseEntity.notFound().build();
         }
     }
 
-    // delete
+    // Delete a post
     @DeleteMapping("/{id}")
-    @Operation(tags = "Post Service")
+    @Operation(
+            summary = "Delete a post",
+            description = "Delete a post by its ID. The user must be logged in and have an enabled account.",
+            tags = "Post Service"
+    )
     @CheckUserEnabled
     public ResponseEntity<Void> deletePost(@PathVariable String id) {
-
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
 
-    // delete null comments
-    @PostMapping("/null/{postId}")
-    @Operation(tags = "Comment Service")
-    public ResponseEntity<Void> deleteNullComment(@PathVariable String postId) {
-        postService.deleteNullComment(postId);
-        return ResponseEntity.noContent().build();
-    }
+//    // Delete null comments from a post
+//    @PostMapping("/null/{postId}")
+//    @Operation(
+//            summary = "Delete null comments",
+//            description = "Remove all comments from a specified post that have null or empty values.",
+//            tags = "Comment Service"
+//    )
+//    public ResponseEntity<Void> deleteNullComment(@PathVariable String postId) {
+//        postService.deleteNullComment(postId);
+//        return ResponseEntity.noContent().build();
+//    }
 
-
-    // search
+    // Search posts by keyword or tags
     @GetMapping("/search")
-    @Operation(tags = "Post Service")
+    @Operation(
+            summary = "Search posts",
+            description = "Search for posts based on a keyword and/or a list of tags.",
+            tags = "Post Service"
+    )
     public ResponseEntity<List<PostResponse>> searchPosts(
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "tags", required = false) List<String> tags
