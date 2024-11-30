@@ -24,7 +24,7 @@ const Homepage = () => {
 
 				if (response.ok) {
 					const data = await response.json();
-					setBlogs(data);
+					setBlogs(data.content);
 				} else {
 					const errorData = await response.json();
 					console.error('Lỗi khi lấy danh sách blog:', errorData.message);

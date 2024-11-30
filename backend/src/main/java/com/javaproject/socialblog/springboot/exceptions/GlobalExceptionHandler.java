@@ -89,8 +89,8 @@ public class GlobalExceptionHandler {
         return ResponseUtil.error(status, message, (Object) null);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<Object>> handleAllExceptions(Exception ex) {
-        return ResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", (Object) null);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ApiResponse<Object>> handleAllExceptions(Exception ex) {
+//        return ResponseUtil.error(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", (Object) null);
+//    }
 }
