@@ -23,18 +23,19 @@ const SaveButton = ({ blog, setBlogs, isSaved, setIsSaved }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+
       if (response.ok) {
         const updatedSaved = !isSaved;
         setIsSaved(updatedSaved);
-        setBlogs((prevBlogs) => {
-          if (updatedSaved) {
-            return prevBlogs.map((b) =>
-              b.id === blog.id ? { ...b, isSaved: updatedSaved } : b
-            );
-          } else {
-            return prevBlogs.filter((b) => b.id !== blog.id);
-          }
-        });
+        
+        // Ensure the blog's saved status is updated correctly in the list
+        setBlogs((prevBlogs) => 
+          prevBlogs.map((b) =>
+            b.id === blog.id ? { ...b, isSaved: updatedSaved } : b
+          )
+        );
+      } else {
+        alert("Không thể cập nhật trạng thái lưu bài viết.");
       }
     } catch (error) {
       console.error("Lỗi khi kết nối đến API:", error);
@@ -60,7 +61,7 @@ SaveButton.propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     isSaved: PropTypes.bool,
   }).isRequired,
-  isSaved: PropTypes.bool,
+  isSaved: PropTypes.bool.isRequired,
   setIsSaved: PropTypes.func.isRequired,
   setBlogs: PropTypes.func.isRequired,
 };
