@@ -7,10 +7,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.model.UserRole;
 import com.javaproject.socialblog.springboot.repository.UserRepository;
-import com.javaproject.socialblog.springboot.security.dto.AuthenticatedUserDto;
-import com.javaproject.socialblog.springboot.security.dto.RegistrationRequest;
-import com.javaproject.socialblog.springboot.security.dto.RegistrationResponse;
-import com.javaproject.socialblog.springboot.security.dto.UserRequest;
+import com.javaproject.socialblog.springboot.security.dto.*;
 import com.javaproject.socialblog.springboot.security.mapper.UserMapper;
 import com.javaproject.socialblog.springboot.security.service.EmailService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
@@ -63,6 +60,30 @@ public class UserServiceImpl implements UserService {
     public User findById(String id) {
 
         return userRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public UserResponse findByIdR(String id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserResponse userResponse = new UserResponse();
+
+        modelMapper.map(user, userResponse);
+        userResponse.setFollowerNumber(user.getFollowers().size()); // Number of followers
+        userResponse.setFollowingNumber(user.getFollowing().size()); // Number of following
+
+        // Check logged user is following user with id or not
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+
+        User currUser = this.findByUsername(username);
+        if (currUser != null)
+            userResponse.setAmIFollowing(user.getFollowers().stream()
+                    .anyMatch(follower -> follower.getId().equals(currUser.getId())));
+        else
+            userResponse.setAmIFollowing(false);
+
+        return userResponse;
     }
 
     @Override
