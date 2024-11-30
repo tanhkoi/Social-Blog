@@ -25,7 +25,7 @@ const ProfilePage = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/api/posts/myPosts`, {
+        const response = await fetch(`http://localhost:8080/api/posts/me`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
