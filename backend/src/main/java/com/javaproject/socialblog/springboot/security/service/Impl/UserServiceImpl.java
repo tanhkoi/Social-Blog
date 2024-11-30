@@ -1,11 +1,16 @@
 package com.javaproject.socialblog.springboot.security.service.Impl;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.model.UserRole;
 import com.javaproject.socialblog.springboot.repository.UserRepository;
 import com.javaproject.socialblog.springboot.security.dto.AuthenticatedUserDto;
 import com.javaproject.socialblog.springboot.security.dto.RegistrationRequest;
 import com.javaproject.socialblog.springboot.security.dto.RegistrationResponse;
+import com.javaproject.socialblog.springboot.security.dto.UserRequest;
 import com.javaproject.socialblog.springboot.security.mapper.UserMapper;
 import com.javaproject.socialblog.springboot.security.service.EmailService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
@@ -14,8 +19,17 @@ import com.javaproject.socialblog.springboot.utils.GeneralMessageAccessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,6 +37,9 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private static final String REGISTRATION_SUCCESSFUL = "registration_successful";
+
+    @Value("${google.clientId}")
+    private String clientId;
 
     private final UserRepository userRepository;
 
@@ -34,10 +51,18 @@ public class UserServiceImpl implements UserService {
 
     private final EmailService emailService;
 
+    private final ModelMapper modelMapper;
+
     @Override
     public User findByUsername(String username) {
 
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public User findById(String id) {
+
+        return userRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -48,6 +73,7 @@ public class UserServiceImpl implements UserService {
         final User user = UserMapper.INSTANCE.convertToUser(registrationRequest);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setUserRole(UserRole.USER);
+        user.setProfilePicture("https://img.freepik.com/premium-psd/3d-male-cute-cartoon-character-avatar-isolated-illustration_530669-1708.jpg");
 
         String randomCode = RandomString.make(64);
         user.setVerificationCode(randomCode);
@@ -86,6 +112,82 @@ public class UserServiceImpl implements UserService {
 
             return true;
         }
+    }
+
+    @Override
+    public boolean checkAccountEnabled(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (Boolean.FALSE.equals(user.isEnabled())) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public User updateUser(UserRequest userRequest) {
+
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+
+        User user = this.findByUsername(username);
+
+        if (userRequest.getPassword() == null) {
+            userRequest.setPassword(user.getPassword());
+        } else {
+            userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
+        }
+
+        modelMapper.map(userRequest, user);
+        userRepository.save(user);
+
+        return user;
+
+    }
+
+    @Override
+    public User authenticateWithGoogle(String token) {
+
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+                .setAudience(Collections.singletonList(clientId))
+                .build();
+
+        GoogleIdToken idToken;
+        try {
+            idToken = verifier.verify(token);
+        } catch (GeneralSecurityException | IOException e) {
+            throw new RuntimeException("Invalid Google Token");
+        }
+
+        if (idToken != null) {
+            GoogleIdToken.Payload payload = idToken.getPayload();
+            String email = payload.getEmail();
+            String name = (String) payload.get("name");
+            String pictureUrl = (String) payload.get("picture");
+
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
+                // If user doesn't exist, create a new one
+                user = new User();
+                user.setName(name);
+                user.setEmail(email);
+                user.setProfilePicture(pictureUrl);
+                user.setUsername(email.split("@")[0]); // Use email prefix as default username
+                user.setEnabled(true); // Automatically enable for OAuth
+                user.setUserRole(UserRole.USER);
+                userRepository.save(user);
+            }
+
+            return user;
+        } else {
+            throw new RuntimeException("Invalid ID Token");
+        }
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
 }

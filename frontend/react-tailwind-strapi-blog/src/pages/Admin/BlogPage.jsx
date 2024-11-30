@@ -1,39 +1,57 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentBlog, setCurrentBlog] = useState({
-    id: null,
-    title: "",
-    category: "",
-    description: "",
-    coverImg: "",
-    date: "",
-  });
+  const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", category: "", content: "" });
   const [showForm, setShowForm] = useState(false);
 
-  useEffect(() => {
-    const storedBlogs = JSON.parse(localStorage.getItem("blogs")) || [];
-    setBlogs(storedBlogs);
-  }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCurrentBlog((prevBlog) => ({ ...prevBlog, [name]: value }));
+  const formatDate = (apiDate) => {
+    const date = new Date(apiDate);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCurrentBlog((prevBlog) => ({ ...prevBlog, coverImg: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
+  // Fetch blogs when the component mounts
+  useEffect(() => {
+    fetch("http://localhost:8080/api/posts")
+      .then((response) => response.json())
+      .then((data) => {
+        const formattedBlogs = data.map((blog) => ({
+          ...blog,
+          createdAt: formatDate(blog.createdAt),
+        }));
+        setBlogs(formattedBlogs);
+      })
+      .catch((error) => console.error("Error fetching blogs:", error));
+  }, []);
+
+  const handleDeleteBlog = (id) => {
+    const token = localStorage.getItem("token");
+    fetch(`http://localhost:8080/api/posts/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          toast.success("Blog deleted successfully!");
+          setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog.id !== id));
+        } else {
+          throw new Error("Unable to delete the blog.");
+        }
+      })
+      .catch((error) => {
+        toast.error("An error occurred while deleting the blog!");
+        console.error("Error deleting blog:", error);
+      });
   };
 
   const handleEditBlog = (blog) => {
@@ -42,35 +60,48 @@ const BlogPage = () => {
     setShowForm(true);
   };
 
-  const handleDeleteBlog = (id) => {
-    const updatedBlogs = blogs.filter((blog) => blog.id !== id);
-    setBlogs(updatedBlogs);
-    localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCurrentBlog({ ...currentBlog, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
+
     if (isEditing) {
-      const updatedBlogs = blogs.map((blog) =>
-        blog.id === currentBlog.id ? currentBlog : blog
-      );
-      setBlogs(updatedBlogs);
-      localStorage.setItem("blogs", JSON.stringify(updatedBlogs));
-    } else {
-      const newBlog = { ...currentBlog, id: blogs.length + 1 };
-      setBlogs([...blogs, newBlog]);
-      localStorage.setItem("blogs", JSON.stringify([...blogs, newBlog]));
+      fetch(`http://localhost:8080/api/posts/${currentBlog.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(currentBlog),
+      })
+        .then((response) => response.json())
+        .then((updatedBlog) => {
+          setBlogs((prevBlogs) =>
+            prevBlogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+          );
+          toast.success("Blog updated successfully!");
+          setShowForm(false);
+          setIsEditing(false);
+        })
+        .catch((error) => {
+          toast.error("An error occurred while updating the blog!");
+          console.error("Error updating blog:", error);
+        });
     }
-    setShowForm(false);
   };
 
   return (
     <div className="p-6">
+      <ToastContainer />
       <h2 className="text-2xl font-bold mb-4">Blogs</h2>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="mb-4 border p-4 rounded">
-          <h3 className="text-xl font-semibold mb-2">{isEditing ? "Edit Blog" : "Add New Blog"}</h3>
+          <h3 className="text-xl font-semibold mb-2">{isEditing ? "Edit Blog" : "Add Blog"}</h3>
           <div className="mb-3">
             <label className="block text-sm font-medium mb-1">Title</label>
             <input
@@ -85,6 +116,7 @@ const BlogPage = () => {
           <div className="mb-3">
             <label className="block text-sm font-medium mb-1">Category</label>
             <input
+              type="text"
               name="category"
               value={currentBlog.category}
               onChange={handleInputChange}
@@ -93,42 +125,23 @@ const BlogPage = () => {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label className="block text-sm font-medium mb-1">Content</label>
             <textarea
-              name="description"
-              value={currentBlog.description}
+              name="content"
+              value={currentBlog.content}
               onChange={handleInputChange}
               required
               className="border rounded w-full px-3 py-2"
-            />
-          </div>
-          <div className="mb-3">
-            <label className="block text-sm font-medium mb-1">Cover Image</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="border rounded w-full px-3 py-2"
-            />
-            {currentBlog.coverImg && (
-              <img src={currentBlog.coverImg} alt="Cover preview" className="mt-2 w-32 h-32 object-cover" />
-            )}
-          </div>
-          <div className="mb-3">
-            <label className="block text-sm font-medium mb-1">Date</label>
-            <input
-              type="date"
-              name="date"
-              value={currentBlog.date}
-              onChange={handleInputChange}
-              required
-              className="border rounded w-full px-3 py-2"
-            />
+            ></textarea>
           </div>
           <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
             {isEditing ? "Update Blog" : "Add Blog"}
           </button>
-          <button type="button" onClick={() => setShowForm(false)} className="bg-gray-500 text-white px-4 py-2 ml-2 rounded">
+          <button
+            type="button"
+            onClick={() => setShowForm(false)}
+            className="bg-gray-500 text-white px-4 py-2 ml-2 rounded"
+          >
             Cancel
           </button>
         </form>
@@ -140,7 +153,6 @@ const BlogPage = () => {
             <th className="py-6 px-8 text-left">#</th>
             <th className="py-6 px-8 text-left">Title</th>
             <th className="py-6 px-8 text-left">Category</th>
-            <th className="py-6 px-8 text-left">Description</th>
             <th className="py-6 px-8 text-left">Date</th>
             <th className="py-6 px-8 text-left">Actions</th>
           </tr>
@@ -151,13 +163,18 @@ const BlogPage = () => {
               <td className="py-6 px-8">{index + 1}</td>
               <td className="py-6 px-8">{blog.title}</td>
               <td className="py-6 px-8">{blog.category}</td>
-              <td className="py-6 px-8">{blog.description}</td>
-              <td className="py-6 px-8">{blog.date}</td>
+              <td className="py-6 px-8">{blog.createdAt}</td>
               <td className="py-6 px-8">
-                <button onClick={() => handleEditBlog(blog)} className="text-blue-500 hover:text-blue-700 mx-1">
+                <button
+                  onClick={() => handleEditBlog(blog)}
+                  className="bg-white border-white text-blue-500 hover:text-blue-700 mx-1"
+                >
                   <FontAwesomeIcon icon={faEdit} />
                 </button>
-                <button onClick={() => handleDeleteBlog(blog.id)} className="text-red-500 hover:text-red-700 mx-1">
+                <button
+                  onClick={() => handleDeleteBlog(blog.id)}
+                  className="bg-white border-white text-red-500 hover:text-red-700 mx-1"
+                >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
               </td>

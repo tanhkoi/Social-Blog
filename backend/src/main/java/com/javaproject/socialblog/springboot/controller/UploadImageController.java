@@ -1,5 +1,6 @@
 package com.javaproject.socialblog.springboot.controller;
 
+import com.javaproject.socialblog.springboot.annotation.CheckUserEnabled;
 import com.javaproject.socialblog.springboot.security.service.CloudinaryService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class UploadImageController {
 
     @PostMapping
     @Operation(tags = "Upload Service")
+    @CheckUserEnabled
     public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) {
 
         final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB

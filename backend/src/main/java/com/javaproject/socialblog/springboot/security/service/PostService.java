@@ -1,21 +1,27 @@
 package com.javaproject.socialblog.springboot.security.service;
 
 import com.javaproject.socialblog.springboot.model.Post;
+import com.javaproject.socialblog.springboot.security.dto.PostRequest;
+import com.javaproject.socialblog.springboot.security.dto.PostResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PostService {
 
-    List<Post> getAllPosts();
+    List<PostResponse> getAllPosts();
 
-    Optional<Post> getPostById(String id);
+    Post getPostById(String id);
 
-    Post createPost(Post post);
+    List<PostResponse> getMyPosts();
 
-    Post updatePost(String id, Post postDetails);
+    Post createPost(PostRequest post);
+
+    Post updatePost(String id, PostRequest postDetails);
 
     void deletePost(String id);
 
+    void deleteNullComment(String id);
+
+    List<PostResponse> searchPosts(String keyword, List<String> tags);
 }
 

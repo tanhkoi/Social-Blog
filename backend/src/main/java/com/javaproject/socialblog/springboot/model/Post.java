@@ -41,6 +41,6 @@ public class Post {
 
     private List<Comment> comments;
 
-    private List<Interaction> interactions;
+    private List<Like> likes;
 
 }

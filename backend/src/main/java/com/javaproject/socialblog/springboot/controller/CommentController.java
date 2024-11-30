@@ -1,7 +1,9 @@
 package com.javaproject.socialblog.springboot.controller;
 
+import com.javaproject.socialblog.springboot.annotation.CheckUserEnabled;
 import com.javaproject.socialblog.springboot.model.Comment;
 import com.javaproject.socialblog.springboot.security.dto.CommentRequest;
+import com.javaproject.socialblog.springboot.security.dto.CommentResponse;
 import com.javaproject.socialblog.springboot.security.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ public class CommentController {
     // get by post id
     @GetMapping("/{postId}")
     @Operation(tags = "Comment Service")
-    public ResponseEntity<List<Comment>> getCommentsByPost(@PathVariable String postId) {
+    public ResponseEntity<List<CommentResponse>> getCommentsByPost(@PathVariable String postId) {
 
         return ResponseEntity.ok(commentService.getCommentsByPost(postId));
     }
@@ -28,6 +30,7 @@ public class CommentController {
     // create
     @PostMapping("/{postId}")
     @Operation(tags = "Comment Service")
+    @CheckUserEnabled
     public ResponseEntity<Comment> createComment(@PathVariable String postId, @RequestBody CommentRequest comment) {
 
         return ResponseEntity.ok(commentService.createComment(comment, postId));
@@ -36,6 +39,7 @@ public class CommentController {
     // delete
     @DeleteMapping("/{id}")
     @Operation(tags = "Comment Service")
+    @CheckUserEnabled
     public ResponseEntity<Void> deleteComment(@PathVariable String id) {
 
         commentService.deleteComment(id);

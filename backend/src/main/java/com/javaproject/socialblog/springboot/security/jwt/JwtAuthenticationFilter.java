@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Service
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenManager jwtTokenManager;
@@ -30,7 +30,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain)
             throws IOException, ServletException {
 
         final String header = request.getHeader(SecurityConstants.HEADER_STRING);

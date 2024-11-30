@@ -1,10 +1,8 @@
 package com.javaproject.socialblog.springboot.security.jwt;
 
 import com.javaproject.socialblog.springboot.model.User;
-import com.javaproject.socialblog.springboot.security.dto.AuthenticatedUserDto;
 import com.javaproject.socialblog.springboot.security.dto.LoginRequest;
 import com.javaproject.socialblog.springboot.security.dto.LoginResponse;
-import com.javaproject.socialblog.springboot.security.mapper.UserMapper;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +30,7 @@ public class JwtTokenService {
 
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        final AuthenticatedUserDto authenticatedUserDto = userService.findAuthenticatedUserByUsername(username);
-
-        final User user = UserMapper.INSTANCE.convertToUser(authenticatedUserDto);
+        final User user = userService.findByUsername(username);
         final String token = jwtTokenManager.generateToken(user);
 
         log.info("{} has successfully logged in!", user.getUsername());
