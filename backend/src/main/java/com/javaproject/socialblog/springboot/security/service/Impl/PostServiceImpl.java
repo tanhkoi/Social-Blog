@@ -38,6 +38,20 @@ public class PostServiceImpl implements PostService {
     private final BookmarkService bookmarkService;
 
     @Override
+    public List<PostResponse> getUserPosts(String id) {
+        return postRepository.findAll().stream()
+                .filter(post -> post.getAuthor().getId().equals(id))
+                .map(post -> {
+                    PostResponse postResponse = modelMapper.map(post, PostResponse.class);
+                    postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
+                    postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
+                    postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
+                    return postResponse;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<PostResponse> getAllPosts() {
 
         List<Post> posts = postRepository.findAll();

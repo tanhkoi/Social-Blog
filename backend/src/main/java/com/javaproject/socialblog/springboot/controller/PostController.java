@@ -54,6 +54,17 @@ public class PostController {
         return ResponseEntity.ok(postService.getMyPosts());
     }
 
+    // Get the logged-in user's posts
+    @GetMapping("/{id}-posts")
+    @Operation(
+            summary = "Get user posts",
+            description = "Retrieve a list of posts created by user with provide id.",
+            tags = "Post Service"
+    )
+    public ResponseEntity<List<PostResponse>> getUserPosts(String id) {
+        return ResponseEntity.ok(postService.getUserPosts(id));
+    }
+
     // Create a new post
     @PostMapping
     @Operation(
