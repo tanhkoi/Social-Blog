@@ -26,13 +26,16 @@ public class FollowServiceImpl implements FollowService {
     private final UserService userService;
 
     @Override
-    public void followUser(String thatUserId) {
+    public boolean followUser(String thatUserId) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
 
         User user = userService.findByUsername(username); // current user
+        if (user.getId().equals(thatUserId))
+            return false;
         User thatUser = userService.findById(thatUserId); // that user
+
 
         Follow follow = new Follow();
         follow.setUser(user.getId());
@@ -45,6 +48,8 @@ public class FollowServiceImpl implements FollowService {
 
         userRepository.save(user);
         userRepository.save(thatUser);
+
+        return true;
     }
 
     @Override
