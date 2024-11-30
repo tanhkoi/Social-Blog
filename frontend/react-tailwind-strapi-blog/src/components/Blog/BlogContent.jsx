@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import CommentButton from "../Button/CommentButton"; // Import CommentButton
 import DOMPurify from "dompurify";
 import PropTypes from "prop-types";
+import FollowButton from "../Button/FollowButton";
 
 const BlogContent = ({ content }) => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const BlogContent = ({ content }) => {
 
     fetchBlogData();
   }, [id]);
- 
+
   if (!blog) {
     return <div>Loading...</div>;
   }
@@ -69,6 +70,9 @@ const BlogContent = ({ content }) => {
               <p className="text-center text-white font-medium">
                 {blog.author.email}
               </p>
+              <div className="text-center pt-4">
+              <FollowButton authorId={blog.author.id}  />
+              </div>
             </div>
           </div>
         </div>
@@ -79,6 +83,7 @@ const BlogContent = ({ content }) => {
 };
 BlogContent.propTypes = {
   content: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 export default BlogContent;
