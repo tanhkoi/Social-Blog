@@ -40,6 +40,7 @@ BlogItem.propTypes = {
 		likeCnt: PropTypes.number, // Initial like count
 		liked: PropTypes.bool, // Initial liked state
 		isSaved: PropTypes.bool,
+		saved: PropTypes.bool,
 	}).isRequired,
 	setBlogs: PropTypes.func.isRequired, // Function to update blogs list
 };

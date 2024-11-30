@@ -8,6 +8,8 @@ import com.javaproject.socialblog.springboot.security.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +30,8 @@ public class PostController {
             description = "Retrieve a list of all posts, including their details.",
             tags = "Post Service"
     )
-    public ResponseEntity<List<PostResponse>> getAllPosts() {
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<Page<PostResponse>> getAllPosts(Pageable pageable) {
+        return ResponseEntity.ok(postService.getAllPosts(pageable));
     }
 
     // Get a post by ID
@@ -40,6 +42,7 @@ public class PostController {
             tags = "Post Service"
     )
     public ResponseEntity<Post> getPostById(@PathVariable String id) {
+
         return ResponseEntity.ok(postService.getPostById(id));
     }
 
@@ -54,14 +57,15 @@ public class PostController {
         return ResponseEntity.ok(postService.getMyPosts());
     }
 
-    // Get the logged-in user's posts
+    // Retrieve posts created by a specific user
     @GetMapping("/{id}-posts")
     @Operation(
-            summary = "Get user posts",
-            description = "Retrieve a list of posts created by user with provide id.",
+            summary = "Get User's Posts",
+            description = "Retrieve a list of posts authored by the user with the specified ID.",
             tags = "Post Service"
     )
     public ResponseEntity<List<PostResponse>> getUserPosts(String id) {
+
         return ResponseEntity.ok(postService.getUserPosts(id));
     }
 

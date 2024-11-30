@@ -13,6 +13,8 @@ import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,19 @@ public class PostServiceImpl implements PostService {
     private final BookmarkService bookmarkService;
 
     @Override
+    public Page<PostResponse> getUserPosts(String id, Pageable pageable) {
+        Page<Post> posts = postRepository.findByAuthorId(id, pageable);
+
+        return posts.map(post -> {
+            PostResponse postResponse = modelMapper.map(post, PostResponse.class);
+            postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
+            postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
+            postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
+            return postResponse;
+        });
+    }
+
+    @Override
     public List<PostResponse> getUserPosts(String id) {
         return postRepository.findAll().stream()
                 .filter(post -> post.getAuthor().getId().equals(id))
@@ -52,22 +67,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponse> getAllPosts() {
+    public Page<PostResponse> getAllPosts(Pageable pageable) {
 
-        List<Post> posts = postRepository.findAll();
+        Page<Post> posts = postRepository.findAll(pageable);
 
-        List<PostResponse> postResponses = new ArrayList<>();
-
-        for (Post post : posts) {
-            PostResponse postResponse = new PostResponse();
-            modelMapper.map(post, postResponse);
+        // Map posts to PostResponse with additional details
+        return posts.map(post -> {
+            PostResponse postResponse = modelMapper.map(post, PostResponse.class);
             postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
             postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
             postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
-            postResponses.add(postResponse);
-        }
-
-        return postResponses;
+            return postResponse;
+        });
 
     }
 

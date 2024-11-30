@@ -64,20 +64,20 @@ const ProfilePage = () => {
         <NavBar />
       </header>
       <main className="flex">
-        <aside className="w-60">
+        <aside className="w-60 h-screen fixed top-0 left-0 bg-[#0E1217] border-r border-gray-600">
           <SideBar />
         </aside>
-        <div className="flex-grow p-10 ml-10">
+        <div className="flex-grow ml-60 p-4">
           <div className="flex flex-col lg:flex-row gap-4">
-            <div className="lg:w-2/3">
-              <h2 className="text-3xl font-bold mb-5 mt-20">Posts</h2>
+            <div className="lg:w-3/4 p-4">
+              <h2 className="text-3xl font-bold mb-4 mt-20">Posts</h2>
               {myPosts.length > 0 ? (
                 <BlogList blogs={myPosts} setBlogs={setMyPosts} />
               ) : (
                 <p className="text-gray-400"></p>
               )}
             </div>
-            <div className="lg:w-1/3 bg-card p-4 rounded-lg border border-gray-600">
+            <div className="lg:w-1/4 bg-card p-4 rounded-lg border border-gray-600">
               <h1 className="text-3xl font-bold mb-5 mt-20">Profile</h1>
               <div className="flex flex-col items-start mt-2">
                 <div className="w-24 h-24 bg-zinc-300 rounded-full overflow-hidden mb-2">
@@ -96,7 +96,8 @@ const ProfilePage = () => {
               <p className="mt-2">0 Followers • 0 Following</p>
               <h4 className="mt-4 font-semibold">Invite friends</h4>
               <p className="mt-2">
-                Invite other developers to discover how easy it is to stay updated with daily.dev.
+                Invite other developers to discover how easy it is to stay
+                updated with daily.dev.
               </p>
             </div>
           </div>

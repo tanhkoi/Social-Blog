@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface FollowService {
 
-    void followUser(String thatUserId);
+    boolean followUser(String thatUserId);
 
     void unfollowUser(String thatUserId);
 
