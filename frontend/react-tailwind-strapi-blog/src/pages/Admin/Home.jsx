@@ -43,8 +43,8 @@ const Home = () => {
     fetch("http://localhost:8080/api/posts")
       .then((response) => response.json())
       .then((data) => {
-        setBlogsCount(data.length);
-        const filteredData = data.filter((blog) => {
+        setBlogsCount(data.content.length);
+        const filteredData = data.content.filter((blog) => {
           const blogDate = new Date(blog.createdAt);
           return blogDate.getMonth() === 10 || blogDate.getMonth() === 11;
         });
@@ -66,7 +66,7 @@ const Home = () => {
         setBlogsByMonth(blogsByDayData);
 
         const categoryCount = {};
-        data.forEach((blog) => {
+        data.content.forEach((blog) => {
           const category = blog.category;
           categoryCount[category] = (categoryCount[category] || 0) + 1;
         });
@@ -151,46 +151,46 @@ const Home = () => {
 
       {/* Biểu đồ */}
       <div className="grid grid-cols-2 gap-5">
-  <div className="flex flex-col items-center mt-7">
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChart
-        data={blogsByMonth}
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line dataKey="count" fill="#8884d8" />
-      </LineChart>
-    </ResponsiveContainer>
-    <div className="mt-2 text-lg font-semibold">Blogs by Month</div>
-  </div>
+        <div className="flex flex-col items-center mt-7">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={blogsByMonth}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line dataKey="count" fill="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
+          <div className="mt-2 text-lg font-semibold">Blogs by Month</div>
+        </div>
 
-  <div className="flex flex-col items-center">
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
-        <Pie
-          data={blogsByCategory}
-          dataKey="count"
-          nameKey="name"
-          cx="50%"
-          cy="50%"
-          outerRadius={150}
-          fill="#82ca9d"
-          label={(entry) => `${entry.name}: ${entry.count}`}
-        >
-          {blogsByCategory.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip />
-      </PieChart>
-    </ResponsiveContainer>
-    <div className="mt-2 text-lg font-semibold">Blogs by Category</div>
-  </div>
-</div>
+        <div className="flex flex-col items-center">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={blogsByCategory}
+                dataKey="count"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={150}
+                fill="#82ca9d"
+                label={(entry) => `${entry.name}: ${entry.count}`}
+              >
+                {blogsByCategory.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="mt-2 text-lg font-semibold">Blogs by Category</div>
+        </div>
+      </div>
 
     </main>
   );

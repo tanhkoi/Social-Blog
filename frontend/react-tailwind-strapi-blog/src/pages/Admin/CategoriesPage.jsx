@@ -15,7 +15,7 @@ const CategoriesPage = () => {
       .then((data) => {
         // Lấy danh sách category từ các bài blog
         const categorySet = new Set();
-        data.forEach((blog) => {
+        data.content.forEach((blog) => {
           if (blog.category) {
             categorySet.add(blog.category); // Giả sử blog có trường category
           }
