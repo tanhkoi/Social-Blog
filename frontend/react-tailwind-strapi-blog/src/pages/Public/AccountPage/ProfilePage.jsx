@@ -170,8 +170,8 @@ const ProfilePage = () => {
                 </p>
                 <FollowButton
                   userId={userId}
-                  // isFollowing={isFollowing}
-                  // setIsFollowing={setIsFollowing}
+                  isFollowing={isFollowing}
+                  setIsFollowing={setIsFollowing}
                 />
               </div>
               <p className="mt-2">

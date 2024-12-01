@@ -59,9 +59,9 @@ const FollowButton = ({ userId, isFollowing, setIsFollowing, setFollowingUsers }
 
 FollowButton.propTypes = {
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    // isFollowing: PropTypes.bool.isRequired,
-    // setIsFollowing: PropTypes.func.isRequired,
-    // setFollowingUsers: PropTypes.func.isRequired,
+    isFollowing: PropTypes.bool.isRequired,
+    setIsFollowing: PropTypes.func.isRequired,
+    setFollowingUsers: PropTypes.func.isRequired,
 };
 
 export default FollowButton;
