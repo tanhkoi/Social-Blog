@@ -4,7 +4,6 @@ import CommentButton from "../Button/CommentButton";
 import DOMPurify from "dompurify";
 import PropTypes from "prop-types";
 
-
 const BlogContent = ({ content }) => {
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
@@ -73,23 +72,11 @@ const BlogContent = ({ content }) => {
               <h1 className="font-bold text-2xl text-center text-white pt-3">
                 {blog.author.name}
               </h1>
-              <p className="text-center text-white font-medium">{blog.author.email}</p>
-
-              {/* Follow Button */}
-              {/* <FollowButton
-                userId={blog.author.id}
-                isFollowing={isFollowing}
-                setIsFollowing={(isFollowing) => {
-                  // Cập nhật danh sách người dùng được theo dõi toàn cục
-                  setFollowingUsers(prevUsers => {
-                    if (isFollowing) {
-                      return [...prevUsers, blog.author.id]; // Sử dụng blog.author.id
-                    } else {
-                      return prevUsers.filter(id => id !== blog.author.id); // Sử dụng blog.author.id
-                    }
-                  });
-                }} 
-              /> */}
+              <p className="text-center text-white font-medium">
+                {blog.author.email}
+              </p>
+              <div className="text-center pt-4">
+              </div>
             </div>
           </div>
         </div>

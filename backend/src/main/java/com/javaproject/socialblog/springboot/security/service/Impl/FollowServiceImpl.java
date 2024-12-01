@@ -7,6 +7,7 @@ import com.javaproject.socialblog.springboot.repository.UserRepository;
 import com.javaproject.socialblog.springboot.security.service.FollowService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FollowServiceImpl implements FollowService {
@@ -78,7 +80,8 @@ public class FollowServiceImpl implements FollowService {
 
         Set<User> users = new HashSet<>();
         for (var i : user.getFollowers()) {
-            users.add(userRepository.findById(i.getUser()).get());
+            User follower = userRepository.findById(i.getUser()).orElseThrow();
+            users.add(follower);
         }
 
         return users;
@@ -91,7 +94,8 @@ public class FollowServiceImpl implements FollowService {
 
         Set<User> users = new HashSet<>();
         for (var i : user.getFollowing()) {
-            users.add(userRepository.findById(i.getUser()).get());
+            User following = userRepository.findById(i.getFollowing()).orElseThrow();
+            users.add(following);
         }
 
         return users;

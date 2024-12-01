@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService {
 
-
     private final LikeRepository likeRepository;
 
     private final PostRepository postRepository;
@@ -27,7 +26,7 @@ public class LikeServiceImpl implements LikeService {
     private final UserService userService;
 
     @Override
-    public long likePost(String postId) {
+    public void likePost(String postId) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -44,12 +43,10 @@ public class LikeServiceImpl implements LikeService {
 
             postRepository.save(post);
         }
-
-        return this.getPostLikeCount(postId);
     }
 
     @Override
-    public long unlikePost(String postId) {
+    public void unlikePost(String postId) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -64,13 +61,10 @@ public class LikeServiceImpl implements LikeService {
         post.getLikes().removeIf(like -> like.getUserId().equals(currUser.getId()));
 
         postRepository.save(post);
-
-        return this.getPostLikeCount(postId);
-
     }
 
     @Override
-    public long likeComment(String commentId) {
+    public void likeComment(String commentId) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -99,13 +93,10 @@ public class LikeServiceImpl implements LikeService {
 
             postRepository.save(post);
         }
-
-        return this.getCommentLikeCount(commentId);
-
     }
 
     @Override
-    public long unlikeComment(String commentId) {
+    public void unlikeComment(String commentId) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
@@ -132,68 +123,6 @@ public class LikeServiceImpl implements LikeService {
         }
 
         postRepository.save(post);
-
-        return this.getCommentLikeCount(commentId);
-
-    }
-
-    @Override
-    public long getPostLikeCount(String postId) {
-
-        return likeRepository.countByContentIdAndType(postId, LikeType.POST);
-
-    }
-
-    @Override
-    public long getCommentLikeCount(String commentId) {
-
-        return likeRepository.countByContentIdAndType(commentId, LikeType.COMMENT);
-
-    }
-
-    @Override
-    public boolean checkIsLikedPost(String postId) {
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        // Check if the user is authenticated
-        if (loggedInUser == null || !loggedInUser.isAuthenticated() || "anonymousUser".equals(loggedInUser.getPrincipal())) {
-            // Return false or throw an exception if the user is not logged in
-            return false;
-        }
-        String username = loggedInUser.getName();
-        String currUserId = userService.findByUsername(username).getId();
-
-
-        Like like = likeRepository.findAll().stream()
-                .filter(l -> l.getUserId().equals(currUserId)
-                        && l.getType().equals(LikeType.POST)
-                        && l.getContentId().equals(postId)
-                )
-                .findFirst() // Extract the first match
-                .orElse(null); // Return null if no match is found
-
-        return like != null;
-    }
-
-    @Override
-    public boolean checkIsLikedComment(String commentId) {
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        // Check if the user is authenticated
-        if (loggedInUser == null || !loggedInUser.isAuthenticated() || "anonymousUser".equals(loggedInUser.getPrincipal())) {
-            // Return false or throw an exception if the user is not logged in
-            return false;
-        }
-        String username = loggedInUser.getName();
-        String currUserId = userService.findByUsername(username).getId();
-
-        Like like = likeRepository.findAll().stream()
-                .filter(l -> l.getUserId().equals(currUserId)
-                        && l.getType().equals(LikeType.COMMENT)
-                        && l.getContentId().equals(commentId)
-                )
-                .findFirst() // Extract the first match
-                .orElse(null); // Return null if no match is found
-
-        return like != null;
     }
 
 }
