@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import NavBar from '../../../components/Header/NavBar';
 import SideBar from '../../../components/Sidebar/SideBar';
