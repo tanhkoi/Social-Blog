@@ -35,7 +35,7 @@ public class JwtTokenService {
 
         log.info("{} has successfully logged in!", user.getUsername());
 
-        return new LoginResponse(token, user.getUsername(), user.getProfilePicture(), user.isEnabled());
+        return new LoginResponse(token, user.getId(), user.getUsername(), user.getProfilePicture(), user.isEnabled());
     }
 
 }

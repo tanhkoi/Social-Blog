@@ -108,7 +108,7 @@ const Home = () => {
   }, []);
 
   return (
-    <main className="p-5 bg-gray-100">
+    <main className="p-5 bg-gray-100 h-10">
       <div className="flex justify-center items-center mb-5">
         <h3 className="text-2xl font-bold text-[#263043]">DASHBOARD</h3>
       </div>
@@ -150,8 +150,8 @@ const Home = () => {
       </div>
 
       {/* Biểu đồ */}
-      <div className="grid grid-cols-2 gap-5 h-96">
-  <div className="flex flex-col items-center">
+      <div className="grid grid-cols-2 gap-5">
+  <div className="flex flex-col items-center mt-7">
     <ResponsiveContainer width="100%" height="100%">
       <LineChart
         data={blogsByMonth}

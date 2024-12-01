@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import CommentButton from "../Button/CommentButton";
 import DOMPurify from "dompurify";
 import PropTypes from "prop-types";
-import FollowButton from '../Button/FollowButton';
+
 
 const BlogContent = ({ content }) => {
   const { id } = useParams();
@@ -63,18 +63,20 @@ const BlogContent = ({ content }) => {
 
           <div className="items-center w-full bg-zinc-900 rounded-xl drop-shadow-md py-5 max-h-[250px]">
             <div>
-              <img
-                className="p-2 w-32 h-32 rounded-full mx-auto object-cover"
-                src={blog.author.profilePicture}
-                alt="Author"
-              />
+            <a href={`/profile/${blog.author.id}`} className="flex justify-center">
+      <img
+        className="p-2 w-32 h-32 rounded-full mx-auto object-cover"
+        src={blog.author.profilePicture}
+        alt="Author"
+      />
+    </a>
               <h1 className="font-bold text-2xl text-center text-white pt-3">
                 {blog.author.name}
               </h1>
               <p className="text-center text-white font-medium">{blog.author.email}</p>
 
               {/* Follow Button */}
-              <FollowButton
+              {/* <FollowButton
                 userId={blog.author.id}
                 isFollowing={isFollowing}
                 setIsFollowing={(isFollowing) => {
@@ -87,7 +89,7 @@ const BlogContent = ({ content }) => {
                     }
                   });
                 }} 
-              />
+              /> */}
             </div>
           </div>
         </div>
@@ -101,6 +103,7 @@ const BlogContent = ({ content }) => {
 
 BlogContent.propTypes = {
   content: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 export default BlogContent;

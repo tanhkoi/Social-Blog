@@ -59,23 +59,23 @@ public class LikeController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/post/{id}-count")
-    @Operation(
-            summary = "Get post like count",
-            description = "Retrieves the total number of likes for a specific post, identified by its ID.",
-            tags = "Like Service"
-    )
-    public ResponseEntity<Long> getPostLikeCount(@PathVariable String id) {
-        return ResponseEntity.ok(likeService.getPostLikeCount(id));
-    }
-
-    @GetMapping("/comment/{id}-count")
-    @Operation(
-            summary = "Get comment like count",
-            description = "Retrieves the total number of likes for a specific comment, identified by its ID.",
-            tags = "Like Service"
-    )
-    public ResponseEntity<Long> getCommentLikeCount(@PathVariable String id) {
-        return ResponseEntity.ok(likeService.getCommentLikeCount(id));
-    }
+//    @GetMapping("/post/{id}-count")
+//    @Operation(
+//            summary = "Get post like count",
+//            description = "Retrieves the total number of likes for a specific post, identified by its ID.",
+//            tags = "Like Service"
+//    )
+//    public ResponseEntity<Long> getPostLikeCount(@PathVariable String id) {
+//        return ResponseEntity.ok(likeService.getPostLikeCount(id));
+//    }
+//
+//    @GetMapping("/comment/{id}-count")
+//    @Operation(
+//            summary = "Get comment like count",
+//            description = "Retrieves the total number of likes for a specific comment, identified by its ID.",
+//            tags = "Like Service"
+//    )
+//    public ResponseEntity<Long> getCommentLikeCount(@PathVariable String id) {
+//        return ResponseEntity.ok(likeService.getCommentLikeCount(id));
+//    }
 }
