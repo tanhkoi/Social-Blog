@@ -23,7 +23,7 @@ const BlogPage = () => {
     fetch("http://localhost:8080/api/posts")
       .then((response) => response.json())
       .then((data) => {
-        const formattedBlogs = data.map((blog) => ({
+        const formattedBlogs = data.content.map((blog) => ({
           ...blog,
           createdAt: formatDate(blog.createdAt),
         }));

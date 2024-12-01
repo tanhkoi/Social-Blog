@@ -15,6 +15,8 @@ public class PostResponse {
 
     private String title;
 
+    private String category;
+
     private String imageCloudUrl;
 
     private Date createdAt;
