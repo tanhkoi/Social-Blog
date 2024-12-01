@@ -1,13 +1,14 @@
 package com.javaproject.socialblog.springboot.security.service.Impl;
 
 import com.javaproject.socialblog.springboot.model.Comment;
+import com.javaproject.socialblog.springboot.model.LikeType;
 import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.model.User;
+import com.javaproject.socialblog.springboot.repository.BookmarkRepository;
+import com.javaproject.socialblog.springboot.repository.LikeRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.dto.PostRequest;
 import com.javaproject.socialblog.springboot.security.dto.PostResponse;
-import com.javaproject.socialblog.springboot.security.service.BookmarkService;
-import com.javaproject.socialblog.springboot.security.service.LikeService;
 import com.javaproject.socialblog.springboot.security.service.PostService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,52 +34,80 @@ public class PostServiceImpl implements PostService {
 
     private final ModelMapper modelMapper;
 
-    private final LikeService likeService;
+    private final LikeRepository likeRepository;
 
-    private final BookmarkService bookmarkService;
+    private final BookmarkRepository bookmarkRepository;
 
     @Override
     public Page<PostResponse> getUserPosts(String id, Pageable pageable) {
         Page<Post> posts = postRepository.findByAuthorId(id, pageable);
 
+        // Fetch the authenticated user's ID if logged in
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currUserId;
+        if (loggedInUser != null && loggedInUser.isAuthenticated() && !"anonymousUser".equals(loggedInUser.getPrincipal())) {
+            String username = loggedInUser.getName();
+            currUserId = userService.findByUsername(username).getId();
+        } else {
+            currUserId = null;
+        }
+
         return posts.map(post -> {
             PostResponse postResponse = modelMapper.map(post, PostResponse.class);
-            postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
-            postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
-            postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
+            postResponse.setLikeCnt(post.getLikes().size());
+            postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
+            postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
             return postResponse;
         });
     }
 
     @Override
     public List<PostResponse> getUserPosts(String id) {
-        return postRepository.findAll().stream()
-                .filter(post -> post.getAuthor().getId().equals(id))
-                .map(post -> {
-                    PostResponse postResponse = modelMapper.map(post, PostResponse.class);
-                    postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
-                    postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
-                    postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
-                    return postResponse;
-                })
-                .collect(Collectors.toList());
+        List<Post> posts = postRepository.findByAuthorId(id);
+
+        // Fetch the authenticated user's ID if logged in
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currUserId;
+        if (loggedInUser != null && loggedInUser.isAuthenticated() && !"anonymousUser".equals(loggedInUser.getPrincipal())) {
+            String username = loggedInUser.getName();
+            currUserId = userService.findByUsername(username).getId();
+        } else {
+            currUserId = null;
+        }
+
+        return posts.stream().map(post -> {
+            PostResponse postResponse = modelMapper.map(post, PostResponse.class);
+            postResponse.setLikeCnt(post.getLikes().size());
+            postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
+            postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
+            return postResponse;
+        }).collect(Collectors.toList());
     }
 
     @Override
     public Page<PostResponse> getAllPosts(Pageable pageable) {
-
         Page<Post> posts = postRepository.findAll(pageable);
 
-        // Map posts to PostResponse with additional details
+        // Fetch user details
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currUserId;
+        if (loggedInUser != null && loggedInUser.isAuthenticated() && !"anonymousUser".equals(loggedInUser.getPrincipal())) {
+            String username = loggedInUser.getName();
+            currUserId = userService.findByUsername(username).getId();
+        } else {
+            currUserId = null;
+        }
+
+        // Map posts to PostResponse
         return posts.map(post -> {
             PostResponse postResponse = modelMapper.map(post, PostResponse.class);
-            postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
-            postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
-            postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
+            postResponse.setLikeCnt(post.getLikes().size());
+            postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
+            postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
             return postResponse;
         });
-
     }
+
 
     @Override
     public Post getPostById(String id) {
@@ -155,56 +182,52 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostResponse> getMyPosts() {
-
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
         User currUser = userService.findByUsername(username);
 
-        List<Post> posts = postRepository.findAll()
-                .stream()
-                .filter(post -> post.getAuthor() != null && post.getAuthor().getId().equals(currUser.getId()))
-                .toList();
+        List<Post> posts = postRepository.findByAuthorId(currUser.getId());
 
-        List<PostResponse> postResponses = new ArrayList<>();
-
-        for (Post post : posts) {
-            PostResponse postResponse = new PostResponse();
-            modelMapper.map(post, postResponse);
-            postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
-            postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
-            postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
-            postResponses.add(postResponse);
-        }
-
-        return postResponses;
-
+        return posts.stream().map(post -> {
+            PostResponse postResponse = modelMapper.map(post, PostResponse.class);
+            postResponse.setLikeCnt(post.getLikes().size());
+            postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUser.getId(), post.getId(), LikeType.POST));
+            postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUser.getId(), post.getId()));
+            return postResponse;
+        }).collect(Collectors.toList());
     }
 
     @Override
     public List<PostResponse> searchPosts(String keyword, List<String> tags) {
         List<Post> posts;
 
-        // Determine the query based on input parameters
         if (keyword != null && !keyword.isEmpty() && (tags == null || tags.isEmpty())) {
             posts = postRepository.findByTitleContainingIgnoreCase(keyword);
         } else if (tags != null && !tags.isEmpty() && (keyword == null || keyword.isEmpty())) {
             posts = postRepository.findByTagsIn(tags);
-        } else if (keyword != null && !keyword.isEmpty() && tags != null && !tags.isEmpty()) {
+        } else if (keyword != null && !keyword.isEmpty()) {
             posts = postRepository.findByTitleContainingIgnoreCase(keyword);
             posts.addAll(postRepository.findByTagsIn(tags));
         } else {
             posts = postRepository.findAll();
         }
 
-        // Map posts to PostResponse
+        // Fetch user-related data
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currUserId;
+        if (loggedInUser != null && loggedInUser.isAuthenticated() && !"anonymousUser".equals(loggedInUser.getPrincipal())) {
+            String username = loggedInUser.getName();
+            currUserId = userService.findByUsername(username).getId();
+        } else {
+            currUserId = null;
+        }
+
         return posts.stream()
-                .distinct() // To remove duplicates when combining title and tag matches
                 .map(post -> {
-                    PostResponse postResponse = new PostResponse();
-                    modelMapper.map(post, postResponse);
-                    postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
-                    postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
-                    postResponse.setSaved(bookmarkService.checkIsSavedPost(post.getId()));
+                    PostResponse postResponse = modelMapper.map(post, PostResponse.class);
+                    postResponse.setLikeCnt(post.getLikes().size());
+                    postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
+                    postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
                     return postResponse;
                 })
                 .collect(Collectors.toList());

@@ -1,11 +1,14 @@
 package com.javaproject.socialblog.springboot.security.service.Impl;
 
-import com.javaproject.socialblog.springboot.model.*;
+import com.javaproject.socialblog.springboot.model.Bookmark;
+import com.javaproject.socialblog.springboot.model.LikeType;
+import com.javaproject.socialblog.springboot.model.Post;
+import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.repository.BookmarkRepository;
+import com.javaproject.socialblog.springboot.repository.LikeRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.dto.PostResponse;
 import com.javaproject.socialblog.springboot.security.service.BookmarkService;
-import com.javaproject.socialblog.springboot.security.service.LikeService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,7 +31,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     private final ModelMapper modelMapper;
 
-    private final LikeService likeService;
+    private final LikeRepository likeRepository;
 
     // Bookmark a post
     public void bookmarkPost(String postId) {
@@ -78,36 +81,14 @@ public class BookmarkServiceImpl implements BookmarkService {
         for (Post post : posts) {
             PostResponse postResponse = new PostResponse();
             modelMapper.map(post, postResponse);
-            postResponse.setLikeCnt(likeService.getPostLikeCount(post.getId()));
-            postResponse.setLiked(likeService.checkIsLikedPost(post.getId()));
-            postResponse.setSaved(this.checkIsSavedPost(post.getId()));
+            postResponse.setLikeCnt(post.getLikes().size());
+            postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUser.getId(), post.getId(), LikeType.POST));
+            postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUser.getId(), post.getId()));
             postResponses.add(postResponse);
         }
 
         return postResponses;
 
     }
-
-    @Override
-    public boolean checkIsSavedPost(String postId) {
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        // Check if the user is authenticated
-        if (loggedInUser == null || !loggedInUser.isAuthenticated() || "anonymousUser".equals(loggedInUser.getPrincipal())) {
-            // Return false or throw an exception if the user is not logged in
-            return false;
-        }
-        String username = loggedInUser.getName();
-        String currUserId = userService.findByUsername(username).getId();
-
-        Bookmark bookmark = bookmarkRepository.findAll().stream()
-                .filter(l -> l.getUserId().equals(currUserId)
-                        && l.getPostId().equals(postId)
-                )
-                .findFirst() // Extract the first match
-                .orElse(null); // Return null if no match is found
-
-        return bookmark != null;
-    }
-
 
 }

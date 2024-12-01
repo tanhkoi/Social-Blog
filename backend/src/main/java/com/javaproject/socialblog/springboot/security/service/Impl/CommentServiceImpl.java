@@ -1,14 +1,15 @@
 package com.javaproject.socialblog.springboot.security.service.Impl;
 
 import com.javaproject.socialblog.springboot.model.Comment;
+import com.javaproject.socialblog.springboot.model.LikeType;
 import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.model.User;
 import com.javaproject.socialblog.springboot.repository.CommentRepository;
+import com.javaproject.socialblog.springboot.repository.LikeRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.dto.CommentRequest;
 import com.javaproject.socialblog.springboot.security.dto.CommentResponse;
 import com.javaproject.socialblog.springboot.security.service.CommentService;
-import com.javaproject.socialblog.springboot.security.service.LikeService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -33,20 +34,26 @@ public class CommentServiceImpl implements CommentService {
 
     private final ModelMapper modelMapper;
 
-    private final LikeService likeService;
+    private final LikeRepository likeRepository;
 
     @Override
     public List<CommentResponse> getCommentsByPost(String id) {
-        // Fetch comments by post ID
         final List<Comment> comments = commentRepository.findByPostId(id);
 
-        // Transform to CommentResponse using Stream API
+        // Fetch the authenticated user's ID if logged in
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currUserId;
+        if (loggedInUser != null && loggedInUser.isAuthenticated() && !"anonymousUser".equals(loggedInUser.getPrincipal())) {
+            String username = loggedInUser.getName();
+            currUserId = userService.findByUsername(username).getId();
+        } else {
+            currUserId = null;
+        }
+
         return comments.stream()
                 .map(comment -> {
-                    // Map Comment to CommentResponse
                     CommentResponse response = modelMapper.map(comment, CommentResponse.class);
-                    // Set the 'liked' property
-                    response.setLiked(likeService.checkIsLikedComment(comment.getId()));
+                    response.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, comment.getId(), LikeType.COMMENT));
                     return response;
                 })
                 .collect(Collectors.toList());
