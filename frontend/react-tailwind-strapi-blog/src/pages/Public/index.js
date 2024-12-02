@@ -11,6 +11,7 @@ import NewPostPage from "./NewPostPage/NewPostPage";
 import SavedBlogsPage from "./SavedBlogsPage/SavedBlogsPage";
 import TagPage from "./TagPage/TagPage";
 import TagList from "./TagPage/TagList";
+import PopularPage from "./PopularPage/PopularPage";
 
 export {
     Homepage,
@@ -25,5 +26,6 @@ export {
     NewPostPage,
     SavedBlogsPage,
     TagPage,
-    TagList
+    TagList,
+    PopularPage
 };

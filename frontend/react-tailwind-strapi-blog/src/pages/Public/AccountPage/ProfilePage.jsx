@@ -176,14 +176,14 @@ const ProfilePage = () => {
               </div>
               <p className="mt-2">
                 <button
-                  className=" mt-4 bg-[#1c1f26] border border-gray-600 text-white px-4 py-2 rounded hover:underline focus:outline-none"
+                  className=" mt-4 bg-[#0E1217] border border-[#0E1217] text-white px-4 py-2 rounded hover:underline focus:outline-none"
                   onClick={() => setIsFollowersModalOpen(true)}
                 >
                   {user.followerNumber} Followers
                 </button>
                 •
                 <button
-                  className=" mt-4 bg-[#1c1f26] border border-gray-600 text-white px-4 py-2 rounded hover:underline focus:outline-none"
+                  className=" mt-4 bg-[#0E1217] border border-[#0E1217] text-white px-4 py-2 rounded hover:underline focus:outline-none"
                   onClick={() => setIsFollowingModalOpen(true)}
                 >
                   {user.followingNumber} Following
@@ -227,7 +227,7 @@ const ProfilePage = () => {
               )}
             </ul>
             <button
-              className="mt-4 bg-[#1c1f26] border-gray-800 text-white px-4 py-2 rounded hover:underline focus:outline-none"
+              className="mt-4 bg-[#0E1217] border-gray-800 text-white px-4 py-2 rounded hover:underline focus:outline-none"
               onClick={() => setIsFollowersModalOpen(false)}
             >
               Close
@@ -264,7 +264,7 @@ const ProfilePage = () => {
               )}
             </ul>
             <button
-              className="mt-4 bg-[#1c1f26] border-gray-800 text-white px-4 py-2 rounded hover:underline focus:outline-none"
+              className="mt-4 bg-[#0E1217] border-gray-800 text-white px-4 py-2 rounded hover:underline focus:outline-none"
               onClick={() => setIsFollowingModalOpen(false)}
             >
               Close
