@@ -29,5 +29,7 @@ public interface PostService {
     void deleteNullComment(String id);
 
     List<PostResponse> searchPosts(String keyword, List<String> tags);
+
+    List<PostResponse> getPostsByMostLikes();
 }
 
