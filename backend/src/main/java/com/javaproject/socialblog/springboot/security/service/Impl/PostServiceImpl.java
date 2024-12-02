@@ -233,4 +233,29 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<PostResponse> getPostsByMostLikes() {
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currUserId;
+        if (loggedInUser != null && loggedInUser.isAuthenticated() && !"anonymousUser".equals(loggedInUser.getPrincipal())) {
+            String username = loggedInUser.getName();
+            currUserId = userService.findByUsername(username).getId();
+        } else {
+            currUserId = null;
+        }
+
+        List<Post> allPosts = postRepository.findAll();
+
+        return allPosts.stream()
+                .map(post -> {
+                    PostResponse dto = modelMapper.map(post, PostResponse.class);
+                    dto.setLikeCnt(post.getLikes().size());
+                    dto.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
+                    dto.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
+                    return dto;
+                })
+                .sorted(Comparator.comparing(PostResponse::getLikeCnt).reversed())
+                .toList();
+    }
+
 }

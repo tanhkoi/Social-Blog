@@ -136,4 +136,15 @@ public class PostController {
     ) {
         return ResponseEntity.ok(postService.searchPosts(keyword, tags));
     }
+
+    @GetMapping("/most-liked")
+    @Operation(
+            summary = "Get posts by most likes",
+            description = "List posts based on most likes.",
+            tags = "Post Service"
+    )
+    public List<PostResponse> getPostsByMostLikes() {
+        return postService.getPostsByMostLikes();
+    }
+
 }
