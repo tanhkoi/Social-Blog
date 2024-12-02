@@ -109,11 +109,11 @@ const Homepage = () => {
                         ) : (
                             <>
                                 <BlogList blogs={filteredBlogs} setBlogs={setBlogs} />
-                                <div className="flex justify-center mt-4">
+                                <div className="flex justify-center mt-5 ">
                                     <button
                                         onClick={() => handlePageChange(currentPage - 1)}
                                         disabled={currentPage === 0}
-                                        className="px-4 py-2 bg-gray-800 text-white rounded-l"
+                                        className="px-4 py-2 bg-[#1c1f26] border border-gray-600 text-white rounded-l mx-2"
                                     >
                                         Previous
                                     </button>
@@ -121,8 +121,8 @@ const Homepage = () => {
                                         <button
                                             key={index}
                                             onClick={() => handlePageChange(index)}
-                                            className={`px-4 py-2 ${
-                                                index === currentPage ? 'bg-blue-600' : 'bg-gray-800'
+                                            className={`px-4 py-2 border border-gray-600 ${
+                                                index === currentPage ? 'bg-[#1c1f26]' : 'bg-gray-800'
                                             } text-white`}
                                         >
                                             {index + 1}
@@ -131,7 +131,7 @@ const Homepage = () => {
                                     <button
                                         onClick={() => handlePageChange(currentPage + 1)}
                                         disabled={currentPage === totalPages - 1}
-                                        className="px-4 py-2 bg-gray-800 text-white rounded-r"
+                                        className="px-4 py-2 bg-[#1c1f26] border border-gray-600 text-white rounded-r mx-2"
                                     >
                                         Next
                                     </button>

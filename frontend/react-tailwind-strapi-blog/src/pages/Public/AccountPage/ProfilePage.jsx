@@ -166,9 +166,9 @@ const ProfilePage = () => {
                   )}
                 </div>
                 <p className="font-medium text-2xl text-center">
-                  {user?.username || "Guest"}
+                  {user?.name || "Guest"}
                 </p>
-                <FollowButton
+             <FollowButton
                   userId={userId}
                   isFollowing={isFollowing}
                   setIsFollowing={setIsFollowing}
@@ -176,14 +176,14 @@ const ProfilePage = () => {
               </div>
               <p className="mt-2">
                 <button
-                  className=" mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:underline focus:outline-none"
+                  className=" mt-4 bg-[#1c1f26] border border-gray-600 text-white px-4 py-2 rounded hover:underline focus:outline-none"
                   onClick={() => setIsFollowersModalOpen(true)}
                 >
                   {user.followerNumber} Followers
                 </button>
                 •
                 <button
-                  className=" mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:underline focus:outline-none"
+                  className=" mt-4 bg-[#1c1f26] border border-gray-600 text-white px-4 py-2 rounded hover:underline focus:outline-none"
                   onClick={() => setIsFollowingModalOpen(true)}
                 >
                   {user.followingNumber} Following
@@ -196,14 +196,14 @@ const ProfilePage = () => {
               </p>
             </div>
           </div>
-        </div>
+        </div>   
       </main>
 
       {/* Modal for Followers */}
       {isFollowersModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-black p-5 rounded-lg shadow-lg w-1/3">
-            <h2 className="text-lg font-bold mb-4">Danh sách Followers</h2>
+            <h2 className="text-lg font-bold mb-4">List Followers</h2>
             <ul>
               {followers.length > 0 ? ( // Kiểm tra followers có dữ liệu không
                 followers.map((follower) => (
@@ -227,10 +227,10 @@ const ProfilePage = () => {
               )}
             </ul>
             <button
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:underline focus:outline-none"
+              className="mt-4 bg-[#1c1f26] border-gray-800 text-white px-4 py-2 rounded hover:underline focus:outline-none"
               onClick={() => setIsFollowersModalOpen(false)}
             >
-              Đóng
+              Close
             </button>
           </div>
         </div>
@@ -240,7 +240,7 @@ const ProfilePage = () => {
       {isFollowingModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-black text-white p-5 rounded-lg shadow-lg w-1/3 border border-gray-600">
-            <h2 className="text-lg font-bold mb-4">Danh sách Following</h2>
+            <h2 className="text-lg font-bold mb-4">List Following</h2>
             <ul>
               {following.length > 0 ? ( // Kiểm tra following có dữ liệu không
                 following.map((followingItem) => (
@@ -264,10 +264,10 @@ const ProfilePage = () => {
               )}
             </ul>
             <button
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:underline focus:outline-none"
+              className="mt-4 bg-[#1c1f26] border-gray-800 text-white px-4 py-2 rounded hover:underline focus:outline-none"
               onClick={() => setIsFollowingModalOpen(false)}
             >
-              Đóng
+              Close
             </button>
           </div>
         </div>
