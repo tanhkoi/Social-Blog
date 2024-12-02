@@ -15,6 +15,8 @@ const Homepage = () => {
     const fetchBlogs = async (page = 1, size = 5) => {
         const token = localStorage.getItem('token');
 
+        setLoading(true); // Bắt đầu trạng thái loading
+
         try {
             const response = await fetch(`http://localhost:8080/api/posts?size=${size}&page=${page}`, {
                 method: 'GET',
@@ -36,13 +38,13 @@ const Homepage = () => {
         } catch (error) {
             console.error('Lỗi kết nối API:', error);
         } finally {
-            setLoading(false);
+            setLoading(false); // Kết thúc trạng thái loading
         }
     };
 
-	const handlePageChange = (newPage) => {
+    const handlePageChange = (newPage) => {
         if (newPage >= 0 && newPage < totalPages) {
-            setCurrentPage(newPage); // Update the current page
+            setCurrentPage(newPage); // Cập nhật trang hiện tại
         }
     };
 
@@ -62,14 +64,6 @@ const Homepage = () => {
         blog.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen bg-[#0E1217]">
-                <p className="text-white text-xl">Loading...</p>
-            </div>
-        );
-    }
-
     return (
         <div className="bg-[#0E1217] min-h-screen text-white">
             <header>
@@ -86,32 +80,63 @@ const Homepage = () => {
                                 Login successfully!
                             </div>
                         )}
-                        <BlogList blogs={filteredBlogs} setBlogs={setBlogs} />
-                        <div className="flex justify-center mt-4">
-                            <button
-                                onClick={() => handlePageChange(currentPage - 1)}
-                                disabled={currentPage === 0}
-                                className="px-4 py-2 bg-gray-800 text-white rounded-l"
-                            >
-                                Previous
-                            </button>
-                            {Array.from({ length: totalPages }, (_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handlePageChange(index)}
-                                    className={`px-4 py-2 ${index === currentPage ? 'bg-blue-600' : 'bg-gray-800'} text-white`}
+
+                        {loading ? (
+                            <div className="flex justify-center items-center mt-10">
+                                <svg
+                                    className="animate-spin h-8 w-8 text-blue-600"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
                                 >
-                                    {index + 1}
-                                </button>
-                            ))}
-                            <button
-                                onClick={() => handlePageChange(currentPage + 1)}
-                                disabled={currentPage === totalPages - 1}
-                                className="px-4 py-2 bg-gray-800 text-white rounded-r"
-                            >
-                                Next
-                            </button>
-                        </div>
+                                    <circle
+                                        className="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        strokeWidth="4"
+                                    ></circle>
+                                    <path
+                                        className="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8v8H4z"
+                                    ></path>
+                                </svg>
+                                <p className="ml-3 text-gray-400 text-lg">Loading blogs...</p>
+                            </div>
+                        ) : (
+                            <>
+                                <BlogList blogs={filteredBlogs} setBlogs={setBlogs} />
+                                <div className="flex justify-center mt-4">
+                                    <button
+                                        onClick={() => handlePageChange(currentPage - 1)}
+                                        disabled={currentPage === 0}
+                                        className="px-4 py-2 bg-gray-800 text-white rounded-l"
+                                    >
+                                        Previous
+                                    </button>
+                                    {Array.from({ length: totalPages }, (_, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => handlePageChange(index)}
+                                            className={`px-4 py-2 ${
+                                                index === currentPage ? 'bg-blue-600' : 'bg-gray-800'
+                                            } text-white`}
+                                        >
+                                            {index + 1}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => handlePageChange(currentPage + 1)}
+                                        disabled={currentPage === totalPages - 1}
+                                        className="px-4 py-2 bg-gray-800 text-white rounded-r"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </main>

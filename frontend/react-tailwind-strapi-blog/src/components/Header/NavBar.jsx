@@ -16,9 +16,9 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
     const profilePicture = localStorage.getItem("profilePicture");
-
+    const userId = localStorage.getItem("userId");
     if (token && username) {
-      setUser({ username, profilePicture });
+      setUser({ username, profilePicture,userId });
     } else {
       setUser(null);
     }
@@ -42,6 +42,7 @@ const Navbar = () => {
     localStorage.removeItem("savedPosts");
     localStorage.removeItem("username");
     localStorage.removeItem("profilePicture");
+    localStorage.removeItem('userId');
     setUser(null);
     navigate("/");
   };
@@ -145,7 +146,7 @@ const Navbar = () => {
                   className="absolute right-0 mt-12 w-40 rounded-xl bg-[#0E1217] border border-gray-600 shadow-lg z-20 transform translate-x-6"
                 >
                   <button
-                    onClick={() => navigate("/profile")}
+                    onClick={() => navigate(`/profile/${user.userId}`)} 
                     className="block px-4 py-2 text-left w-full rounded-xl bg-[#0E1217] text-white border-[#0E1217] hover:bg-[#0E1217]"
                   >
                     Profile
