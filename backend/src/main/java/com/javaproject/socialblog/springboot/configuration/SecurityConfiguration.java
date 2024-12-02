@@ -62,7 +62,9 @@ public class SecurityConfiguration {
                                 "/api/posts/{id}",
                                 "/api/comments/{id}",
                                 "/api/likes/post/{id}/count",
-                                "/api/users/{id}"
+                                "/api/users/{id}",
+                                "/api/follows/{id}/following",
+                                "/api/follows/{id}/followers"
                         )
                         .permitAll()
                         .requestMatchers("/api/admin/**")

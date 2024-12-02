@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         User currUser = this.findByUsername(username);
         if (currUser != null)
             userResponse.setAmIFollowing(user.getFollowers().stream()
-                    .anyMatch(follower -> follower.getId().equals(currUser.getId())));
+                    .anyMatch(follower -> follower.getUser().equals(currUser.getId())));
         else
             userResponse.setAmIFollowing(false);
 
