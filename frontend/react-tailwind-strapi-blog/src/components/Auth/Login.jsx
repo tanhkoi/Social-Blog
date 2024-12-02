@@ -36,7 +36,7 @@ const Login = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('username', data.username);
       localStorage.setItem('profilePicture', data.profilePicture || '');
-
+      localStorage.setItem('userId', data.id);
       toast.success('Login successful!', {
         position: 'top-right',
         autoClose: 3000,
@@ -70,7 +70,8 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('username', data.username);
         localStorage.setItem('profilePicture', data.profilePicture);
-
+        localStorage.setItem('userId', data.id);
+        console.log(data.id);
         toast.success('Google login successful!', {
           position: 'top-right',
           autoClose: 3000,

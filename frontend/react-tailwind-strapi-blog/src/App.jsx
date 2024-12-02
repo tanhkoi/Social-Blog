@@ -71,7 +71,7 @@ const App = () => {
         <Route path="/account" element={<AccountDetailPage />} />
         <Route path="/newpost" element={<NewPostPage />} />
         <Route path="/saved" element={<SavedBlogsPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
