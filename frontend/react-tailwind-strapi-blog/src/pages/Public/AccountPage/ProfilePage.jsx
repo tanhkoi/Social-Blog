@@ -154,7 +154,14 @@ const ProfilePage = () => {
                   userId={userId}
                   isFollowing={isFollowing}
                   setIsFollowing={setIsFollowing}
+                  onFollowChange={(change) => {
+                    setUser((prevUser) => ({
+                      ...prevUser,
+                      followerNumber: prevUser.followerNumber + change,
+                    }));
+                  }}
                 />
+
               </div>
               <p className="mt-2">
                 <button
