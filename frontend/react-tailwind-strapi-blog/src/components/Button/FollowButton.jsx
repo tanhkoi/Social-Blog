@@ -3,7 +3,10 @@ import { FaUserPlus, FaUserTimes } from "react-icons/fa";
 
 const FollowButton = ({ userId, isFollowing, setIsFollowing, onFollowChange }) => {
     const token = localStorage.getItem("token");
-
+    const currentUserId = localStorage.getItem("userId");
+    if (userId === currentUserId) {
+        return null;
+    }
     const handleToggleFollow = async (e) => {
         e.stopPropagation();
 

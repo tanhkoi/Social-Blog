@@ -97,7 +97,7 @@ function SearchResults() {
                       <strong>Category:</strong> {result.category}
                     </p>
                     <p className="text-sm text-gray-400">
-                      <strong>Tags:</strong> {result.tags.join(", ")}
+                      <strong>Tags:</strong> {Array.isArray(result.tags) ? result.tags.join(", ") : "No tags available"}
                     </p>
                   </div>
                   {result.imageCloudUrl && (
