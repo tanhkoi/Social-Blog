@@ -12,7 +12,7 @@ const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const [followers, setFollowers] = useState([]); // Khởi tạo là mảng rỗng
   const [following, setFollowing] = useState([]); // Khởi tạo là mảng rỗng
-
+  const loggedInUserId = localStorage.getItem("userId");
   const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
   const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false); 
@@ -172,6 +172,7 @@ const ProfilePage = () => {
                   userId={userId}
                   isFollowing={isFollowing}
                   setIsFollowing={setIsFollowing}
+                  loggedInUserId={loggedInUserId}
                 />
               </div>
               <p className="mt-2">
