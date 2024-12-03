@@ -64,7 +64,7 @@ public class PostController {
             description = "Retrieve a list of posts authored by the user with the specified ID.",
             tags = "Post Service"
     )
-    public ResponseEntity<List<PostResponse>> getUserPosts(String id) {
+    public ResponseEntity<List<PostResponse>> getUserPosts(@PathVariable String id) {
 
         return ResponseEntity.ok(postService.getUserPosts(id));
     }
