@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import BlogList from "../../../components/Blog/BlogList";
 import NavBar from "../../../components/Header/NavBar";
@@ -16,7 +17,6 @@ const ProfilePage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
-
   useEffect(() => {
     const token = localStorage.getItem("token");
 
