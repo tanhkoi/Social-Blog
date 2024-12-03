@@ -17,6 +17,7 @@ const ProfilePage = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
