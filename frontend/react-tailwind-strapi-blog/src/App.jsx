@@ -17,6 +17,9 @@ import AccountDetailPage from "./pages/Public/AccountPage/AccountDetailPage";
 import NewPostPage from "./pages/Public/NewPostPage/NewPostPage";
 import SavedBlogsPage from "./pages/Public/SavedBlogsPage/SavedBlogsPage";
 import ProfilePage from "./pages/Public/AccountPage/ProfilePage";
+import TagPage from "./pages/Public/TagPage/TagPage";
+import TagList from "./pages/Public/TagPage/TagList";
+import PopularPage from "./pages/Public/PopularPage/PopularPage";
 
 
 
@@ -71,7 +74,10 @@ const App = () => {
         <Route path="/account" element={<AccountDetailPage />} />
         <Route path="/newpost" element={<NewPostPage />} />
         <Route path="/saved" element={<SavedBlogsPage />} />
+        <Route path="/category" element={<TagPage />} />
+        <Route path="/category/:categoryName" element={<TagList />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
+        <Route path="/popular" element={<PopularPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

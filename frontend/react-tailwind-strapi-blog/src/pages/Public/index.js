@@ -9,6 +9,9 @@ import HistoryPage from "./HistoryPage/HistoryPage";
 import AccountDetailPage from "./AccountPage/AccountDetailPage";
 import NewPostPage from "./NewPostPage/NewPostPage";
 import SavedBlogsPage from "./SavedBlogsPage/SavedBlogsPage";
+import TagPage from "./TagPage/TagPage";
+import TagList from "./TagPage/TagList";
+import PopularPage from "./PopularPage/PopularPage";
 
 export {
     Homepage,
@@ -22,5 +25,7 @@ export {
     AccountDetailPage,
     NewPostPage,
     SavedBlogsPage,
-
+    TagPage,
+    TagList,
+    PopularPage
 };
