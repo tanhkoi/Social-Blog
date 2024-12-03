@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { FaUserPlus, FaUserTimes } from "react-icons/fa";
 
-const FollowButton = ({ userId, isFollowing, setIsFollowing, setFollowingUsers }) => {
+const FollowButton = ({ userId, isFollowing, setIsFollowing }) => {
     const token = localStorage.getItem("token");
 
     const handleToggleFollow = async (e) => {
