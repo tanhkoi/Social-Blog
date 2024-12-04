@@ -51,7 +51,6 @@ const SaveButton = ({ blog, setBlogs, isSaved, setIsSaved }) => {
       }`}
     >
       <FaBookmark />
-      <span>{isSaved ? "Saved" : "Save"}</span>
     </div>
   );
 };
