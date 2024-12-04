@@ -14,13 +14,16 @@ public class SocialBlogApplication {
     }
 
 //    @Bean
-//    CommandLineRunner run(EmailServiceImpl emailService) {
+//    CommandLineRunner run(NotificationService notificationService, UserService userService) {
 //        return args -> {
 //            try {
-//                User newUser = new User();
-//                newUser.setEmail("tankhoi46@gmail.com");
-//                newUser.setUsername("tankhoi");
-//                emailService.sendVerificationEmail(newUser);  // Calling the sendHtmlEmail method
+//                User currUser = userService.findByUsername("tankhoitest3");
+//
+//                int cnt = 0;
+//                for (Follow fl : currUser.getFollowers()) {
+//                    notificationService.createNewPostNotification("postid" + cnt, fl.getUser(),"New post", "New post from " + currUser.getName());
+//                    cnt++;
+//                }
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
