@@ -3,11 +3,18 @@ import BlogItem from "./BlogItem";
 
 const BlogList = ({ blogs, setBlogs }) => {
   return (
-    <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 xs:grid-cols-1 gap-8 px-4 mt-20 text-black">
-      {blogs.map((blog) => (
-        <BlogItem key={blog.id} blog={blog} setBlogs={setBlogs} />
-      ))}
-    </div>
+    <div
+  className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-2 xs:grid-cols-1 gap-4 px-10 mt-20 text-black"
+>
+  {blogs.map((blog) => (
+    <BlogItem
+      key={blog.id}
+      blog={blog}
+      setBlogs={setBlogs}
+    />
+  ))}
+</div>
+
   );
 };
 

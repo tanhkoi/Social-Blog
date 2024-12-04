@@ -71,14 +71,14 @@ function SearchResults() {
           placeholder="Search..."
           value={searchTerm}
           onChange={handleInputChange}
-          className="w-full p-3 text-white rounded-xl border border-gray-700 bg-[#1c1f26] focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+          className="w-full p-3 text-black rounded-xl border border-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
           aria-label="Search posts"
         />
       </div>
       {showResults && (
         <div
           ref={searchResultsRef} // Gán ref vào container kết quả
-          className="searchResultsContainer bg-[#1c1f26] border border-gray-700"
+          className="searchResultsContainer bg-white border border-gray-700"
         >
           {isLoading && <p>Loading results...</p>}
           {!isLoading && (
@@ -86,17 +86,17 @@ function SearchResults() {
               {results.slice(0, 5).map((result) => (
                 <li
                   key={result.id}
-                  className="p-4 rounded-md bg-[#1c1f26] hover:bg-[#1A2027] cursor-pointer transition-transform transform hover:scale-105 flex items-center"
+                  className="p-4 rounded-md bg-white hover:bg-[#1A2027] cursor-pointer transition-transform transform hover:scale-105 flex items-center"
                   onClick={() => handleClick(result.id)}
                 >
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-white">
+                    <h3 className="text-lg font-semibold text-black">
                       {result.title}
                     </h3>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-black">
                       <strong>Category:</strong> {result.category}
                     </p>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-black">
                       <strong>Tags:</strong> {Array.isArray(result.tags) ? result.tags.join(", ") : "No tags available"}
                     </p>
                   </div>

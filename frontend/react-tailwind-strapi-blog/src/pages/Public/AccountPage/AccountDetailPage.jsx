@@ -133,12 +133,12 @@ const AccountDetailPage = () => {
   };
 
   return (
-   <div className="bg-[#0E1217]">
-     <div className="p-6 max-w-md mx-auto bg-[#1c1f26] rounded-lg shadow-lg">
+   <div className="bg-white">
+     <div className="p-6 max-w-md mx-auto bg-white rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
         <button
           onClick={handleGoHome}
-          className="bg-[#1c1f26] border-[#1c1f26] text-white px-4 py-2 rounded ml-auto flex items-center"
+          className="bg-white border-white text-black px-4 py-2 rounded ml-auto flex items-center"
         >
           <FaTimes className="h-6 w-6" />
         </button>
@@ -149,13 +149,13 @@ const AccountDetailPage = () => {
           alt="User Avatar"
           className="w-32 h-32 rounded-full mx-auto border border-gray-200"
         />
-        <h2 className="text-2xl text-white font-semibold mt-4">{user.name}</h2>
-        <p className="text-white">{user.email}</p>
+        <h2 className="text-2xl text-black font-semibold mt-4">{user.name}</h2>
+        <p className="text-black">{user.email}</p>
       </div>
         <div className="mb-4">
-          <h3 className="text-xl text-white font-bold mb-3">Edit Profile</h3>
+          <h3 className="text-xl text-black font-bold mb-3">Edit Profile</h3>
           <div className="mb-3">
-            <label className=" text-sm text-white font-medium mb-1">Name</label>
+            <label className=" text-sm text-black font-medium mb-1">Name</label>
             <input
               type="text"
               name="name"
@@ -165,7 +165,7 @@ const AccountDetailPage = () => {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm text-white font-medium mb-1">Email</label>
+            <label className="block text-sm text-black font-medium mb-1">Email</label>
             <input
               type="email"
               name="email"
@@ -175,11 +175,11 @@ const AccountDetailPage = () => {
             />
           </div>
           <div className="mb-3">
-            <label className="block text-sm text-white font-medium mb-1">Avatar</label>
+            <label className="block text-sm text-black font-medium mb-1">Avatar</label>
             <input type="file" onChange={handleAvatarChange} className="border bg-white rounded w-full px-3 py-2" />
           </div>
           <div className="mb-3">
-            <label className="block text-sm text-white font-medium mb-1">Password</label>
+            <label className="block text-sm text-black font-medium mb-1">Password</label>
             <input
               type="password"
               name="password"
@@ -191,7 +191,7 @@ const AccountDetailPage = () => {
           <div className="flex space-x-2">
             <button
               onClick={handleSaveChanges}
-              className="bg-[#1c1f26] border border-gray-600 text-white px-4 py-2 rounded"
+              className="bg-white border border-gray-600 text-black px-4 py-2 rounded"
             >
               Save
             </button>

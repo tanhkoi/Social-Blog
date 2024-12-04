@@ -45,14 +45,14 @@ const SavedBlogsPage = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-[#0E1217]">
-        <p className="text-white text-xl">Loading...</p>
+      <div className="flex justify-center items-center h-screen bg-white">
+        <p className="text-black text-xl">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#0E1217] min-h-screen text-white">
+    <div className="bg-white min-h-screen text-black">
       <header>
         <NavBar />
       </header>

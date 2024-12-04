@@ -104,21 +104,21 @@ const handlePost = async () => {
       <h1 className="text-3xl font-bold mb-6">Create New Post</h1>
       <input
         type="text"
-        className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
+        className="w-full h-12 mt-4 p-4 bg-white text-black border border-gray-600 rounded-xl text-lg"
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <input
         type="text"
-        className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
+        className="w-full h-12 mt-4 p-4 bg-white text-black border border-gray-600 rounded-xl text-lg"
         placeholder="Category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
       />
       <input
         type="text"
-        className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
+        className="w-full h-12 mt-4 p-4 bg-white text-black border border-gray-600 rounded-xl text-lg"
         placeholder="Tags "
         value={tags}
         onChange={(e) => setTags(e.target.value)}
@@ -127,7 +127,7 @@ const handlePost = async () => {
         <ReactQuill
           value={content}
           onChange={setContent}
-          className="bg-[#1c1f26] text-white border border-gray-600 rounded-xl"
+          className="bg-white text-black border border-gray-600 rounded-xl"
           placeholder="Content"
           style={{ height: "300px", marginBottom: "20px" }}
         />
@@ -135,7 +135,7 @@ const handlePost = async () => {
         <input
           type="file"
           id="fileInput"
-          className="w-full h-12 mt-4 p-4 bg-[#1c1f26] text-white border border-gray-600 rounded-xl text-lg"
+          className="w-full h-12 mt-4 p-4 bg-white text-black border border-gray-600 rounded-xl text-lg"
           onChange={handleImageChange}
           accept="image/*"
         />

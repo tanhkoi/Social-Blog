@@ -13,9 +13,9 @@ const Homepage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(6);
 
-  const fetchBlogs = async (page = 1, size = 7) => {
+  const fetchBlogs = async (page = 1, size = 5) => {
     const token = localStorage.getItem("token");
 
     setLoading(true); // Bắt đầu trạng thái loading
@@ -51,7 +51,7 @@ const Homepage = () => {
 
   const fetchMostLikedBlogs = async () => {
     const token = localStorage.getItem("token");
-
+    setLoading(true);
     try {
       const mostLikedResponse = await fetch(
         "http://localhost:8080/api/posts/most-liked",
@@ -106,9 +106,9 @@ const Homepage = () => {
   );
 
   return (
-    <div className="bg-[#0E1217] min-h-screen text-white">
+    <div className="bg-white min-h-screen text-black">
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full bg-black z-50">
+      <header className="fixed text-black top-0 left-0 w-full bg-black z-50">
         <NavBar setSearchTerm={setSearchTerm} />
       </header>
 
@@ -123,11 +123,11 @@ const Homepage = () => {
         <div className="ml-60 flex-grow">
           {/* Banner Section - only show on the first page */}
           {currentPage === 0 && (
-            <div className="flex flex-col items-start p-4 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-5">
-              <h1 className="text-5xl font-bold text-blue-700 mb-4">
+            <div className="flex flex-col items-start p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-8">
+              <h1 className="text-6xl font-bold text-blue-700 mb-6">
                 Diverse Perspectives of the Young Generation in Vietnam
               </h1>
-              <p className="text-3xl font-bold text-zinc-700 mb-4">
+              <p className="text-4xl font-bold text-zinc-700 mb-6">
                 Write - Share - Connect - Reflect
                 <br />
                 All at CWTS
@@ -172,43 +172,42 @@ const Homepage = () => {
               {/* Most Liked Blogs - Only show on the first page */}
               {currentPage === 0 && (
                 <>
-                  <h2 className="text-3xl font-bold text-blue-500 mb-5">
+                  <h2 className="text-3xl font-bold text-black mb-5 px-10">
                     POPULAR BLOG
                   </h2>
-                  <div className="w-50 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 px-10">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 px-10">
                     {mostLikedBlogs.slice(0, 4).map((blog) => (
                       <Link
                         to={`/blog/${blog.id}`} // Điều hướng đến trang chi tiết blog
                         key={blog.id}
-                        className="flex items-center space-x-6 bg-[#1c1f26] rounded-lg hover:shadow-md hover:scale-[1.02] transition transform duration-300"
+                        className="flex items-center   bg-white rounded-lg hover:shadow-md hover:scale-[1.02] transition transform duration-300 h-36"
+                        style={{ width: "580px", height: "141px" }}
                       >
                         {/* Image on the left */}
-                        <div className="flex-shrink-0 w-1/3">
+                        <div className="flex-shrink-0 w-1/4 h-full">
                           <img
-                            src={blog.imageCloudUrl} // Giả sử bạn có trường 'imageUrl' trong blog
+                            src={blog.imageCloudUrl}
                             alt={blog.title}
-                            className="w-full h-auto rounded-lg"
+                            className="w-full h-full object-cover rounded-l-lg"
                           />
                         </div>
-                        {/* Title and tags on the right */}
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-white">
-                            {blog.title}
-                          </h3>
-                          <h3 className="text-lg font-semibold text-white">
+                        {/* Title and details on the right */}
+                        <div className="flex-1 px-4 flex flex-col justify-center space-y-2">
+                          <span className="text-xl  text-gray-500">
                             {blog.category}
-                          </h3>
-                          <div className="p-4 flex flex-col">
-                            <div className="flex space-x-3">
-                              <img
-                                className="w-8 h-8 rounded-full object-cover"
-                                src={blog.author.profilePicture}
-                                alt="Author"
-                              />
-                              <h1 className="font-bold text-lg text-white">
-                                {blog.author.name}
-                              </h1>
-                            </div>
+                          </span>
+                          <h2 className="text-2xl font-semibold text-black truncate">
+                            {blog.title}
+                          </h2>
+                          <div className="flex items-center space-x-3 pt-2">
+                            <img
+                              className="w-6 h-6 rounded-full object-cover"
+                              src={blog.author.profilePicture}
+                              alt="Author"
+                            />
+                            <h1 className="text-xs font-medium text-black">
+                              {blog.author.name}
+                            </h1>
                           </div>
                         </div>
                       </Link>
@@ -217,21 +216,25 @@ const Homepage = () => {
                 </>
               )}
               {currentPage === 0 && (
-                <div className="mt-8 mb-8 flex justify-center">
+                <div className="mt-8  flex flex-col items-center">
                   <img
                     src="https://img.freepik.com/free-psd/horizontal-banner-template-techno-store_23-2148979527.jpg?t=st=1733290054~exp=1733293654~hmac=db36f9214353c62a8ba1d049ba2961f1a5ed0c65b8b8a0ac2f4c2e1b11b6a6b0&w=1380"
                     alt="Technology horizontal banner template"
                     className="rounded-lg shadow-lg"
-                    style={{ maxWidth: "70%", height: "auto" }}
+                    style={{ maxWidth: "80%", height: "auto" }}
                   />
+                  <h2 className="text-3xl text-start font-bold text-black mt-7 ml-10">
+                    ALL BLOG
+                  </h2>
                 </div>
               )}
+
               <BlogList blogs={filteredBlogs} setBlogs={setBlogs} />
               <div className="flex justify-center mt-5">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 0}
-                  className="px-4 py-2 bg-[#0E1217] border border-[#0E1217] text-white rounded-l mx-2"
+                  className="px-4 py-2 bg-white border border-white text-black rounded-l mx-2"
                 >
                   Previous
                 </button>
@@ -239,8 +242,8 @@ const Homepage = () => {
                   <button
                     key={index}
                     onClick={() => handlePageChange(index)}
-                    className={`px-4 py-2 border border-[#0E1217] bg-[#0E1217] ${
-                      index === currentPage ? "text-blue-500" : "text-white"
+                    className={`px-4 py-2 border border-white bg-white ${
+                      index === currentPage ? "text-blue-500" : "text-black"
                     }`}
                   >
                     {index + 1}
@@ -249,7 +252,7 @@ const Homepage = () => {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages - 1}
-                  className="px-4 py-2 bg-[#0E1217] border border-[#0E1217] text-white rounded-r mx-2"
+                  className="px-4 py-2 bg-white border border-white text-black rounded-r mx-2"
                 >
                   Next
                 </button>

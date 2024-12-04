@@ -39,10 +39,10 @@ const BlogContent = () => {
   const sanitizedContent = DOMPurify.sanitize(blog.content);
 
   return (
-    <div className="w-full pb-10 bg-[#0E1217] mt-10">
+    <div className="w-full pb-10 bg-white mt-10">
       <div className="max-w-[1240px] mx-auto">
         <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 ss:grid-cols-1 md:gap-x-8 sm:gap-y-8 ss:gap-y-8 px-4 sm:pt-20 text-black">
-          <div className="col-span-2 text-white">
+          <div className="col-span-2 text-black">
             <img
               className="h-80 w-full object-contain"
               src={blog.imageCloudUrl}
@@ -57,7 +57,7 @@ const BlogContent = () => {
             </div>
           </div>
 
-          <div className="items-center w-full bg-zinc-900 rounded-xl drop-shadow-md py-5 max-h-[250px]">
+          <div className="items-center w-full bg-gray-300 rounded-xl drop-shadow-md py-5 max-h-[250px]">
             <div>
               <a href={`/profile/${blog.author.id}`} className="flex justify-center">
                 <img
@@ -66,10 +66,10 @@ const BlogContent = () => {
                   alt="Author"
                 />
               </a>
-              <h1 className="font-bold text-2xl text-center text-white pt-3">
+              <h1 className="font-bold text-2xl text-center text-black pt-3">
                 {blog.author.name}
               </h1>
-              <p className="text-center text-white font-medium">
+              <p className="text-center text-black font-medium">
                 {blog.author.email}
               </p>
             </div>

@@ -11,15 +11,31 @@ const BlogItem = ({ blog, setBlogs }) => {
   const [isSaved, setIsSaved] = useState(blog.saved || false);
 
   return (
-    <div className="bg-[#1c1f26] rounded-xl overflow-hidden drop-shadow-md border border-gray-600 relative">
-      <Link to={`/blog/${blog.id}`}>
+    <div className="relative flex items-center bg-white rounded-lg hover:shadow-md hover:scale-[1.02] transition transform duration-300  overflow-hidden">
+      {/* Image on the left */}
+      
+      <div className="flex-shrink-0 w-1/4 h-36">
         <img
-          className="h-56 w-full object-cover"
+          className="w-full h-full object-cover rounded-l-lg"
           src={blog.imageCloudUrl}
           alt="Blog cover"
         />
-        {/* Like and Save buttons positioned on top of the image */}
-        <div className="absolute top-4 right-4 flex-col space-y-3 z-10">
+      </div>
+
+      {/* Content area */}
+      <div className="flex-1 p-4 flex flex-col justify-between">
+        {/* Save Button at top-right */}
+        <div className="absolute top-2 right-5">
+          <SaveButton
+            blog={blog}
+            setBlogs={setBlogs}
+            isSaved={isSaved}
+            setIsSaved={setIsSaved}
+          />
+        </div>
+
+        {/* Like Button at bottom-right */}
+        <div className="absolute bottom-2 right-2">
           <LikeButton
             blogId={blog.id}
             likes={likes}
@@ -28,25 +44,37 @@ const BlogItem = ({ blog, setBlogs }) => {
             setIsLiked={setIsLiked}
             setBlogs={setBlogs}
           />
-          <SaveButton
-            blog={blog}
-            setBlogs={setBlogs}
-            isSaved={isSaved}
-            setIsSaved={setIsSaved}
-          />
         </div>
-        <div className="p-4">
-          <h3 className="text-white font-bold text-2xl my-1 mb-10">{blog.title}</h3>    
-        </div>
-		<div className="absolute bottom-0 left-0 p-4 flex items-center space-x-3 bg-gradient-to-t from-black via-transparent to-transparent">
-      <img
-        className="w-8 h-8 rounded-full object-cover"
-        src={blog.author.profilePicture}
-        alt="Author"
-      />
-      <h1 className="font-bold text-lg text-white">{blog.author.name}</h1>
-    </div>
-      </Link>
+
+        {/* Blog content */}
+        <Link to={`/blog/${blog.id}`} className="flex-1">
+          {/* Category nằm trên cùng */}
+          <span className="text-xl font-medium text-gray-500 block mb-2">
+            {blog.category}
+          </span>
+
+          {/* Blog title */}
+          <h3 className="text-2xl font-semibold text-black truncate">
+            {blog.title}
+          </h3>
+
+          {/* Author and createdAt */}
+          <div className="flex items-center space-x-3 pt-2">
+            <img
+              className="w-6 h-6 rounded-full object-cover"
+              src={blog.author.profilePicture}
+              alt="Author"
+            />
+            <h1 className="text-xs font-medium text-black">
+              {blog.author.name}
+            </h1>
+            {/* Thêm ngày tạo blog */}
+            <span className="text-xs text-gray-500">
+              {new Date(blog.createdAt).toLocaleDateString("en-GB")}
+            </span>
+          </div>
+        </Link>
+      </div>
     </div>
   );
 };
@@ -56,9 +84,11 @@ BlogItem.propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string,
+    createdAt: PropTypes.string,
+    category: PropTypes.string,
     imageCloudUrl: PropTypes.string,
-    likeCnt: PropTypes.number, // Initial like count
-    liked: PropTypes.bool, // Initial liked state
+    likeCnt: PropTypes.number,
+    liked: PropTypes.bool,
     isSaved: PropTypes.bool,
     saved: PropTypes.bool,
     author: PropTypes.shape({
@@ -67,7 +97,7 @@ BlogItem.propTypes = {
       profilePicture: PropTypes.string,
     }),
   }).isRequired,
-  setBlogs: PropTypes.func.isRequired, // Function to update blogs list
+  setBlogs: PropTypes.func.isRequired,
 };
 
 export default BlogItem;

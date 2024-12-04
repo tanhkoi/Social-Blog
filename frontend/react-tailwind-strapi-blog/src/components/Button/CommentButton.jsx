@@ -149,15 +149,15 @@ const CommentButton = ({ blogId }) => {
   };
 
   return (
-    <div className="mt-8 px-4 bg-[#0E1217] border border-gray-600 rounded-lg p-6">
-      <h2 className="text-2xl text-white font-bold">Comments</h2>
+    <div className="mt-8 px-4 bg-white border border-gray-600 rounded-lg p-6">
+      <h2 className="text-2xl text-black font-bold">Comments</h2>
       <form onSubmit={handleCommentSubmit} className="mt-4">
         <input
           type="text"
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
           placeholder="Add a comment"
-          className="w-full p-2 bg-[#0E1217] text-white border border-gray-300 rounded-lg"
+          className="w-full p-2 bg-white text-black border border-gray-300 rounded-lg"
         />
         <button type="submit" className="hidden">
           Submit
@@ -168,14 +168,14 @@ const CommentButton = ({ blogId }) => {
         {comments.map((comment) => (
           <div
             key={comment.id}
-            className="text-white p-2 rounded-md flex justify-between items-center border border-gray-700 shadow-sm"
+            className="text-black p-2 rounded-md flex justify-between items-center border border-gray-700 shadow-sm"
           >
             <div>
-              <p className="text-lg font-bold text-white">{comment.user.name}</p>
+              <p className="text-lg font-bold text-black">{comment.user.name}</p>
               <p className="text-justify mr-4">{comment.content}</p>
             </div>
             <div className="flex space-x-4 items-center relative">
-              <p className="text-sm text-white text-right">{comment.createdAt}</p>
+              <p className="text-sm text-black text-right">{comment.createdAt}</p>
               <div
                 onClick={() => handleToggleLike(comment.id, comment.liked)}
                 className={`flex items-center space-x-1 cursor-pointer ${comment.liked ? "text-red-500" : "hover:text-red-500"
@@ -185,24 +185,24 @@ const CommentButton = ({ blogId }) => {
               </div>
               <button
                 onClick={() => toggleDropdown(comment.id)}
-                className="text-white bg-[#0E1217] border-[#0E1217] hover:text-gray-400 focus:outline-none"
+                className="text-black bg-white border-white hover:text-gray-400 focus:outline-none"
               >
                 <FaEllipsisV />
               </button>
               {activeCommentId === comment.id && (
                 <div
                   ref={menuRef}
-                  className="bg-[#0E1217] absolute right-0 text-white mt-20 w-40 z-50"
+                  className="bg-white absolute right-0 text-black mt-20 w-40 z-50"
                 >
-                  <div className="border border-gray-600 rounded-xl ">
+                  <div className="border border-gray-600 rounded-xl">
                     <button
                       onClick={() => handleDeleteComment(comment.id)}
-                      className="mx-4 py-2 bg-[#0E1217]  border-[#0E1217] hover:bg-[#0E1217]"
+                      className="mx-4 py-2 text-black bg-white  border-white hover:bg-white"
                     >
                       Delete comment
                     </button>
                     <button
-                      className="mx-4 py-2 bg-[#0E1217] border-[#0E1217] hover:bg-[#0E1217]"
+                      className="mx-4 py-2 text-black bg-white border-white hover:bg-white"
                     >
                       Report comment
                     </button>
