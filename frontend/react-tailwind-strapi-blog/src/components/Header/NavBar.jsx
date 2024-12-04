@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { menu, close, logo } from "../../assets";
 import { useNavigate, Link } from "react-router-dom";
 import SearchResults from "./SearchResults";
+import NotificationDropdown from "../Notification/NotificationDropdown";
 
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
@@ -10,7 +11,7 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
-  const dropdownRef = useRef(null); // Thêm ref cho dropdown
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -18,7 +19,7 @@ const Navbar = () => {
     const profilePicture = localStorage.getItem("profilePicture");
     const userId = localStorage.getItem("userId");
     if (token && username) {
-      setUser({ username, profilePicture,userId });
+      setUser({ username, profilePicture, userId });
     } else {
       setUser(null);
     }
@@ -124,6 +125,7 @@ const Navbar = () => {
             >
               New Post
             </button>
+
           )}
           {user ? (
             <>
@@ -146,8 +148,8 @@ const Navbar = () => {
                   className="absolute right-0 mt-12 w-40 rounded-xl bg-white border border-gray-600 shadow-lg z-20 transform translate-x-6"
                 >
                   <button
-                    onClick={() => navigate(`/profile/${user.userId}`)} 
-                    className="block px-4 py-2 text-left w-full rounded-xl bg-white text-black border-white hover:bg-white"
+                    onClick={() => navigate(`/profile/${user.userId}`)}
+                    className="block px-4 py-2 text-left w-full rounded-xl bg-[#0E1217] text-white border-[#0E1217] hover:bg-[#0E1217]"
                   >
                     Profile
                   </button>
@@ -165,6 +167,7 @@ const Navbar = () => {
                   </button>
                 </div>
               )}
+              <NotificationDropdown />
             </>
           ) : (
             <>
