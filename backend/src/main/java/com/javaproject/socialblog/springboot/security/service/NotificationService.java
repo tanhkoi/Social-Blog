@@ -7,7 +7,7 @@ import java.util.List;
 public interface NotificationService {
     Notification createNotification(String userId, String title, String message);
 
-    void createNewPostNotification(String id, String userId, String title, String message);
+    void createNewPostNotification(String userId, String postId, String title, String message);
 
     List<Notification> getNotifications(boolean unreadOnly);
 
