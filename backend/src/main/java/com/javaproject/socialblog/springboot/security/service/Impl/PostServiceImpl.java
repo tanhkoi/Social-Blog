@@ -142,12 +142,16 @@ public class PostServiceImpl implements PostService {
         User currUser = userService.findByUsername(username);
         post.setAuthor(currUser); // Set curr user
 
+        postRepository.save(post);
+
+        System.out.println(post.getId());
+
         // todo: create a new post notification for all followers
         for (Follow fl : currUser.getFollowers()) {
-            notificationService.createNewPostNotification(post.getId(), fl.getUser(),"New post", "New post from " + currUser.getName());
+            notificationService.createNewPostNotification(fl.getUser(), post.getId(), "New post", "New post from " + currUser.getName());
         }
 
-        return postRepository.save(post);
+        return post;
 
     }
 

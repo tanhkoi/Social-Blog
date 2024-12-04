@@ -26,9 +26,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void createNewPostNotification(String id, String userId, String title, String message) {
-        Notification notification = new Notification(userId, title, message);
-        notification.setId(id);
+    public void createNewPostNotification(String userId, String postId, String title, String message) {
+        Notification notification = new Notification(userId, postId, title, message);
         notificationRepository.save(notification);
     }
 
