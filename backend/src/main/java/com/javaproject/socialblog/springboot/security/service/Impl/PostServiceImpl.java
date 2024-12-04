@@ -1,14 +1,12 @@
 package com.javaproject.socialblog.springboot.security.service.Impl;
 
-import com.javaproject.socialblog.springboot.model.Comment;
-import com.javaproject.socialblog.springboot.model.LikeType;
-import com.javaproject.socialblog.springboot.model.Post;
-import com.javaproject.socialblog.springboot.model.User;
+import com.javaproject.socialblog.springboot.model.*;
 import com.javaproject.socialblog.springboot.repository.BookmarkRepository;
 import com.javaproject.socialblog.springboot.repository.LikeRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.dto.PostRequest;
 import com.javaproject.socialblog.springboot.security.dto.PostResponse;
+import com.javaproject.socialblog.springboot.security.service.NotificationService;
 import com.javaproject.socialblog.springboot.security.service.PostService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -37,6 +38,8 @@ public class PostServiceImpl implements PostService {
     private final LikeRepository likeRepository;
 
     private final BookmarkRepository bookmarkRepository;
+
+    private final NotificationService notificationService;
 
     @Override
     public Page<PostResponse> getUserPosts(String id, Pageable pageable) {
@@ -138,6 +141,11 @@ public class PostServiceImpl implements PostService {
 
         User currUser = userService.findByUsername(username);
         post.setAuthor(currUser); // Set curr user
+
+        // todo: create a new post notification for all followers
+        for (Follow fl : currUser.getFollowers()) {
+            notificationService.createNewPostNotification(post.getId(), fl.getUser(),"New post", "New post from " + currUser.getName());
+        }
 
         return postRepository.save(post);
 
