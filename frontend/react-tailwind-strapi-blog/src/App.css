@@ -51,7 +51,7 @@
   position: absolute; 
   width: 170%;
   top: 100%; 
-  left: -35%; 
+  left: -33%; 
   right: 0;
   padding: 1rem;
   max-height: 400px;
@@ -61,7 +61,7 @@
 .searchBar {
   width: 170%;
   position: relative; 
-  left: -35%; 
+  left: -33%; 
 }
 
 .searchBar input {

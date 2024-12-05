@@ -23,7 +23,7 @@ const TagPage = () => {
   }, []);
 
   return (
-    <div className="bg-[#0E1217] min-h-screen text-white">
+    <div className="bg-white min-h-screen text-black">
       <header>
         <NavBar />
       </header>
@@ -36,7 +36,7 @@ const TagPage = () => {
             <h2 className="text-2xl font-bold mb-4 mt-20">Tags</h2>
             {isLoading ? (
               <div className="flex justify-center items-center min-h-[50vh]">
-                <p className="text-white text-lg">Loading...</p>
+                <p className="text-black text-lg">Loading...</p>
               </div>
             ) : (
               <div className="flex flex-wrap gap-4">
@@ -44,7 +44,7 @@ const TagPage = () => {
                   <Link
                     key={index}
                     to={`/category/${category}`}
-                    className="bg-gray-700 text-white px-4 py-2 rounded-full w-1/5"
+                    className=" text-black px-4 py-2 rounded-full w-1/5"
                   >
                     #{category}
                   </Link>

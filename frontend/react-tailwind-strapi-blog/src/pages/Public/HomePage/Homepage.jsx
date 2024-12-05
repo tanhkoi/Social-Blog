@@ -123,11 +123,21 @@ const Homepage = () => {
         <div className="ml-60 flex-grow">
           {/* Banner Section - only show on the first page */}
           {currentPage === 0 && (
-            <div className="flex flex-col items-start p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-8">
-              <h1 className="text-6xl font-bold text-blue-700 mb-6">
+            <div
+              className="flex flex-col  justify-center p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-8"
+              style={{ width: "1300px", height: "515px" }}
+            >
+              <h1
+                className="text-6xl font-bold mb-6 text-start"
+                style={{
+                  background: "linear-gradient(to right, #1A2D5A, #4CA4D8)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
                 Diverse Perspectives of the Young Generation in Vietnam
               </h1>
-              <p className="text-4xl font-bold text-zinc-700 mb-6">
+              <p className="text-4xl font-bold text-zinc-700  text-start">
                 Write - Share - Connect - Reflect
                 <br />
                 All at CWTS

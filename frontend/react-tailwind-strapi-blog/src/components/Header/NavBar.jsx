@@ -149,7 +149,7 @@ const Navbar = () => {
                 >
                   <button
                     onClick={() => navigate(`/profile/${user.userId}`)}
-                    className="block px-4 py-2 text-left w-full rounded-xl bg-[#0E1217] text-white border-[#0E1217] hover:bg-[#0E1217]"
+                    className="block px-4 py-2 text-left w-full rounded-xl bg-white text-black border-white hover:bg-white"
                   >
                     Profile
                   </button>
