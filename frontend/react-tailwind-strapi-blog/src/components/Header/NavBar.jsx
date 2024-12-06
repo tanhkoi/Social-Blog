@@ -34,10 +34,13 @@ const Navbar = () => {
   };
 
   const handleNavClick = (path) => {
-    navigate(path);
-    setToggle(false);
+    if (path === "/" && window.location.pathname === "/") {
+      window.location.reload(); 
+    } else {
+      navigate(path);
+      setToggle(false);
+    }
   };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("savedPosts");

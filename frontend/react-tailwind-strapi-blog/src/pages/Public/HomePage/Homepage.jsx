@@ -110,7 +110,7 @@ const Homepage = () => {
       {/* Header */}
       <header className="fixed text-black top-0 left-0 w-full bg-black z-50">
         <NavBar setSearchTerm={setSearchTerm} />
-        resetPage={() => setCurrentPage(0)} 
+        resetPage={() => setCurrentPage(0)}
       </header>
 
       {/* Sidebar and Content */}
@@ -181,8 +181,9 @@ const Homepage = () => {
           ) : (
             <>
               {/* Most Liked Blogs - Only show on the first page */}
-              {currentPage === 0 && (
+              {!loading && currentPage === 0 && (
                 <>
+                  {/* Most Liked Blogs */}
                   <h2 className="text-3xl font-bold text-black mb-5 px-10">
                     POPULAR BLOG
                   </h2>
@@ -191,7 +192,7 @@ const Homepage = () => {
                       <Link
                         to={`/blog/${blog.id}`} // Điều hướng đến trang chi tiết blog
                         key={blog.id}
-                        className="flex items-center   bg-white rounded-lg hover:shadow-md hover:scale-[1.02] transition transform duration-300 h-36"
+                        className="flex items-center bg-white rounded-lg hover:shadow-md hover:scale-[1.02] transition transform duration-300 h-36"
                         style={{ width: "580px", height: "141px" }}
                       >
                         {/* Image on the left */}
@@ -204,7 +205,7 @@ const Homepage = () => {
                         </div>
                         {/* Title and details on the right */}
                         <div className="flex-1 px-4 flex flex-col justify-center space-y-2">
-                          <span className="text-xl  text-gray-500">
+                          <span className="text-xl text-gray-500">
                             {blog.category}
                           </span>
                           <h2 className="text-2xl font-semibold text-black truncate">
@@ -224,20 +225,20 @@ const Homepage = () => {
                       </Link>
                     ))}
                   </div>
+
+                  {/* Banner Section */}
+                  <div className="mt-8 flex flex-col items-center">
+                    <img
+                      src="https://img.freepik.com/free-psd/horizontal-banner-template-techno-store_23-2148979527.jpg?t=st=1733290054~exp=1733293654~hmac=db36f9214353c62a8ba1d049ba2961f1a5ed0c65b8b8a0ac2f4c2e1b11b6a6b0&w=1380"
+                      alt="Technology horizontal banner template"
+                      className="rounded-lg shadow-lg"
+                      style={{ maxWidth: "80%", height: "auto" }}
+                    />
+                    <h2 className="text-3xl text-start font-bold text-black mt-7 ml-10">
+                      ALL BLOG
+                    </h2>
+                  </div>
                 </>
-              )}
-              {currentPage === 0 && (
-                <div className="mt-8  flex flex-col items-center">
-                  <img
-                    src="https://img.freepik.com/free-psd/horizontal-banner-template-techno-store_23-2148979527.jpg?t=st=1733290054~exp=1733293654~hmac=db36f9214353c62a8ba1d049ba2961f1a5ed0c65b8b8a0ac2f4c2e1b11b6a6b0&w=1380"
-                    alt="Technology horizontal banner template"
-                    className="rounded-lg shadow-lg"
-                    style={{ maxWidth: "80%", height: "auto" }}
-                  />
-                  <h2 className="text-3xl text-start font-bold text-black mt-7 ml-10">
-                    ALL BLOG
-                  </h2>
-                </div>
               )}
 
               <BlogList blogs={filteredBlogs} setBlogs={setBlogs} />
