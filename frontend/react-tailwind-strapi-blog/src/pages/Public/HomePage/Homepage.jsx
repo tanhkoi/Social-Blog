@@ -110,6 +110,7 @@ const Homepage = () => {
       {/* Header */}
       <header className="fixed text-black top-0 left-0 w-full bg-black z-50">
         <NavBar setSearchTerm={setSearchTerm} />
+        resetPage={() => setCurrentPage(0)} 
       </header>
 
       {/* Sidebar and Content */}

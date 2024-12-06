@@ -11,6 +11,7 @@ import SearchResults from "./Header/SearchResults";
 import SocialIcons from "./Icon/SocialIcons";
 import SideBar from "./Sidebar/SideBar";
 import Support from "./Support/Support";
+import SnowfallEffect  from "./Support/SnowfallEffect ";
 
 
 export {
@@ -26,5 +27,6 @@ export {
     SearchResults,
     SocialIcons,
     SideBar,
-    Support
+    Support,
+    SnowfallEffect 
 };
