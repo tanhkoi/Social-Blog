@@ -18,6 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -49,6 +53,22 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
 
     private final ModelMapper modelMapper;
+
+    private final MongoTemplate mongoTemplate;
+
+    @Override
+    public List<UserPostCount> getTopAuthors() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.group("author.$id")
+                        .count().as("postCount"),
+                Aggregation.sort(Sort.Direction.DESC, "postCount"),
+                Aggregation.limit(5),
+                Aggregation.lookup("users", "_id", "_id", "userDetails")
+        );
+
+        AggregationResults<UserPostCount> results = mongoTemplate.aggregate(aggregation, "posts", UserPostCount.class);
+        return results.getMappedResults();
+    }
 
     @Override
     public User findByUsername(String username) {
