@@ -24,7 +24,7 @@ const BlogList = ({ blogs, setBlogs, layout }) => {
         className="flex items-center cursor-pointer bg-white border border-gray-600 rounded-full w-fit mt-5 mb-5"
       >
         <div
-          className={`flex justify-center items-center bg-white rounded-l-3xl w-12 h-10 transition-all duration-300 ${
+          className={`flex justify-center items-center bg-blue-400 rounded-l-3xl w-12 h-10 transition-all duration-300 ${
             currentLayout === "list" ? "bg-blue-400" : "bg-transparent"
           }`}
         >
@@ -35,7 +35,7 @@ const BlogList = ({ blogs, setBlogs, layout }) => {
         <div className="bg-gray-500 w-0.5 h-10 rounded-full "></div>
 
         <div
-          className={`flex justify-center items-center bg-white rounded-r-3xl w-12 h-10 transition-all duration-300 ${
+          className={`flex justify-center items-center bg-blue-400 rounded-r-3xl w-12 h-10 transition-all duration-300 ${
             currentLayout === "grid" ? "bg-blue-400" : "bg-transparent"
           }`}
         >
