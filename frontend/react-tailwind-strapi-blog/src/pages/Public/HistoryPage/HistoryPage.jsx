@@ -51,7 +51,7 @@ const ReadingHistory = () => {
   };
 
   return (
-    <div className="bg-zinc-900 min-h-screen text-white"> 
+    <div className="bg-white min-h-screen text-black"> 
       <header>
         <NavBar />
       </header>
@@ -71,7 +71,7 @@ const ReadingHistory = () => {
                   value={searchTerm}
                   onChange={handleSearchChange}
                   placeholder="Search blog..."
-                  className="bg-zinc-900 rounded px-4 py-2 pl-10 pr-4" 
+                  className="bg-white rounded px-4 py-2 pl-10 pr-4" 
                 />
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
 

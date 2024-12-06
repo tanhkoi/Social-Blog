@@ -20,8 +20,7 @@ import ProfilePage from "./pages/Public/AccountPage/ProfilePage";
 import TagPage from "./pages/Public/TagPage/TagPage";
 import TagList from "./pages/Public/TagPage/TagList";
 import PopularPage from "./pages/Public/PopularPage/PopularPage";
-
-
+import SnowfallEffect from "./components/Support/SnowfallEffect";
 
 import {
   CategoriesPage,
@@ -61,6 +60,7 @@ const AdminLayout = () => {
 const App = () => {
   return (
     <>
+      <SnowfallEffect />
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Homepage />} />

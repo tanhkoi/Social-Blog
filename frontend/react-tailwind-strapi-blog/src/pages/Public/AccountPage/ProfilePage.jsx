@@ -28,13 +28,16 @@ const ProfilePage = () => {
 
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `http://localhost:8080/api/users/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -50,13 +53,16 @@ const ProfilePage = () => {
 
     const fetchMyPosts = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/posts/${userId}-posts`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `http://localhost:8080/api/posts/${userId}-posts`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -78,11 +84,14 @@ const ProfilePage = () => {
   const fetchFollowers = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:8080/api/follows/${userId}/followers`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/follows/${userId}/followers`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         setFollowers(await response.json());
@@ -95,11 +104,14 @@ const ProfilePage = () => {
   const fetchFollowing = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:8080/api/follows/${userId}/following`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/follows/${userId}/following`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         setFollowing(await response.json());
@@ -111,19 +123,19 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-[#0E1217]">
-        <p className="text-white text-xl">Loading...</p>
+      <div className="flex justify-center items-center h-screen bg-white">
+        <p className="text-black text-xl">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#0E1217] min-h-screen text-white">
+    <div className="bg-white min-h-screen text-black">
       <header>
         <NavBar />
       </header>
       <main className="flex">
-        <aside className="w-60 h-screen fixed top-0 left-0 bg-[#0E1217] border-r border-gray-600">
+        <aside className="w-60 h-screen fixed top-0 left-0 bg-white border-r border-gray-600">
           <SideBar />
         </aside>
         <div className="flex-grow ml-60 p-4">
@@ -137,7 +149,9 @@ const ProfilePage = () => {
               )}
             </div>
             <div className="lg:w-1/4 bg-card p-4 rounded-lg border border-gray-600">
-              <h1 className="text-3xl font-bold mb-5 mt-20 text-center">Profile</h1>
+              <h1 className="text-3xl font-bold mb-5 mt-20 text-center">
+                Profile
+              </h1>
               <div className="flex flex-col items-center mt-2">
                 <div className="w-32 h-32 bg-zinc-300 rounded-full overflow-hidden mb-4">
                   {user?.profilePicture ? (
@@ -150,7 +164,9 @@ const ProfilePage = () => {
                     <div className="w-full h-full bg-gray-400 rounded-full" />
                   )}
                 </div>
-                <p className="font-medium text-2xl text-center">{user?.name || "Guest"}</p>
+                <p className="font-medium text-2xl text-center">
+                  {user?.name || "Guest"}
+                </p>
                 <FollowButton
                   userId={userId}
                   isFollowing={isFollowing}
@@ -162,11 +178,10 @@ const ProfilePage = () => {
                     }));
                   }}
                 />
-
               </div>
               <p className="mt-2">
                 <button
-                  className="mt-4 bg-[#0E1217] border border-[#0E1217] text-white px-4 py-2 rounded hover:underline focus:outline-none"
+                  className="mt-4 bg-white border border-white text-black px-4 py-2 rounded hover:underline focus:outline-none"
                   onClick={() => {
                     setIsFollowersModalOpen(true);
                     fetchFollowers();
@@ -176,7 +191,7 @@ const ProfilePage = () => {
                 </button>
                 •
                 <button
-                  className="mt-4 bg-[#0E1217] border border-[#0E1217] text-white px-4 py-2 rounded hover:underline focus:outline-none"
+                  className="mt-4 bg-white border border-white text-black px-4 py-2 rounded hover:underline focus:outline-none"
                   onClick={() => {
                     setIsFollowingModalOpen(true);
                     fetchFollowing();
@@ -185,6 +200,13 @@ const ProfilePage = () => {
                   {user?.followingNumber} Following
                 </button>
               </p>
+              <div className="mt-4 text-start text-lg text-black">
+                <p>Invite friends</p>
+                <p className="text-md text-black">
+                  Invite other developers to discover how easy it is to stay
+                  updated with CWTS
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -208,8 +230,28 @@ const ProfilePage = () => {
 };
 
 const Modal = ({ title, onClose, items }) => (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-black rounded-lg p-4 w-96 max-h-96 overflow-y-auto">
+  <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white border border-gray-600 rounded-lg p-4 w-96 max-h-96 overflow-y-auto relative">
+      <button
+        className="absolute top-2 right-2 text-red-600 hover:text-gray-800 bg-white border-white"
+        onClick={onClose}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
       <h2 className="text-lg font-bold mb-4">{title}</h2>
       <ul>
         {items.map((item) => (
@@ -225,18 +267,10 @@ const Modal = ({ title, onClose, items }) => (
                 <div className="w-full h-full bg-gray-500 rounded-full" />
               )}
             </div>
-            {/* User Name */}
             <span className="ml-2">{item.name}</span>
           </li>
         ))}
       </ul>
-
-      <button
-        className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-        onClick={onClose}
-      >
-        Close
-      </button>
     </div>
   </div>
 );

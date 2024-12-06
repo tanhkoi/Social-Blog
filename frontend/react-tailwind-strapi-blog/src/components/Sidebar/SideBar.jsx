@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const SideBar = () => {
   return (
-    <aside className="w-60 h-screen bg-[#0E1217] text-white p-4 flex flex-col justify-center  rounded-lg drop-shadow-lg fixed border-r border-gray-600">
+    <aside className="w-60 h-screen bg-white text-black p-4 flex flex-col justify-center  rounded-lg drop-shadow-lg fixed border-r border-gray-600">
       <ul className="space-y-6">
         <li>
           <Link to="/saved" className="hover:text-zinc-400 text-lg font-bold">Bookmarks</Link>
