@@ -26,4 +26,7 @@ public interface UserService {
     User authenticateWithGoogle(String token);
 
     List<User> getUsers();
+
+    List<UserPostCount> getTopAuthors();
+
 }
