@@ -1,6 +1,7 @@
 package com.javaproject.socialblog.springboot.controller;
 
 import com.javaproject.socialblog.springboot.model.User;
+import com.javaproject.socialblog.springboot.security.dto.UserPostCount;
 import com.javaproject.socialblog.springboot.security.dto.UserRequest;
 import com.javaproject.socialblog.springboot.security.dto.UserResponse;
 import com.javaproject.socialblog.springboot.security.service.UserService;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,5 +56,15 @@ public class UserController {
     )
     public ResponseEntity<User> updateUser(@RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.updateUser(userRequest));
+    }
+
+    @GetMapping("/most-posts")
+    @Operation(
+            summary = "Get user with most posts",
+            description = "Fetches the details of the user with the highest number of posts.",
+            tags = "User Service"
+    )
+    public ResponseEntity<List<UserPostCount>> getUserByMostPost() {
+        return ResponseEntity.ok(userService.getTopAuthors());
     }
 }

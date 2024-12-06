@@ -143,8 +143,8 @@ public class PostController {
             description = "List posts based on most likes.",
             tags = "Post Service"
     )
-    public List<PostResponse> getPostsByMostLikes() {
-        return postService.getPostsByMostLikes();
+    public ResponseEntity<List<PostResponse>> getPostsByMostLikes() {
+        return ResponseEntity.ok(postService.getPostsByMostLikes());
     }
 
 }
