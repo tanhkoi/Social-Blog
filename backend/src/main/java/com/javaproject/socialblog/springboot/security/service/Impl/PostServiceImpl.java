@@ -135,7 +135,8 @@ public class PostServiceImpl implements PostService {
 
         if (postDetail.getImageCloudUrl().isBlank())
             post.setImageCloudUrl("https://img.freepik.com/free-vector/hand-drawn-flat-design-digital-detox-illustration_23-2149332264.jpg");
-
+        else
+            post.setImageCloudUrl(postDetail.getImageCloudUrl());
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
 
