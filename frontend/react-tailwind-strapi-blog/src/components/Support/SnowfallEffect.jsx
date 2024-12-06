@@ -14,32 +14,48 @@ const SnowfallEffect = () => {
     canvas.height = height;
 
     // Tạo một mảng snowflake
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 20; i++) {
       snowflakes.push({
         x: Math.random() * width, // Vị trí ngang ngẫu nhiên
         y: Math.random() * height, // Vị trí dọc ngẫu nhiên
-        radius: Math.random() * 4 + 1, // Kích thước bông tuyết
-        speedY: Math.random() * 1 + 0.5, // Tốc độ rơi
+        radius: Math.random() * 3 + 4, // Kích thước hoa tuyết
+        speedY: Math.random() *  0.5, // Tốc độ rơi
         speedX: Math.random() * 0.5 - 0.25, // Tốc độ gió
       });
     }
+
+    // Vẽ hoa tuyết với nhiều cánh
+    const drawSnowflake = (x, y, radius) => {
+      ctx.save();
+      ctx.translate(x, y); // Dịch chuyển tâm để vẽ từ giữa bông hoa tuyết
+
+      // Vẽ các cánh hoa tuyết
+      ctx.strokeStyle = "#ADD8E6"; // Màu xanh nhạt
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 8; i++) { // 6 cánh hoa tuyết
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, -radius); // Vẽ một cánh hoa
+        ctx.stroke();
+        ctx.rotate(Math.PI / 3); // Xoay 60 độ để tạo thành cánh hoa
+      }
+
+      ctx.restore();
+    };
 
     const animate = () => {
       // Xóa canvas
       ctx.clearRect(0, 0, width, height);
 
-      // Vẽ từng bông tuyết
+      // Vẽ từng bông hoa tuyết
       snowflakes.forEach((snowflake) => {
-        ctx.beginPath();
-        ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "white";
-        ctx.fill();
+        drawSnowflake(snowflake.x, snowflake.y, snowflake.radius);
 
         // Cập nhật vị trí
         snowflake.y += snowflake.speedY;
         snowflake.x += snowflake.speedX;
 
-        // Khi bông tuyết ra khỏi màn hình, đặt lại vị trí
+        // Khi hoa tuyết ra khỏi màn hình, đặt lại vị trí
         if (snowflake.y > height) snowflake.y = -snowflake.radius;
         if (snowflake.x > width) snowflake.x = -snowflake.radius;
         if (snowflake.x < -snowflake.radius) snowflake.x = width + snowflake.radius;
