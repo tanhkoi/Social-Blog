@@ -126,7 +126,7 @@ const Homepage = () => {
           {currentPage === 0 && (
             <div
               className="flex flex-col  justify-center p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-8"
-              style={{ width: "1300px", height: "515px" }}
+              style={{ width: "1273px", height: "515px" }}
             >
               <h1
                 className="text-6xl font-bold mb-6 text-start"
@@ -192,7 +192,7 @@ const Homepage = () => {
                       <Link
                         to={`/blog/${blog.id}`} // Điều hướng đến trang chi tiết blog
                         key={blog.id}
-                        className="flex items-center bg-white rounded-lg hover:shadow-md hover:scale-[1.02] transition transform duration-300 h-36"
+                        className="flex items-center bg-white rounded-lg hover:shadow-xl hover:scale-[1.02] transition transform duration-300 h-36"
                         style={{ width: "580px", height: "141px" }}
                       >
                         {/* Image on the left */}
@@ -241,7 +241,7 @@ const Homepage = () => {
                 </>
               )}
 
-              <BlogList blogs={filteredBlogs} setBlogs={setBlogs} />
+              <BlogList blogs={filteredBlogs} setBlogs={setBlogs} layout="grid" />
               <div className="flex justify-center mt-5">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}

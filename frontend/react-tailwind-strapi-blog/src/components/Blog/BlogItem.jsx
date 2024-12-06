@@ -11,7 +11,7 @@ const BlogItem = ({ blog, setBlogs }) => {
   const [isSaved, setIsSaved] = useState(blog.saved || false);
 
   return (
-    <div className="relative flex items-center bg-white rounded-lg hover:shadow-md hover:scale-[1.02] transition transform duration-300  overflow-hidden">
+    <div className="relative flex items-center bg-white rounded-lg hover:shadow-xl hover:scale-[1.02] transition transform duration-300 h-36 overflow-hidden">
       {/* Image on the left */}
       
       <div className="flex-shrink-0 w-1/4 h-36">
