@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import NavBar from "../../../components/Header/NavBar";
 import SideBar from "../../../components/Sidebar/SideBar";
+import BlogList from "../../../components/Blog/BlogList"; // Đảm bảo bạn đã import BlogList
 
 const TagList = () => {
   const { categoryName } = useParams(); // Lấy category từ URL
@@ -27,7 +28,7 @@ const TagList = () => {
   }, [categoryName]);
 
   return (
-    <div className="bg-[#0E1217] min-h-screen text-white">
+    <div className="bg-white min-h-screen text-black">
       <header>
         <NavBar />
       </header>
@@ -44,17 +45,7 @@ const TagList = () => {
               {isLoading ? (
                 <p>Loading...</p> // Hiển thị "Loading..." khi đang tải dữ liệu
               ) : (
-                blogs.map((blog) => (
-                    <Link
-                    key={blog.id} // Thêm key cho Link
-                    to={`/blog/${blog.id}`} // Tạo liên kết đến trang chi tiết của bài blog
-                  >
-                    <div className="bg-[#1c1f26] p-4 mb-2 ">
-                      <h3 className="text-xl font-semibold">{blog.title}</h3>
-                      <p>{blog.excerpt}</p>
-                    </div>
-                  </Link>
-                ))
+                <BlogList blogs={blogs} setBlogs={setBlogs} layout="grid" />
               )}
             </div>
           </div>

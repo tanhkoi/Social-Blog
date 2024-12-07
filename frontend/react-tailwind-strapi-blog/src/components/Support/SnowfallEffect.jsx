@@ -13,42 +13,50 @@ const SnowfallEffect = () => {
     canvas.width = width;
     canvas.height = height;
 
-    // Tạo một mảng snowflake
-    for (let i = 0; i < 100; i++) {
+    // Tạo mảng snowflake
+    for (let i = 0; i < 20; i++) {
       snowflakes.push({
         x: Math.random() * width, // Vị trí ngang ngẫu nhiên
         y: Math.random() * height, // Vị trí dọc ngẫu nhiên
-        radius: Math.random() * 4 + 1, // Kích thước bông tuyết
+        size: Math.random() * 15 + 10, // Kích thước hoa tuyết nhỏ lại
         speedY: Math.random() * 1 + 0.5, // Tốc độ rơi
         speedX: Math.random() * 0.5 - 0.25, // Tốc độ gió
       });
     }
 
-    const animate = () => {
-      // Xóa canvas
-      ctx.clearRect(0, 0, width, height);
+    const snowflakeImage = new Image();
+    snowflakeImage.src = "src/assets/snowflake.svg"; // Đảm bảo đường dẫn đúng tới ảnh PNG với nền trong suốt
 
-      // Vẽ từng bông tuyết
-      snowflakes.forEach((snowflake) => {
-        ctx.beginPath();
-        ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "white";
-        ctx.fill();
+    snowflakeImage.onload = () => {
+      const animate = () => {
+        // Xóa canvas
+        ctx.clearRect(0, 0, width, height);
 
-        // Cập nhật vị trí
-        snowflake.y += snowflake.speedY;
-        snowflake.x += snowflake.speedX;
+        // Vẽ từng bông tuyết
+        snowflakes.forEach((snowflake) => {
+          ctx.drawImage(
+            snowflakeImage,
+            snowflake.x - snowflake.size / 2, // Căn chỉnh bông tuyết
+            snowflake.y - snowflake.size / 2, // Căn chỉnh bông tuyết
+            snowflake.size, // Điều chỉnh kích thước bông tuyết
+            snowflake.size // Điều chỉnh kích thước bông tuyết
+          );
 
-        // Khi bông tuyết ra khỏi màn hình, đặt lại vị trí
-        if (snowflake.y > height) snowflake.y = -snowflake.radius;
-        if (snowflake.x > width) snowflake.x = -snowflake.radius;
-        if (snowflake.x < -snowflake.radius) snowflake.x = width + snowflake.radius;
-      });
+          // Cập nhật vị trí
+          snowflake.y += snowflake.speedY;
+          snowflake.x += snowflake.speedX;
 
-      requestAnimationFrame(animate); // Lặp lại animation
+          // Khi hoa tuyết ra khỏi màn hình, đặt lại vị trí
+          if (snowflake.y > height) snowflake.y = -snowflake.size;
+          if (snowflake.x > width) snowflake.x = -snowflake.size;
+          if (snowflake.x < -snowflake.size) snowflake.x = width + snowflake.size;
+        });
+
+        requestAnimationFrame(animate); // Lặp lại animation
+      };
+
+      animate();
     };
-
-    animate();
 
     // Dọn dẹp khi component bị unmount
     return () => {

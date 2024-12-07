@@ -12,6 +12,7 @@ import SocialIcons from "./Icon/SocialIcons";
 import SideBar from "./Sidebar/SideBar";
 import Support from "./Support/Support";
 import SnowfallEffect  from "./Support/SnowfallEffect ";
+import TopAuthors  from "./Author/TopAuthors ";
 
 
 export {
@@ -28,5 +29,6 @@ export {
     SocialIcons,
     SideBar,
     Support,
-    SnowfallEffect 
+    SnowfallEffect,
+    TopAuthors
 };
