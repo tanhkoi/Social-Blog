@@ -51,7 +51,7 @@ const TopAuthors = () => {
 
   return (
     <div className="bg-[#F5F7FA]">
-      <h2 className="text-3xl font-bold ml-10 mt-5 mb-4 bg-[#F5F7FA]">
+      <h2 className="text-3xl font-bold ml-10 mt-10 mb-4 bg-[#F5F7FA]">
         Top 4 Authors with Most Blog Posts
       </h2>
       <div className="flex space-x-8 bg-[#F5F7FA]">

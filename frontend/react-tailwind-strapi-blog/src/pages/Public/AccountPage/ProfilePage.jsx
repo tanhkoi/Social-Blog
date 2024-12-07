@@ -6,6 +6,7 @@ import SideBar from "../../../components/Sidebar/SideBar";
 import "../../../App.css";
 import { useParams } from "react-router-dom";
 import FollowButton from "../../../components/Button/FollowButton";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const { userId } = useParams();
@@ -148,7 +149,7 @@ const ProfilePage = () => {
                 <p className="text-gray-400">No posts yet.</p>
               )}
             </div>
-            <div className="lg:w-1/4 bg-card p-4 rounded-lg border border-gray-600">
+            <div className="lg:w-1/4 lg:h-1/4 bg-card p-4 rounded-lg border border-gray-600">
               <h1 className="text-3xl font-bold mb-5 mt-20 text-center">
                 Profile
               </h1>
@@ -229,50 +230,85 @@ const ProfilePage = () => {
   );
 };
 
-const Modal = ({ title, onClose, items }) => (
-  <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-white border border-gray-600 rounded-lg p-4 w-96 max-h-96 overflow-y-auto relative">
-      <button
-        className="absolute top-2 right-2 text-red-600 hover:text-gray-800 bg-white border-white"
-        onClick={onClose}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
+const Modal = ({ title, onClose, items }) => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-      <h2 className="text-lg font-bold mb-4">{title}</h2>
-      <ul>
-        {items.map((item) => (
-          <li key={item.id} className="mb-2 flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
-              {item.profilePicture ? (
-                <img
-                  src={item.profilePicture}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-500 rounded-full" />
-              )}
-            </div>
-            <span className="ml-2">{item.name}</span>
-          </li>
-        ))}
-      </ul>
+  const handleProfileClick = async (authorId) => {
+    setLoading(true); // Bắt đầu loading
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 3000)); // Giả lập việc tải dữ liệu (bạn có thể thay bằng API thật)
+
+      // Sau khi loading xong, điều hướng đến trang profile
+      navigate(`/profile/${authorId}`);
+    } catch (error) {
+      console.error("Error while navigating:", error);
+    } finally {
+      setLoading(false); // Tắt loading
+      onClose(); // Đóng modal sau khi hoàn thành
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
+        <div className="absolute inset-0 bg-white opacity-75 flex items-center justify-center z-50">
+          <div className="loader">Loading...</div> {/* Hiển thị loading */}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white border border-gray-600 rounded-lg p-4 w-96 max-h-96 overflow-y-auto relative">
+        <button
+          className="absolute top-2 right-2 text-red-600 hover:text-gray-800 bg-white border-white"
+          onClick={onClose}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <h2 className="text-lg font-bold mb-4">{title}</h2>
+        <ul>
+          {items.map((item) => (
+            <li
+              key={item.id}
+              className="mb-2 flex items-center space-x-2 cursor-pointer"
+              onClick={() => handleProfileClick(item.id)}
+            >
+              <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden cursor-pointer">
+                {item.profilePicture ? (
+                  <img
+                    src={item.profilePicture}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-500 rounded-full" />
+                )}
+              </div>
+              <span className="ml-2">{item.name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default ProfilePage;
