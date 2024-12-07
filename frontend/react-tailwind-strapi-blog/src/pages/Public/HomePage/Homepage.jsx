@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../../../components/Header/NavBar";
 import SideBar from "../../../components/Sidebar/SideBar";
 import BlogList from "../../../components/Blog/BlogList";
+import TopAuthors from "../../../components/Author/TopAuthors";
 import { Link } from "react-router-dom";
 
 const Homepage = () => {
@@ -234,14 +235,18 @@ const Homepage = () => {
                       className="rounded-lg shadow-lg"
                       style={{ maxWidth: "80%", height: "auto" }}
                     />
-                    <h2 className="text-3xl text-start font-bold text-black mt-7 ml-10">
-                      ALL BLOG
-                    </h2>
                   </div>
                 </>
               )}
-
-              <BlogList blogs={filteredBlogs} setBlogs={setBlogs} layout="grid" />
+              <TopAuthors />
+              <h2 className="text-3xl font-bold text-black mt-7 ml-10">
+                ALL BLOG
+              </h2>
+              <BlogList
+                blogs={filteredBlogs}
+                setBlogs={setBlogs}
+                layout="grid"
+              />
               <div className="flex justify-center mt-5">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}

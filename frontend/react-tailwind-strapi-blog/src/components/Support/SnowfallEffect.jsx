@@ -13,58 +13,50 @@ const SnowfallEffect = () => {
     canvas.width = width;
     canvas.height = height;
 
-    // Tạo một mảng snowflake
+    // Tạo mảng snowflake
     for (let i = 0; i < 20; i++) {
       snowflakes.push({
         x: Math.random() * width, // Vị trí ngang ngẫu nhiên
         y: Math.random() * height, // Vị trí dọc ngẫu nhiên
-        radius: Math.random() * 3 + 4, // Kích thước hoa tuyết
-        speedY: Math.random() *  0.5, // Tốc độ rơi
+        size: Math.random() * 15 + 10, // Kích thước hoa tuyết nhỏ lại
+        speedY: Math.random() * 1 + 0.5, // Tốc độ rơi
         speedX: Math.random() * 0.5 - 0.25, // Tốc độ gió
       });
     }
 
-    // Vẽ hoa tuyết với nhiều cánh
-    const drawSnowflake = (x, y, radius) => {
-      ctx.save();
-      ctx.translate(x, y); // Dịch chuyển tâm để vẽ từ giữa bông hoa tuyết
+    const snowflakeImage = new Image();
+    snowflakeImage.src = "src/assets/snowflake.svg"; // Đảm bảo đường dẫn đúng tới ảnh PNG với nền trong suốt
 
-      // Vẽ các cánh hoa tuyết
-      ctx.strokeStyle = "#ADD8E6"; // Màu xanh nhạt
-      ctx.lineWidth = 2;
-      for (let i = 0; i < 8; i++) { // 6 cánh hoa tuyết
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(0, -radius); // Vẽ một cánh hoa
-        ctx.stroke();
-        ctx.rotate(Math.PI / 3); // Xoay 60 độ để tạo thành cánh hoa
-      }
+    snowflakeImage.onload = () => {
+      const animate = () => {
+        // Xóa canvas
+        ctx.clearRect(0, 0, width, height);
 
-      ctx.restore();
+        // Vẽ từng bông tuyết
+        snowflakes.forEach((snowflake) => {
+          ctx.drawImage(
+            snowflakeImage,
+            snowflake.x - snowflake.size / 2, // Căn chỉnh bông tuyết
+            snowflake.y - snowflake.size / 2, // Căn chỉnh bông tuyết
+            snowflake.size, // Điều chỉnh kích thước bông tuyết
+            snowflake.size // Điều chỉnh kích thước bông tuyết
+          );
+
+          // Cập nhật vị trí
+          snowflake.y += snowflake.speedY;
+          snowflake.x += snowflake.speedX;
+
+          // Khi hoa tuyết ra khỏi màn hình, đặt lại vị trí
+          if (snowflake.y > height) snowflake.y = -snowflake.size;
+          if (snowflake.x > width) snowflake.x = -snowflake.size;
+          if (snowflake.x < -snowflake.size) snowflake.x = width + snowflake.size;
+        });
+
+        requestAnimationFrame(animate); // Lặp lại animation
+      };
+
+      animate();
     };
-
-    const animate = () => {
-      // Xóa canvas
-      ctx.clearRect(0, 0, width, height);
-
-      // Vẽ từng bông hoa tuyết
-      snowflakes.forEach((snowflake) => {
-        drawSnowflake(snowflake.x, snowflake.y, snowflake.radius);
-
-        // Cập nhật vị trí
-        snowflake.y += snowflake.speedY;
-        snowflake.x += snowflake.speedX;
-
-        // Khi hoa tuyết ra khỏi màn hình, đặt lại vị trí
-        if (snowflake.y > height) snowflake.y = -snowflake.radius;
-        if (snowflake.x > width) snowflake.x = -snowflake.radius;
-        if (snowflake.x < -snowflake.radius) snowflake.x = width + snowflake.radius;
-      });
-
-      requestAnimationFrame(animate); // Lặp lại animation
-    };
-
-    animate();
 
     // Dọn dẹp khi component bị unmount
     return () => {
