@@ -124,7 +124,6 @@ const Homepage = () => {
         {/* Main Content */}
         <div className="ml-60 flex-grow">
           {/* Banner Section - only show on the first page */}
-          {currentPage === 0 && (
             <div
               className="flex flex-col  justify-center p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-8"
               style={{ width: "1273px", height: "515px" }}
@@ -145,8 +144,6 @@ const Homepage = () => {
                 All at CWTS
               </p>
             </div>
-          )}
-
           {/* Message Section */}
           {showMessage && (
             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
@@ -181,8 +178,6 @@ const Homepage = () => {
             </div>
           ) : (
             <>
-              {/* Most Liked Blogs - Only show on the first page */}
-              {!loading && currentPage === 0 && (
                 <>
                   {/* Most Liked Blogs */}
                   <h2 className="text-3xl font-bold text-black mb-5 px-10">
@@ -237,7 +232,7 @@ const Homepage = () => {
                     />
                   </div>
                 </>
-              )}
+              )
               <TopAuthors />
               <h2 className="text-3xl font-bold text-black mt-7 ml-10">
                 ALL BLOG

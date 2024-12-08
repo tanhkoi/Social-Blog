@@ -49,7 +49,7 @@
 
 .searchResultsContainer {
   position: absolute; 
-  width: 170%;
+  width: 165%;
   top: 100%; 
   left: -33%; 
   right: 0;
@@ -59,7 +59,7 @@
   z-index: 10; 
 }
 .searchBar {
-  width: 170%;
+  width: 165%;
   position: relative; 
   left: -33%; 
 }
@@ -91,7 +91,7 @@
 }
 
 .searchResultsContainer li:hover {
-  background-color: #2d3748; /* Hiệu ứng hover */
+  background-color: white; /* Hiệu ứng hover */
 }
 
 .searchResultsContainer li:last-child {
@@ -103,7 +103,7 @@
 }
 
 .searchResultsContainer::-webkit-scrollbar-thumb {
-  background-color: #2d3748; 
+  background-color: gray; 
   border-radius: 4px;
 }
 
@@ -112,7 +112,7 @@
 }
 
 .searchResultsContainer::-webkit-scrollbar-track {
-  background-color: #1a202c; 
+  background-color: white; 
 }
 
 .fixed {

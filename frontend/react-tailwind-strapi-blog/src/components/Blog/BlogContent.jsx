@@ -29,7 +29,7 @@ const BlogContent = () => {
       }
     };
 
-    fetchBlogData();
+    return () => fetchBlogData();
   }, [id]);
 
   if (!blog) {

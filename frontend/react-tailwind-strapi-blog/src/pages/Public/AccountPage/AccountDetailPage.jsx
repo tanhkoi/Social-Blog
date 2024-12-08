@@ -64,8 +64,17 @@ const AccountDetailPage = () => {
   }, [token, user.avatar, user.name, username]);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedUser({ ...editedUser, [name]: value });
+    const { name, value, files } = e.target;
+    if (name === "avatar" && files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        setEditedUser({ ...editedUser, avatar: reader.result }); // Base64 ảnh
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setEditedUser({ ...editedUser, [name]: value });
+    }
   };
 
   const handleSaveChanges = async () => {
@@ -118,14 +127,6 @@ const AccountDetailPage = () => {
       });
     }
     navigate("/");
-  };
-
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setEditedUser({ ...editedUser, avatar: imageUrl });
-    }
   };
 
   const handleGoHome = () => {
@@ -184,10 +185,20 @@ const AccountDetailPage = () => {
             </label>
             <input
               type="file"
-              onChange={handleAvatarChange}
+              name="avatar"
+              accept="image/*"
+              onChange={handleInputChange}
               className="border bg-white rounded w-full px-3 py-2"
             />
+            {editedUser.avatar && (
+              <img
+                src={editedUser.avatar}
+                alt="Preview Avatar"
+                className="w-16 h-16 rounded-full mt-2"
+              />
+            )}
           </div>
+
           <div className="mb-3">
             <label className="block text-sm text-black font-medium mb-1">
               Password

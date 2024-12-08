@@ -105,7 +105,7 @@ const NewPost = ({ token }) => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto mt-10 p-6 rounded-lg">
+    <div className="w-full max-w-5xl mx-auto mt-10 p-4 rounded-lg">
       <h1 className="text-3xl font-bold mb-6">Create New Post</h1>
       <input
         type="text"
