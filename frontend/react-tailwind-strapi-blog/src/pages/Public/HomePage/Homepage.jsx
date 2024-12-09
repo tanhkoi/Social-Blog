@@ -67,7 +67,7 @@ const Homepage = () => {
 
       if (mostLikedResponse.ok) {
         const mostLikedData = await mostLikedResponse.json();
-        setMostLikedBlogs(mostLikedData); // Cập nhật bài blog được thích nhiều nhất
+        setMostLikedBlogs(mostLikedData.content); // Cập nhật bài blog được thích nhiều nhất
       } else {
         const errorData = await mostLikedResponse.json();
         console.error(
@@ -126,7 +126,7 @@ const Homepage = () => {
           {/* Banner Section - only show on the first page */}
             <div
               className="flex flex-col  justify-center p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-8"
-              style={{ width: "1273px", height: "515px" }}
+              style={{ width: "auto", height: "auto" }}
             >
               <h1
                 className="text-6xl font-bold mb-6 text-start"
@@ -254,9 +254,8 @@ const Homepage = () => {
                   <button
                     key={index}
                     onClick={() => handlePageChange(index)}
-                    className={`px-4 py-2 border border-white bg-white ${
-                      index === currentPage ? "text-blue-500" : "text-black"
-                    }`}
+                    className={`px-4 py-2 border border-white bg-white ${index === currentPage ? "text-blue-500" : "text-black"
+                      }`}
                   >
                     {index + 1}
                   </button>

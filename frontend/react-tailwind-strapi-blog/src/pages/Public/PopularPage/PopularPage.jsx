@@ -10,7 +10,7 @@ const PopularPage = () => {
 
   const fetchPopularBlogs = async () => {
     const token = localStorage.getItem("token");
-  
+
     try {
       setLoading(true);
       const response = await fetch(
@@ -23,15 +23,15 @@ const PopularPage = () => {
           },
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Failed to fetch popular posts.");
       }
-  
+
       const data = await response.json();
-  
+
       if (data) {
-        setBlogs(data);
+        setBlogs(data.content);
       } else {
         console.error("Dữ liệu không hợp lệ", data);
         setBlogs([]);

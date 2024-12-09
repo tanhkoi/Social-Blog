@@ -13,7 +13,6 @@ const BlogItem = ({ blog, setBlogs }) => {
   return (
     <div className="relative flex items-center bg-white rounded-lg hover:shadow-xl hover:scale-[1.02] transition transform duration-300 h-36 overflow-hidden">
       {/* Image on the left */}
-      
       <div className="flex-shrink-0 w-1/4 h-36">
         <img
           className="w-full h-full object-cover rounded-l-lg"
@@ -89,7 +88,6 @@ BlogItem.propTypes = {
     imageCloudUrl: PropTypes.string,
     likeCnt: PropTypes.number,
     liked: PropTypes.bool,
-    isSaved: PropTypes.bool,
     saved: PropTypes.bool,
     author: PropTypes.shape({
       id: PropTypes.string,

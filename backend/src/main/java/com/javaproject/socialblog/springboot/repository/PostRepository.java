@@ -17,4 +17,6 @@ public interface PostRepository extends MongoRepository<Post, String>, PagingAnd
     Page<Post> findByAuthorId(String id, Pageable pageable);
 
     List<Post> findByAuthorId(String id);
+
+    Page<Post> findByTags(List<String> tags, Pageable pageable);
 }
