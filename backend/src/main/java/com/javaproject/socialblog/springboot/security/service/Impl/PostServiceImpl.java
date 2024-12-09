@@ -273,4 +273,30 @@ public class PostServiceImpl implements PostService {
         return new PageImpl<>(postResponses, pageable, posts.getTotalElements());
     }
 
+    @Override
+    public Page<PostResponse> getRelatedPosts(String tag, Pageable pageable) {
+        List<String> tags = new ArrayList<>();
+        tags.add(tag);
+        Page<Post> posts = postRepository.findByTags(tags, pageable);
+
+        // Fetch user details
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String currUserId;
+        if (loggedInUser != null && loggedInUser.isAuthenticated() && !"anonymousUser".equals(loggedInUser.getPrincipal())) {
+            String username = loggedInUser.getName();
+            currUserId = userService.findByUsername(username).getId();
+        } else {
+            currUserId = null;
+        }
+
+        // Map posts to PostResponse
+        return posts.map(post -> {
+            PostResponse postResponse = modelMapper.map(post, PostResponse.class);
+            postResponse.setLikeCnt(post.getLikes().size());
+            postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
+            postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
+            return postResponse;
+        });
+    }
+
 }

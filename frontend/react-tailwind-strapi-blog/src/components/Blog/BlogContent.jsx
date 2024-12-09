@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CommentButton from "../Button/CommentButton";
+import RelatedBlogs from "./RelatedBlogs"
 import DOMPurify from "dompurify";
 
 const BlogContent = () => {
@@ -75,7 +76,7 @@ const BlogContent = () => {
             </div>
           </div>
         </div>
-
+        <RelatedBlogs tag={blog.tags[0]} />
         {/* Comment Button */}
         <CommentButton blogId={id} />
       </div>

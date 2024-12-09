@@ -40,7 +40,8 @@ public class SecurityConfiguration {
             "/login",
             "/verify",
             "/api/posts/null/{postId}",
-            "/api/auth/google"
+            "/api/auth/google",
+            "/api/posts/related/**"
     };
 
     @Bean

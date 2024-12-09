@@ -127,7 +127,7 @@ const Homepage = () => {
           {currentPage === 0 && (
             <div
               className="flex flex-col  justify-center p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-8"
-              style={{ width: "1273px", height: "515px" }}
+              style={{ width: "auto", height: "auto" }}
             >
               <h1
                 className="text-6xl font-bold mb-6 text-start"
