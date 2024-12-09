@@ -67,7 +67,7 @@ const Homepage = () => {
 
       if (mostLikedResponse.ok) {
         const mostLikedData = await mostLikedResponse.json();
-        setMostLikedBlogs(mostLikedData); // Cập nhật bài blog được thích nhiều nhất
+        setMostLikedBlogs(mostLikedData.content); // Cập nhật bài blog được thích nhiều nhất
       } else {
         const errorData = await mostLikedResponse.json();
         console.error(
@@ -259,9 +259,8 @@ const Homepage = () => {
                   <button
                     key={index}
                     onClick={() => handlePageChange(index)}
-                    className={`px-4 py-2 border border-white bg-white ${
-                      index === currentPage ? "text-blue-500" : "text-black"
-                    }`}
+                    className={`px-4 py-2 border border-white bg-white ${index === currentPage ? "text-blue-500" : "text-black"
+                      }`}
                   >
                     {index + 1}
                   </button>

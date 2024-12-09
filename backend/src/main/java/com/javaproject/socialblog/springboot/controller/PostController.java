@@ -9,7 +9,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -143,8 +145,13 @@ public class PostController {
             description = "List posts based on most likes.",
             tags = "Post Service"
     )
-    public ResponseEntity<List<PostResponse>> getPostsByMostLikes() {
-        return ResponseEntity.ok(postService.getPostsByMostLikes());
+    public ResponseEntity<Page<PostResponse>> getPostsByMostLikes(
+            @RequestParam(defaultValue = "0") int page, // Default page = 0 (first page)
+            @RequestParam(defaultValue = "4") int size, // Default size = 4 (4 items per page)
+            @RequestParam(defaultValue = "likeCnt,desc") String sort // Optional: default sort by likes descending
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort.split(",")[1].equals("desc") ? Sort.Order.desc(sort.split(",")[0]) : Sort.Order.asc(sort.split(",")[0])));
+        return ResponseEntity.ok(postService.getPostsByMostLikes(pageable));
     }
 
 }

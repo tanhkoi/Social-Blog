@@ -30,6 +30,6 @@ public interface PostService {
 
     List<PostResponse> searchPosts(String keyword, List<String> tags);
 
-    List<PostResponse> getPostsByMostLikes();
+    Page<PostResponse> getPostsByMostLikes(Pageable pageable);
 }
 
