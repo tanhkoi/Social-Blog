@@ -13,15 +13,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -247,28 +245,32 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponse> getPostsByMostLikes() {
-        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-        String currUserId;
-        if (loggedInUser != null && loggedInUser.isAuthenticated() && !"anonymousUser".equals(loggedInUser.getPrincipal())) {
-            String username = loggedInUser.getName();
-            currUserId = userService.findByUsername(username).getId();
-        } else {
-            currUserId = null;
-        }
+    public Page<PostResponse> getPostsByMostLikes(Pageable pageable) {
+        // Step 1: Get Current User ID
+        String currUserId = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .filter(auth -> auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal()))
+                .map(auth -> userService.findByUsername(auth.getName()).getId())
+                .orElse(null);
 
-        List<Post> allPosts = postRepository.findAll();
+        // Step 2: Fetch Posts (Paginated)
+        Page<Post> posts = postRepository.findAll(pageable);
 
-        return allPosts.stream()
+        // Step 3: Map to PostResponse and Set Derived Fields
+        List<PostResponse> postResponses = posts.getContent().stream()
                 .map(post -> {
-                    PostResponse dto = modelMapper.map(post, PostResponse.class);
-                    dto.setLikeCnt(post.getLikes().size());
-                    dto.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
-                    dto.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
-                    return dto;
+                    PostResponse postResponse = modelMapper.map(post, PostResponse.class);
+                    postResponse.setLikeCnt(post.getLikes().size());
+                    if (currUserId != null) {
+                        postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
+                        postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
+                    }
+                    return postResponse;
                 })
-                .sorted(Comparator.comparing(PostResponse::getLikeCnt).reversed())
+                .sorted(Comparator.comparing(PostResponse::getLikeCnt).reversed()) // Sort by most likes
                 .toList();
+
+        // Step 4: Return Paginated Result
+        return new PageImpl<>(postResponses, pageable, posts.getTotalElements());
     }
 
 }
