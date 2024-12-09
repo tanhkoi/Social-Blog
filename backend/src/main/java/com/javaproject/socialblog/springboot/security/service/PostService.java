@@ -31,5 +31,7 @@ public interface PostService {
     List<PostResponse> searchPosts(String keyword, List<String> tags);
 
     Page<PostResponse> getPostsByMostLikes(Pageable pageable);
+
+    Page<PostResponse> getRelatedPosts(String tag, Pageable pageable);
 }
 

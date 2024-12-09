@@ -154,4 +154,18 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostsByMostLikes(pageable));
     }
 
+    @GetMapping("/related/{tag}")
+    @Operation(
+            summary = "Get related posts",
+            description = "List posts based on a specific post",
+            tags = "Post Service"
+    )
+    public ResponseEntity<Page<PostResponse>> getRelatedPosts(@PathVariable("tag") String tag,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "4") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(postService.getRelatedPosts(tag, pageable));
+    }
+
 }
