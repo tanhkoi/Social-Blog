@@ -11,7 +11,7 @@ const BlogItem = ({ blog, setBlogs }) => {
   const [isSaved, setIsSaved] = useState(blog.saved || false);
 
   return (
-    <div className="relative flex items-center bg-white rounded-lg hover:shadow-xl hover:scale-[1.02] transition transform duration-300 h-36 overflow-hidden">
+    <div className="relative flex items-center border border-gray-100 bg-white rounded-lg hover:shadow-xl hover:scale-[1.02] transition transform duration-300  h-36 overflow-hidden">
       {/* Image on the left */}
       <div className="flex-shrink-0 w-1/4 h-36">
         <img
@@ -53,7 +53,7 @@ const BlogItem = ({ blog, setBlogs }) => {
           </span>
 
           {/* Blog title */}
-          <h3 className="text-2xl font-semibold text-black truncate">
+          <h3 className="text-2xl font-semibold text-black truncate overflow-hidden whitespace-nowrap">
             {blog.title}
           </h3>
 

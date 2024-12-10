@@ -13,6 +13,7 @@ import SideBar from "./Sidebar/SideBar";
 import Support from "./Support/Support";
 import SnowfallEffect  from "./Support/SnowfallEffect ";
 import TopAuthors  from "./Author/TopAuthors ";
+import NewsletterSignup  from "./Newsletter/NewsletterSignup ";
 
 
 export {
@@ -30,5 +31,6 @@ export {
     SideBar,
     Support,
     SnowfallEffect,
-    TopAuthors
+    TopAuthors,
+    NewsletterSignup
 };
