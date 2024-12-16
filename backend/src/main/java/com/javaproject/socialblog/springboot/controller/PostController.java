@@ -68,7 +68,7 @@ public class PostController {
     )
     public ResponseEntity<List<PostResponse>> getUserPosts(@PathVariable String id) {
 
-        return ResponseEntity.ok(postService.getUserPosts(id));
+        return ResponseEntity.ok(postService.getPostsByUser(id));
     }
 
     // Create a new post
