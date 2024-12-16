@@ -34,7 +34,8 @@ public class AuthController {
                 user.getId(),
                 user.getUsername(),
                 user.getProfilePicture(),
-                user.isEnabled());
+                user.isEnabled(),
+                user.getUserRole().toString());
 
         return ResponseEntity.ok(loginResponse);
     }
