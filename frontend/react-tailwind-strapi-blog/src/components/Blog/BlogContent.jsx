@@ -3,11 +3,15 @@ import { useState, useEffect } from "react";
 import CommentButton from "../Button/CommentButton";
 import RelatedBlogs from "./RelatedBlogs";
 import DOMPurify from "dompurify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 
 const BlogContent = () => {
   const { id } = useParams(); // Lấy id của bài blog từ URL
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true); // Trạng thái loading
+  const [isPlaying, setIsPlaying] = useState(false); // Trạng thái nút play/pause
+  const [audio, setAudio] = useState(null); // Audio object
 
   // Fetch blog data when component mounts
   useEffect(() => {
@@ -36,6 +40,79 @@ const BlogContent = () => {
 
     fetchBlogData();
   }, [id]);
+
+  // Gọi API Zalo TTS để lấy audio URL
+  // Trích xuất văn bản thuần túy từ sanitizedContent
+const extractTextFromHTML = (htmlContent) => {
+  const tempElement = document.createElement("div");
+  tempElement.innerHTML = htmlContent;
+  return tempElement.textContent || tempElement.innerText || "";
+};
+
+// Gọi API Zalo TTS để lấy audio URL
+const fetchAudio = async (htmlContent) => {
+  const apiKey = "dRj4rqOFQKzYPBP30b8lVZDVxvx4hjXf"; // Thay bằng API key của bạn
+  const text = extractTextFromHTML(htmlContent); // Chuyển HTML thành plain text
+
+  try {
+    const response = await fetch("https://api.zalo.ai/v1/tts/synthesize", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        apikey: apiKey,
+      },
+      body: new URLSearchParams({
+        input: text,
+        speed: "1.0",
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Error fetching audio:", await response.text());
+      return null;
+    }
+
+    const data = await response.json();
+    if (data && data.data && data.data.url) {
+      return data.data.url;
+    } else {
+      console.error("Invalid audio response:", data);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching audio:", error);
+    return null;
+  }
+};
+
+// Toggle play/pause state
+const togglePlay = async () => {
+  if (!audio && blog) {
+    // Fetch audio if not already fetched
+    const audioUrl = await fetchAudio(sanitizedContent); // Truyền sanitizedContent
+    if (audioUrl) {
+      const newAudio = new Audio(audioUrl);
+      setAudio(newAudio);
+      newAudio.play();
+      setIsPlaying(true);
+
+      newAudio.onended = () => {
+        setIsPlaying(false);
+      };
+    } else {
+      alert("Không thể lấy dữ liệu âm thanh. Vui lòng thử lại sau!");
+    }
+  } else if (audio) {
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.play();
+      setIsPlaying(true);
+    }
+  }
+};
+
 
   // Nếu đang loading, hiển thị hiệu ứng loading
   if (loading) {
@@ -79,7 +156,15 @@ const BlogContent = () => {
               src={blog.imageCloudUrl}
               alt="Blog cover"
             />
-            <h1 className="font-bold text-2xl my-1 pt-5">{blog.title}</h1>
+            <div className="flex items-center justify-between pt-5">
+              <h1 className="font-bold text-2xl my-1">{blog.title}</h1>
+              <button
+                className="ml-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center justify-center"
+                onClick={togglePlay}
+              >
+                <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+              </button>
+            </div>
             <div className="pt-5 text-justify">
               <div
                 className="content"
