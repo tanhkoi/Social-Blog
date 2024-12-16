@@ -232,7 +232,7 @@ const Homepage = () => {
                     />
                   </div>
                 </>
-              )
+              
               <TopAuthors />
               <h2 className="text-3xl font-bold text-black mt-7 ml-10">
                 ALL BLOG
