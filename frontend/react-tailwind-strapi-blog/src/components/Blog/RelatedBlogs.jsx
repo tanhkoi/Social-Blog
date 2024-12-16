@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import BlogCard from "./BlogCard";
 import { useState, useEffect } from "react";
 

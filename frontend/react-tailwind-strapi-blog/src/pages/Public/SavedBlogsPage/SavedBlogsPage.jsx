@@ -54,7 +54,7 @@ const SavedBlogsPage = () => {
         <aside className="w-60">
           <SideBar />
         </aside>
-        <div className="flex-grow p-4 ml-4">
+        <div className="flex-grow p-4 ml-8">
           <h1 className="text-3xl font-bold mb-5 mt-20">Bookmarks</h1>
           {loading ? (
             <div className="flex justify-center items-center mt-10">
