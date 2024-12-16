@@ -274,12 +274,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponse> getRelatedPosts(String tag, Pageable pageable) {
+    public Page<PostResponse> getRelatedPosts(String tag, String postId, Pageable pageable) {
+        // Step 1: Retrieve posts by the specified tag
         List<String> tags = new ArrayList<>();
         tags.add(tag);
         Page<Post> posts = postRepository.findByTags(tags, pageable);
 
-        // Fetch user details
+        // Step 2: Fetch the current user ID
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String currUserId;
         if (loggedInUser != null && loggedInUser.isAuthenticated() && !"anonymousUser".equals(loggedInUser.getPrincipal())) {
@@ -289,14 +290,20 @@ public class PostServiceImpl implements PostService {
             currUserId = null;
         }
 
-        // Map posts to PostResponse
-        return posts.map(post -> {
-            PostResponse postResponse = modelMapper.map(post, PostResponse.class);
-            postResponse.setLikeCnt(post.getLikes().size());
-            postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
-            postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
-            return postResponse;
-        });
+        // Step 3: Filter and map to PostResponse
+        List<PostResponse> filteredResponses = posts.getContent().stream()
+                .filter(post -> !post.getId().equals(postId)) // Exclude the current post by ID
+                .map(post -> {
+                    PostResponse postResponse = modelMapper.map(post, PostResponse.class);
+                    postResponse.setLikeCnt(post.getLikes().size());
+                    postResponse.setLiked(likeRepository.existsByUserIdAndContentIdAndType(currUserId, post.getId(), LikeType.POST));
+                    postResponse.setSaved(bookmarkRepository.existsByUserIdAndPostId(currUserId, post.getId()));
+                    return postResponse;
+                })
+                .toList();
+
+        // Step 4: Rebuild the Page
+        return new PageImpl<>(filteredResponses, pageable, posts.getTotalElements());
     }
 
 }
