@@ -106,7 +106,7 @@ const BlogContent = () => {
             </div>
           </div>
         </div>
-        <RelatedBlogs tag={blog.tags[0]} />
+        <RelatedBlogs tag={blog.tags[0]} postId={blog.id} />
         {/* Comment Button */}
         <CommentButton blogId={id} />
       </div>
