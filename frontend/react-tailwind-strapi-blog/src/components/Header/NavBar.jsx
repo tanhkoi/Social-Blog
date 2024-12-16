@@ -35,7 +35,7 @@ const Navbar = () => {
 
   const handleNavClick = (path) => {
     if (path === "/" && window.location.pathname === "/") {
-      window.location.reload(); 
+      window.location.reload();
     } else {
       navigate(path);
       setToggle(false);
@@ -46,7 +46,7 @@ const Navbar = () => {
     localStorage.removeItem("savedPosts");
     localStorage.removeItem("username");
     localStorage.removeItem("profilePicture");
-    localStorage.removeItem('userId');
+    localStorage.removeItem("userId");
     setUser(null);
     navigate("/");
   };
@@ -128,7 +128,6 @@ const Navbar = () => {
             >
               New Post
             </button>
-
           )}
           {user ? (
             <>
@@ -180,7 +179,10 @@ const Navbar = () => {
               >
                 Login
               </button>
-              <button className="px-8 py-3 border-none bg-gradient-to-r from-blue-300 to-white text-black" onClick={handleSignUpClick}>
+              <button
+                className="px-8 py-3 border-none text-black bg-gradient-to-r from-blue-300 to-white bg-[length:400%_400%] animate-pulse"
+                onClick={handleSignUpClick}
+              >
                 Sign Up
               </button>
             </>
