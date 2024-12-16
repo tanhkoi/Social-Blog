@@ -128,14 +128,13 @@ const NewPost = ({ token }) => {
         value={tags}
         onChange={(e) => setTags(e.target.value)}
       />
-      <div className="mt-6">
+      <div className="mt-6 h-[300px] ">
         <ReactQuill
           value={content}
           onChange={setContent}
           className="bg-white text-black border border-gray-600 rounded-xl"
           placeholder="Content"
-          style={{ height: "300px", marginBottom: "20px" }}
-        />
+          style={{ height: "100%", maxHeight: "300px", overflow: "hidden" }}        />
       </div>
       <input
         type="file"

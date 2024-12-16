@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BlogList from "../../../components/Blog/BlogList";
 import NavBar from "../../../components/Header/NavBar";  // Import NavBar
 import SideBar from "../../../components/Sidebar/SideBar";  // Import Sidebar
@@ -6,13 +7,14 @@ import SideBar from "../../../components/Sidebar/SideBar";  // Import Sidebar
 const SavedBlogsPage = () => {
   const [savedBlogs, setSavedBlogs] = useState([]);
   const [loading, setLoading] = useState(true); // Thêm state loading
+  const [alertShown] = useState(false); // State để kiểm tra alert đã hiển thị chưa
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSavedBlogs = async () => {
       const token = localStorage.getItem("token");
-
-      if (!token) {
-        alert("Bạn cần đăng nhập để xem bài viết đã lưu.");
+      if (!token && !alertShown) {
+        navigate("/*"); // Điều hướng đến trang đăng nhập
         return;
       }
 
@@ -41,9 +43,7 @@ const SavedBlogsPage = () => {
     };
 
     fetchSavedBlogs();
-  }, []);
-
-
+  }, [alertShown, navigate]); // alertShown và navigate là dependencies
 
   return (
     <div className="bg-white min-h-screen text-black">
@@ -54,7 +54,7 @@ const SavedBlogsPage = () => {
         <aside className="w-60">
           <SideBar />
         </aside>
-        <div className="flex-grow p-4 ml-4">
+        <div className="flex-grow p-4 ml-10">
           <h1 className="text-3xl font-bold mb-5 mt-20">Bookmarks</h1>
           {loading ? (
             <div className="flex justify-center items-center mt-10">

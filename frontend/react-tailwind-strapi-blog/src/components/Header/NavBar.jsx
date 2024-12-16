@@ -124,7 +124,7 @@ const Navbar = () => {
           {user && (
             <button
               onClick={handleNewPost}
-              className="border-none bg-white text-black font-bold px-6 py-3 rounded-full ml-4"
+              className="border-none bg-white text-black font-bold px-4 py-2 rounded-full ml-5"
             >
               New Post
             </button>
@@ -180,7 +180,7 @@ const Navbar = () => {
               >
                 Login
               </button>
-              <button className="px-8 py-3" onClick={handleSignUpClick}>
+              <button className="px-8 py-3 border-none bg-gradient-to-r from-blue-300 to-white text-black" onClick={handleSignUpClick}>
                 Sign Up
               </button>
             </>
