@@ -119,7 +119,7 @@ const Signup = () => {
                 <div className="text-center lg:text-left">
                   <button
                     type="submit"
-                    className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out"
+                    className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-white transition duration-150 ease-in-out"
                   >
                     Signup
                   </button>

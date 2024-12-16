@@ -149,7 +149,7 @@ const CommentButton = ({ blogId }) => {
   };
 
   return (
-    <div className="mt-8 px-4 bg-white border border-gray-600 rounded-lg p-6">
+    <div className="mt-8 px-4 bg-white border border-gray-300 rounded-lg p-6">
       <h2 className="text-2xl text-black font-bold">Comments</h2>
       <form onSubmit={handleCommentSubmit} className="mt-4">
         <input
@@ -168,7 +168,7 @@ const CommentButton = ({ blogId }) => {
         {comments.map((comment) => (
           <div
             key={comment.id}
-            className="text-black p-2 rounded-md flex justify-between items-center border border-gray-700 shadow-sm"
+            className="text-black p-2 rounded-md flex justify-between items-center border border-gray-200 shadow-sm"
           >
             <div>
               <p className="text-lg font-bold text-black">{comment.user.name}</p>

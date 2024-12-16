@@ -63,11 +63,34 @@ const PopularPage = () => {
         </aside>
         <section className="flex-1 p-5">
           <h1 className="text-2xl font-bold mb-4 mt-20">Popular Posts</h1>
-          {loading && <p>Loading...</p>}
-          {!loading && filteredBlogs.length > 0 ? (
+          {loading ? (
+            <div className="flex justify-center items-center mt-10">
+              <svg
+                className="animate-spin h-8 w-8 text-blue-600"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
+              <p className="ml-3 text-gray-400 text-lg">Loading popular posts...</p>
+            </div>
+          ) : filteredBlogs.length > 0 ? (
             <BlogList blogs={filteredBlogs} setBlogs={setBlogs} />
           ) : (
-            !loading && <p>No popular posts found.</p>
+            <p className="text-gray-400">No popular posts found.</p>
           )}
         </section>
       </main>

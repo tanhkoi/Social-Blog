@@ -43,13 +43,7 @@ const SavedBlogsPage = () => {
     fetchSavedBlogs();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-white">
-        <p className="text-black text-xl">Loading...</p>
-      </div>
-    );
-  }
+
 
   return (
     <div className="bg-white min-h-screen text-black">
@@ -62,10 +56,34 @@ const SavedBlogsPage = () => {
         </aside>
         <div className="flex-grow p-4 ml-4">
           <h1 className="text-3xl font-bold mb-5 mt-20">Bookmarks</h1>
-          {savedBlogs.length > 0 ? (
+          {loading ? (
+            <div className="flex justify-center items-center mt-10">
+              <svg
+                className="animate-spin h-8 w-8 text-blue-600"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
+              <p className="ml-3 text-gray-400 text-lg">Loading saved blogs...</p>
+            </div>
+          ) : savedBlogs.length > 0 ? (
             <BlogList blogs={savedBlogs} setBlogs={setSavedBlogs} />
           ) : (
-            <p className="text-gray-400"></p>
+            <p className="text-gray-400">Không có blog đã lưu nào.</p>
           )}
         </div>
       </main>

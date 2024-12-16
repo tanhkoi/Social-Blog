@@ -14,7 +14,7 @@ const NewPostPage = () => {
         <aside className="w-60">
           <SideBar />
         </aside>
-        <div className="w-full flex-grow p-4 mt-10">
+        <div className="w-50 flex-grow p-1 mt-10">
           <NewPost token={token} />
         </div>
       </main>

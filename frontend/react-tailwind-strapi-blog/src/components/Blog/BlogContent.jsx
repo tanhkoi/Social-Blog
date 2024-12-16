@@ -1,17 +1,19 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CommentButton from "../Button/CommentButton";
-import RelatedBlogs from "./RelatedBlogs"
+import RelatedBlogs from "./RelatedBlogs";
 import DOMPurify from "dompurify";
 
 const BlogContent = () => {
   const { id } = useParams(); // Lấy id của bài blog từ URL
   const [blog, setBlog] = useState(null);
+  const [loading, setLoading] = useState(true); // Trạng thái loading
 
   // Fetch blog data when component mounts
   useEffect(() => {
     const fetchBlogData = async () => {
       const token = localStorage.getItem("token");
+      setLoading(true); // Bắt đầu trạng thái loading
       try {
         const response = await fetch(`http://localhost:8080/api/posts/${id}`, {
           method: "GET",
@@ -27,16 +29,44 @@ const BlogContent = () => {
         setBlog(blogData);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false); // Kết thúc trạng thái loading
       }
     };
 
     fetchBlogData();
   }, [id]);
 
-  if (!blog) {
-    return <div>Loading...</div>;
+  // Nếu đang loading, hiển thị hiệu ứng loading
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <svg
+          className="animate-spin h-8 w-8 text-blue-600"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          ></path>
+        </svg>
+        <p className="ml-3 text-gray-400 text-lg">Loading blog...</p>
+      </div>
+    );
   }
 
+  // Nội dung khi đã tải xong blog
   const sanitizedContent = DOMPurify.sanitize(blog.content);
 
   return (
@@ -83,7 +113,5 @@ const BlogContent = () => {
     </div>
   );
 };
-
-
 
 export default BlogContent;

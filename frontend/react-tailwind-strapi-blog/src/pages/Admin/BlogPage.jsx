@@ -7,7 +7,13 @@ import "react-toastify/dist/ReactToastify.css";
 const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentBlog, setCurrentBlog] = useState({ id: null, title: "", category: "", content: "" });
+  const [currentBlog, setCurrentBlog] = useState({ 
+    id: null, 
+    title: "", 
+    category: "", 
+    content: "", 
+    imageCloudUrl: "" // Thêm trường imageCloudUrl
+  });
   const [showForm, setShowForm] = useState(false);
 
   const formatDate = (apiDate) => {
@@ -91,6 +97,26 @@ const BlogPage = () => {
           toast.error("An error occurred while updating the blog!");
           console.error("Error updating blog:", error);
         });
+    } else {
+      // Thêm blog mới (nếu cần)
+      fetch("http://localhost:8080/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(currentBlog),
+      })
+        .then((response) => response.json())
+        .then((newBlog) => {
+          setBlogs((prevBlogs) => [...prevBlogs, newBlog]);
+          toast.success("Blog added successfully!");
+          setShowForm(false);
+        })
+        .catch((error) => {
+          toast.error("An error occurred while adding the blog!");
+          console.error("Error adding blog:", error);
+        });
     }
   };
 
@@ -133,6 +159,16 @@ const BlogPage = () => {
               required
               className="border rounded w-full px-3 py-2"
             ></textarea>
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium mb-1">Image URL</label>
+            <input
+              type="text"
+              name="imageCloudUrl"
+              value={currentBlog.imageCloudUrl}
+              onChange={handleInputChange}
+              className="border rounded w-full px-3 py-2"
+            />
           </div>
           <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
             {isEditing ? "Update Blog" : "Add Blog"}
