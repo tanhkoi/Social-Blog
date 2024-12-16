@@ -18,4 +18,6 @@ public class LoginResponse {
     private String profilePicture;
 
     private boolean enabled;
+
+    private String userRole;
 }

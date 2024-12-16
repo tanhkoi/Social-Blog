@@ -65,9 +65,25 @@ public class UserServiceImpl implements UserService {
                 Aggregation.limit(5),
                 Aggregation.lookup("users", "_id", "_id", "userDetails")
         );
+        // Check logged user is following user with id or not
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+
+        User currUser = this.findByUsername(username);
 
         AggregationResults<UserPostCount> results = mongoTemplate.aggregate(aggregation, "posts", UserPostCount.class);
-        return results.getMappedResults();
+        return results.getMappedResults().stream().map(user -> {
+            List<UserResponse> userResponse = user.getUserDetails();
+            userResponse.get(0).setFollowingNumber(userRepository.findById(user.getId()).get().getFollowing().size());
+            userResponse.get(0).setFollowerNumber(userRepository.findById(user.getId()).get().getFollowers().size());
+            if (currUser != null)
+                userResponse.get(0).setAmIFollowing(currUser.getFollowing().stream()
+                        .anyMatch(following -> following.getUser().equals(user.getId())));
+            else
+                userResponse.get(0).setAmIFollowing(false);
+            user.setUserDetails(userResponse);
+            return user;
+        }).toList();
     }
 
     @Override
@@ -213,6 +229,7 @@ public class UserServiceImpl implements UserService {
                 user = new User();
                 user.setName(name);
                 user.setEmail(email);
+                user.setPassword(bCryptPasswordEncoder.encode("NoPassword"));
                 user.setProfilePicture(pictureUrl);
                 user.setUsername(email.split("@")[0]); // Use email prefix as default username
                 user.setEnabled(true); // Automatically enable for OAuth
