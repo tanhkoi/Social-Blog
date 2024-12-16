@@ -124,7 +124,7 @@ const Navbar = () => {
           {user && (
             <button
               onClick={handleNewPost}
-              className="border-none bg-white text-black font-bold px-6 py-3 rounded-full ml-4"
+              className="border-none bg-white text-black font-bold px-4 py-2 rounded-full ml-4"
             >
               New Post
             </button>
