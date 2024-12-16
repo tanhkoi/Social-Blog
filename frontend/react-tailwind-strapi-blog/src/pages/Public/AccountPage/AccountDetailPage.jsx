@@ -13,7 +13,7 @@ const AccountDetailPage = () => {
     avatar:
       profilePicture ||
       "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1600",
-    name: name,
+    name: username,
     email: "",
     password: "", // Add password to state
   });
@@ -23,7 +23,7 @@ const AccountDetailPage = () => {
   // Fetch user data when the component mounts
   useEffect(() => {
     if (!token) {
-      alert("Bạn cần đăng nhập để xem thông tin tài khoản.");
+      alert("You need to log in to view account information.");
       navigate("/login");
       return;
     }
@@ -53,10 +53,10 @@ const AccountDetailPage = () => {
           });
         } else {
           const errorData = await response.json();
-          alert(`Lỗi: ${errorData.message}`);
+          alert(`Error: ${errorData.message}`);
         }
       } catch (error) {
-        console.error("Lỗi khi tải thông tin người dùng:", error);
+        console.error("Error loading user information:", error);
       }
     };
 
@@ -69,7 +69,7 @@ const AccountDetailPage = () => {
       const file = files[0];
       const reader = new FileReader();
       reader.onload = () => {
-        setEditedUser({ ...editedUser, avatar: reader.result }); // Base64 ảnh
+        setEditedUser({ ...editedUser, avatar: reader.result }); // Base64 image
       };
       reader.readAsDataURL(file);
     } else {
@@ -84,7 +84,7 @@ const AccountDetailPage = () => {
       profilePicture: editedUser.avatar,
     };
 
-    // Chỉ gửi mật khẩu mới nếu người dùng đã thay đổi mật khẩu
+    // Only send the new password if the user has changed it
     if (editedUser.password) {
       updatedUserInfo.password = editedUser.password;
     }
@@ -104,12 +104,12 @@ const AccountDetailPage = () => {
 
         setUser({ ...updatedUser });
 
-        // Cập nhật localStorage với các giá trị mới
+        // Update localStorage with the new values
         localStorage.setItem("username", updatedUser.name);
         localStorage.setItem("profilePicture", updatedUser.profilePicture);
         localStorage.setItem("email", updatedUser.email);
 
-        // Hiển thị thông báo thành công
+        // Show success message
         toast.success("Account updated successfully!", {
           position: "top-right",
           autoClose: 3000,
@@ -158,7 +158,7 @@ const AccountDetailPage = () => {
         <div className="mb-4">
           <h3 className="text-xl text-black font-bold mb-3">Edit Profile</h3>
           <div className="mb-3">
-            <label className=" text-sm text-black font-medium mb-1">Name</label>
+            <label className="text-sm text-black font-medium mb-1">Name</label>
             <input
               type="text"
               name="name"

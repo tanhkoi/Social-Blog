@@ -22,11 +22,6 @@ const ProfilePage = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (!token) {
-      alert("Bạn cần đăng nhập để xem bài viết của bạn.");
-      return;
-    }
-
     const fetchUserInfo = async () => {
       try {
         const response = await fetch(
@@ -121,14 +116,6 @@ const ProfilePage = () => {
       console.error("Lỗi khi lấy danh sách following:", error);
     }
   };
-
-  // if (loading) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen bg-white">
-  //       <p className="text-black text-xl">Loading...</p>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="bg-white min-h-screen text-black">
