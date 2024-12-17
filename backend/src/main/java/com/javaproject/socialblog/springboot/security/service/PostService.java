@@ -16,9 +16,9 @@ public interface PostService {
 
     List<PostResponse> getMyPosts();
 
-    Page<PostResponse> getUserPosts(String id, Pageable pageable);
+    Page<PostResponse> getPostsByUser(String id, Pageable pageable);
 
-    List<PostResponse> getUserPosts(String id);
+    List<PostResponse> getPostsByUser(String id);
 
     Post createPost(PostRequest post);
 
