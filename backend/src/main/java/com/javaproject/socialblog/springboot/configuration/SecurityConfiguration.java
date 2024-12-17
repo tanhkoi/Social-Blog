@@ -41,7 +41,8 @@ public class SecurityConfiguration {
             "/verify",
             "/api/posts/null/{postId}",
             "/api/auth/google",
-            "/api/posts/related/**"
+            "/api/posts/related/**",
+            "/api/audio/**"
     };
 
     @Bean

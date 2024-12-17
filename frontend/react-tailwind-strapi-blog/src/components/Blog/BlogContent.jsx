@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import CommentButton from "../Button/CommentButton";
 import RelatedBlogs from "./RelatedBlogs";
 import DOMPurify from "dompurify";
+import BlogAudio from "../Button/BlogAudio";
 
 const BlogContent = () => {
   const { id } = useParams(); // Lấy id của bài blog từ URL
@@ -80,6 +81,7 @@ const BlogContent = () => {
               alt="Blog cover"
             />
             <h1 className="font-bold text-2xl my-1 pt-5">{blog.title}</h1>
+            <BlogAudio blogText={blog.content}></BlogAudio>
             <div className="pt-5 text-justify">
               <div
                 className="content"
