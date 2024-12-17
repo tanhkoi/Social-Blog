@@ -16,7 +16,7 @@ pip install .
 ```
 ### 3. Chạy server lên:
 ```
-python run app.py
+python app.py
 ```
 Như hình là ok nhé
 ![image](https://github.com/user-attachments/assets/fad7553a-79c5-489c-a9e9-05c8eb46e7d2)
