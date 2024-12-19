@@ -124,26 +124,26 @@ const Homepage = () => {
         {/* Main Content */}
         <div className="ml-60 flex-grow">
           {/* Banner Section - only show on the first page */}
-            <div
-              className="flex flex-col  justify-center p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-8"
-              style={{ width: "auto", height: "auto" }}
+          <div
+            className="flex flex-col  justify-center p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg shadow-lg mb-8"
+            style={{ width: "auto", height: "auto" }}
+          >
+            <h1
+              className="text-6xl font-bold mb-6 text-start"
+              style={{
+                background: "linear-gradient(to right, #1A2D5A, #4CA4D8)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
             >
-              <h1
-                className="text-6xl font-bold mb-6 text-start"
-                style={{
-                  background: "linear-gradient(to right, #1A2D5A, #4CA4D8)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Diverse Perspectives of the Young Generation in Vietnam
-              </h1>
-              <p className="text-4xl font-bold text-zinc-700  text-start">
-                Write - Share - Connect - Reflect
-                <br />
-                All at CWTS
-              </p>
-            </div>
+              Diverse Perspectives of the Young Generation in Vietnam
+            </h1>
+            <p className="text-4xl font-bold text-zinc-700  text-start">
+              Write - Share - Connect - Reflect
+              <br />
+              All at CWTS
+            </p>
+          </div>
           {/* Message Section */}
           {showMessage && (
             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
@@ -178,61 +178,61 @@ const Homepage = () => {
             </div>
           ) : (
             <>
-                <>
-                  {/* Most Liked Blogs */}
-                  <h2 className="text-3xl font-bold text-black mb-5 px-10">
-                    POPULAR BLOG
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 px-10">
-                    {mostLikedBlogs.slice(0, 4).map((blog) => (
-                      <Link
-                        to={`/blog/${blog.id}`} // Điều hướng đến trang chi tiết blog
-                        key={blog.id}
-                        className="flex items-center bg-white rounded-lg hover:shadow-xl hover:scale-[1.02] transition transform duration-300 h-36"
-                        style={{ width: "580px", height: "141px" }}
-                      >
-                        {/* Image on the left */}
-                        <div className="flex-shrink-0 w-1/4 h-full">
+              <>
+                {/* Most Liked Blogs */}
+                <h2 className="text-3xl font-bold text-black mb-5 px-10">
+                  POPULAR BLOG
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 px-10">
+                  {mostLikedBlogs.slice(0, 4).map((blog) => (
+                    <Link
+                      to={`/blog/${blog.id}`} // Điều hướng đến trang chi tiết blog
+                      key={blog.id}
+                      className="flex items-center bg-white rounded-lg hover:shadow-xl hover:scale-[1.02] transition transform duration-300 h-36"
+                      style={{ width: "580px", height: "141px" }}
+                    >
+                      {/* Image on the left */}
+                      <div className="flex-shrink-0 w-1/4 h-full">
+                        <img
+                          src={blog.imageCloudUrl}
+                          alt={blog.title}
+                          className="w-full h-full object-cover rounded-l-lg"
+                        />
+                      </div>
+                      {/* Title and details on the right */}
+                      <div className="flex-1 px-4 flex flex-col justify-center space-y-2">
+                        <span className="text-xl text-gray-500">
+                          {blog.category}
+                        </span>
+                        <h2 className="text-2xl font-semibold text-black truncate">
+                          {blog.title}
+                        </h2>
+                        <div className="flex items-center space-x-3 pt-2">
                           <img
-                            src={blog.imageCloudUrl}
-                            alt={blog.title}
-                            className="w-full h-full object-cover rounded-l-lg"
+                            className="w-6 h-6 rounded-full object-cover"
+                            src={blog.author.profilePicture}
+                            alt="Author"
                           />
+                          <h1 className="text-xs font-medium text-black">
+                            {blog.author.name}
+                          </h1>
                         </div>
-                        {/* Title and details on the right */}
-                        <div className="flex-1 px-4 flex flex-col justify-center space-y-2">
-                          <span className="text-xl text-gray-500">
-                            {blog.category}
-                          </span>
-                          <h2 className="text-2xl font-semibold text-black truncate">
-                            {blog.title}
-                          </h2>
-                          <div className="flex items-center space-x-3 pt-2">
-                            <img
-                              className="w-6 h-6 rounded-full object-cover"
-                              src={blog.author.profilePicture}
-                              alt="Author"
-                            />
-                            <h1 className="text-xs font-medium text-black">
-                              {blog.author.name}
-                            </h1>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
 
-                  {/* Banner Section */}
-                  <div className="mt-8 flex flex-col items-center">
-                    <img
-                      src="https://img.freepik.com/free-psd/horizontal-banner-template-techno-store_23-2148979527.jpg?t=st=1733290054~exp=1733293654~hmac=db36f9214353c62a8ba1d049ba2961f1a5ed0c65b8b8a0ac2f4c2e1b11b6a6b0&w=1380"
-                      alt="Technology horizontal banner template"
-                      className="rounded-lg shadow-lg"
-                      style={{ maxWidth: "80%", height: "auto" }}
-                    />
-                  </div>
-                </>
-              
+                {/* Banner Section */}
+                <div className="mt-8 flex flex-col items-center">
+                  <img
+                    src="public\freepik-export-20241219071211VKAR.jpeg"
+                    alt="Technology horizontal banner template"
+                    className="rounded-lg shadow-lg"
+                    style={{ maxWidth: "80%", height: "auto" }}
+                  />
+                </div>
+              </>
+
               <TopAuthors />
               <h2 className="text-3xl font-bold text-black mt-7 ml-10">
                 ALL BLOG

@@ -2,6 +2,9 @@ package com.javaproject.socialblog.springboot.controller;
 
 import com.javaproject.socialblog.springboot.model.ReportItem;
 import com.javaproject.socialblog.springboot.repository.ReportItemRepository;
+import com.javaproject.socialblog.springboot.security.service.CommentService;
+import com.javaproject.socialblog.springboot.security.service.NotificationService;
+import com.javaproject.socialblog.springboot.security.service.PostService;
 import com.javaproject.socialblog.springboot.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +25,12 @@ import java.util.Map;
 public class PerspectiveController {
 
     private final UserService userService;
+
+    private final PostService postService;
+
+    private final NotificationService notificationService;
+
+    private final CommentService commentService;
 
     private final ReportItemRepository reportItemRepository;
 
@@ -34,13 +44,29 @@ public class PerspectiveController {
         }
     }
 
+    public void senDeleteNotificationToUser(String userid, String type) {
+        notificationService.createNotification(userid, type + " deleted", "Your " + type + " is consider harmful and inappropriate.");
+    }
+
     public void sendNotificationToAdmin(String type, String id, double percentToxic) {
-        ReportItem reportItem = new ReportItem();
-        reportItem.setContentId(id);
-        reportItem.setType(type);
-        reportItem.setPercentToxic(percentToxic);
-        reportItem.setUserReportId(getCurrentUserId());
-        reportItemRepository.save(reportItem);
+        System.out.println(type + id + percentToxic);
+        String userid;
+        if (percentToxic >= 70) {
+            if (Objects.equals(type, "Post")) {
+                 userid= postService.deletePostR(id);
+                senDeleteNotificationToUser(userid, "Post");
+            } else if (Objects.equals(type, "Com")) {
+                userid = commentService.deleteCommentR(id);
+                senDeleteNotificationToUser(userid, "Comment");
+            }
+        } else {
+            ReportItem reportItem = new ReportItem();
+            reportItem.setContentId(id);
+            reportItem.setType(type);
+            reportItem.setPercentToxic(percentToxic);
+            reportItem.setUserReportId(getCurrentUserId());
+            reportItemRepository.save(reportItem);
+        }
     }
 
     @PostMapping("/analyze")

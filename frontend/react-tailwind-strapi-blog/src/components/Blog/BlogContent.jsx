@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CommentButton from "../Button/CommentButton";
 import RelatedBlogs from "./RelatedBlogs";
@@ -10,7 +10,7 @@ const BlogContent = () => {
   const { id } = useParams(); // Lấy id của bài blog từ URL
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true); // Trạng thái loading
-
+  const navigate = useNavigate();
 
   // Fetch blog data when component mounts
   useEffect(() => {
@@ -26,6 +26,7 @@ const BlogContent = () => {
         });
 
         if (!response.ok) {
+          navigate("/*");
           throw new Error("Failed to fetch blog data");
         }
         const blogData = await response.json();

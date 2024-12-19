@@ -33,5 +33,7 @@ public interface PostService {
     Page<PostResponse> getPostsByMostLikes(Pageable pageable);
 
     Page<PostResponse> getRelatedPosts(String tag, String postId,Pageable pageable);
+
+    String deletePostR(String id);
 }
 

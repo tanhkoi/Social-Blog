@@ -75,6 +75,7 @@ const CommentButton = ({ blogId }) => {
 
         if (response.ok) {
           const savedComment = await response.json();
+          savedComment.createdAt = formatDate(savedComment.createdAt)
           setComments([...comments, savedComment]);
           setCommentText("");
         } else {

@@ -18,4 +18,5 @@ public interface CommentService {
 
     String getPostByCommentId(String id);
 
+    String deleteCommentR(String id);
 }
