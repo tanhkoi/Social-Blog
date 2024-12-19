@@ -22,7 +22,7 @@ import TagList from "./pages/Public/TagPage/TagList";
 import PopularPage from "./pages/Public/PopularPage/PopularPage";
 import SnowfallEffect from "./components/Support/SnowfallEffect";
 import ReportItemList from './components/Report/ReportItemList';
-import FeedbackPage from './components/FeedbackPage/FeedbackPage';
+import FeedbackPage from './pages/Public/FeedbackPage/FeedbackPage';
 
 import {
   CategoriesPage,
@@ -46,6 +46,7 @@ const AdminLayout = () => {
         OpenSidebar={OpenSidebar}
       />
       <div className="content">
+      <ToastContainer />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="products" element={<BlogPage />} />
@@ -54,7 +55,7 @@ const AdminLayout = () => {
           <Route path="settings" element={<SettingPage />} />
           <Route path="/report-items" element={<ReportItemList />} />
         </Routes>
-        <ToastContainer />
+        
       </div>
     </div>
   );

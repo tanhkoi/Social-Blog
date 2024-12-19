@@ -64,10 +64,20 @@ const Home = () => {
         }, {});
 
         setBlogsByMonth(
-          Object.entries(dailyCount).map(([date, count]) => ({
-            name: date,
-            count,
-          }))
+          Object.entries(dailyCount)
+            .map(([date, count]) => ({
+              name: date,
+              count,
+            }))
+            .sort((a, b) => {
+              const [dayA, monthA] = a.name.split("/").map(Number);
+              const [dayB, monthB] = b.name.split("/").map(Number);
+        
+              if (monthA === monthB) {
+                return dayA - dayB; // Sắp xếp theo ngày
+              }
+              return monthA - monthB; // Sắp xếp theo tháng
+            })
         );
 
         // Đếm số lượng blog theo danh mục
