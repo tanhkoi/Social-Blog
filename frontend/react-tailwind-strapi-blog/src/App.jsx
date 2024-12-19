@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,15 +32,35 @@ import {
 
 const AdminLayout = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
+  const sidebarRef = useRef(null);
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
   };
 
+  // Close sidebar when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target) &&
+        openSidebarToggle // Only act if the sidebar is open
+      ) {
+        setOpenSidebarToggle(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openSidebarToggle]);
+
   return (
     <div className="grid-container">
       <Header OpenSidebar={OpenSidebar} />
       <Sidebar
+        ref={sidebarRef} // Pass the ref to the Sidebar component
         openSidebarToggle={openSidebarToggle}
         OpenSidebar={OpenSidebar}
       />
