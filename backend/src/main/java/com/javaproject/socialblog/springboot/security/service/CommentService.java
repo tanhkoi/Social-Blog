@@ -16,4 +16,6 @@ public interface CommentService {
 
     void deleteComment(String id);
 
+    String getPostByCommentId(String id);
+
 }

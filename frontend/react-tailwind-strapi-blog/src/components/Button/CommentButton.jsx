@@ -1,6 +1,7 @@
 import { FaHeart, FaEllipsisV } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
+import ReportButton from "../Button/ReportButton";
 
 const CommentButton = ({ blogId }) => {
   const [comments, setComments] = useState([]);
@@ -205,6 +206,7 @@ const CommentButton = ({ blogId }) => {
                       className="mx-4 py-2 text-black bg-white border-white hover:bg-white"
                     >
                       Report comment
+                      <ReportButton reportText={comment.content} id={comment.id} type={"Com"}></ReportButton>
                     </button>
                   </div>
                 </div>

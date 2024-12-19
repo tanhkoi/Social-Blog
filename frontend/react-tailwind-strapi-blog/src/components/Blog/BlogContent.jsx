@@ -4,6 +4,7 @@ import CommentButton from "../Button/CommentButton";
 import RelatedBlogs from "./RelatedBlogs";
 import DOMPurify from "dompurify";
 import BlogAudio from "../Button/BlogAudio";
+import ReportButton from "../Button/ReportButton";
 
 const BlogContent = () => {
   const { id } = useParams(); // Lấy id của bài blog từ URL
@@ -108,8 +109,8 @@ const BlogContent = () => {
             </div>
           </div>
         </div>
+        <ReportButton reportText={blog.content} id={blog.id} type={"Post"}></ReportButton>
         <RelatedBlogs tag={blog.tags[0]} postId={blog.id} />
-        {/* Comment Button */}
         <CommentButton blogId={id} />
       </div>
     </div>

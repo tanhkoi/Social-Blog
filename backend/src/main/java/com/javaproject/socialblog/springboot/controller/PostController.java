@@ -4,6 +4,7 @@ import com.javaproject.socialblog.springboot.annotation.CheckUserEnabled;
 import com.javaproject.socialblog.springboot.model.Post;
 import com.javaproject.socialblog.springboot.security.dto.PostRequest;
 import com.javaproject.socialblog.springboot.security.dto.PostResponse;
+import com.javaproject.socialblog.springboot.security.service.CommentService;
 import com.javaproject.socialblog.springboot.security.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+
+    private final CommentService commentService;
 
     // Get all posts
     @GetMapping
@@ -46,6 +49,17 @@ public class PostController {
     public ResponseEntity<Post> getPostById(@PathVariable String id) {
 
         return ResponseEntity.ok(postService.getPostById(id));
+    }
+
+    @GetMapping("/post-by-com-id/{id}")
+    @Operation(
+            summary = "Get post by Comment's ID",
+            description = "Retrieve a specific post by its comment's unique ID.",
+            tags = "Post Service"
+    )
+    public ResponseEntity<String> getPostByCommentId(@PathVariable String id) {
+
+        return ResponseEntity.ok(commentService.getPostByCommentId(id));
     }
 
     // Get the logged-in user's posts
