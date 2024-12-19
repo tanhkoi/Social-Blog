@@ -21,6 +21,7 @@ import TagPage from "./pages/Public/TagPage/TagPage";
 import TagList from "./pages/Public/TagPage/TagList";
 import PopularPage from "./pages/Public/PopularPage/PopularPage";
 import SnowfallEffect from "./components/Support/SnowfallEffect";
+import  FeedbackPage  from "./pages/Public/FeedbackPage/FeedbackPage";
 
 import {
   CategoriesPage,
@@ -78,6 +79,7 @@ const App = () => {
         <Route path="/category/:categoryName" element={<TagList />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/popular" element={<PopularPage />} />
+        <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

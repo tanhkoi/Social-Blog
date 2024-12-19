@@ -1,19 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { GoogleLogin } from '@react-oauth/google';
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [userRole, setUserRole] = useState(null); // State lưu vai trò
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/');
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("userRole");
+    setUserRole(role); // Cập nhật state
+    if (token && role === "ADMIN") {
+      navigate("/admin");
+    } else if (token) {
+      navigate("/");
     }
   }, [navigate]);
 
@@ -22,31 +28,40 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
 
       if (!response.ok) {
-        throw new Error('Login failed, please check your credentials!');
+        throw new Error("Login failed, please check your credentials!");
       }
 
       const data = await response.json();
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('profilePicture', data.profilePicture || '');
-      localStorage.setItem('userId', data.id);
-      toast.success('Login successful!', {
-        position: 'top-right',
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("username", data.username);
+      localStorage.setItem("profilePicture", data.profilePicture || "");
+      localStorage.setItem("userId", data.id);
+      localStorage.setItem("userRole", data.userRole);
+
+      setUserRole(data.userRole); // Cập nhật state userRole
+
+      toast.success("Login successful!", {
+        position: "top-right",
         autoClose: 3000,
       });
 
-      navigate('/');
+      // Điều hướng dựa trên vai trò
+      if (data.userRole === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       setError(err.message);
       toast.error(err.message, {
-        position: 'top-right',
+        position: "top-right",
         autoClose: 3000,
       });
     }
@@ -55,33 +70,41 @@ const Login = () => {
   const handleGoogleLogin = (credentialResponse) => {
     const token = credentialResponse.credential;
 
-    fetch('http://localhost:8080/api/auth/google', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    fetch("http://localhost:8080/api/auth/google", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token }),
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Google login failed!');
+          throw new Error("Google login failed!");
         }
         return response.json();
       })
       .then((data) => {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('username', data.username);
-        localStorage.setItem('profilePicture', data.profilePicture);
-        localStorage.setItem('userId', data.id);
-        console.log(data.id);
-        toast.success('Google login successful!', {
-          position: 'top-right',
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("profilePicture", data.profilePicture);
+        localStorage.setItem("userId", data.id);
+        localStorage.setItem("userRole", data.userRole);
+
+        setUserRole(data.userRole); // Cập nhật state userRole
+
+        toast.success("Google login successful!", {
+          position: "top-right",
           autoClose: 3000,
         });
 
-        navigate('/');
+        // Điều hướng dựa trên vai trò
+        if (data.userRole === "ADMIN") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       })
       .catch((error) => {
         toast.error(error.message, {
-          position: 'top-right',
+          position: "top-right",
           autoClose: 3000,
         });
       });
@@ -129,7 +152,7 @@ const Login = () => {
                     Login
                   </button>
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
-                    Don’t have an account?{' '}
+                    Don’t have an account?{" "}
                     <Link
                       to="/register"
                       className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out"
@@ -144,8 +167,8 @@ const Login = () => {
                 <GoogleLogin
                   onSuccess={handleGoogleLogin}
                   onError={() => {
-                    toast.error('Google login failed!', {
-                      position: 'top-right',
+                    toast.error("Google login failed!", {
+                      position: "top-right",
                       autoClose: 3000,
                     });
                   }}
