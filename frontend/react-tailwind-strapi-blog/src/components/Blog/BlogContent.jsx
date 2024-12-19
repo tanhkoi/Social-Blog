@@ -82,12 +82,20 @@ const BlogContent = () => {
               alt="Blog cover"
             />
             <h1 className="font-bold text-2xl my-1 pt-5">{blog.title}</h1>
-            <BlogAudio blogText={blog.content}></BlogAudio>
             <div className="pt-5 text-justify">
               <div
                 className="content"
                 dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-              ></div>
+              >
+              </div>
+              <hr className="mt-4" />
+              <div className="flex justify-between">
+                <BlogAudio blogText={blog.content} />
+                <div className="bg-white text-black p-4 flex hover:bg-red">
+                  <ReportButton reportText={blog.content} id={blog.id} type={"Post"} message={"Report Post"} />
+                </div>
+              </div>
+              <hr />
             </div>
           </div>
 
@@ -109,11 +117,10 @@ const BlogContent = () => {
             </div>
           </div>
         </div>
-        <ReportButton reportText={blog.content} id={blog.id} type={"Post"}></ReportButton>
         <RelatedBlogs tag={blog.tags[0]} postId={blog.id} />
         <CommentButton blogId={id} />
       </div>
-    </div>
+    </div >
   );
 };
 

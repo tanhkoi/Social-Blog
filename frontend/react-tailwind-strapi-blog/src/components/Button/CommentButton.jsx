@@ -202,11 +202,7 @@ const CommentButton = ({ blogId }) => {
                     >
                       Delete comment
                     </button>
-                    <button
-                      className="mx-4 py-2 text-black bg-white border-white hover:bg-white"
-                    >
-                      <ReportButton reportText={comment.content} id={comment.id} type={"Com"}></ReportButton>
-                    </button>
+                    <ReportButton reportText={comment.content} id={comment.id} type={"Com"} message={"Report comment"} />
                   </div>
                 </div>
               )}

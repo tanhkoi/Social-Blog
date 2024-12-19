@@ -32,7 +32,7 @@ const RelatedBlogs = ({ tag, postId }) => {
 
   return (
     <div className="related-blogs text-lg">
-      <h2 className="font-bold mt-5 mb-4">Bài viết nổi bật khác</h2>
+      <h2 className="font-bold mt-5 mb-4">Other related Blogs</h2>
       <div className="blogs-container flex flex-wrap gap-4">
         {blogs?.map((blog) => (
           <BlogCard
