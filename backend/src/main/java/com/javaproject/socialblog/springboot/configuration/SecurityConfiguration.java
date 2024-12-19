@@ -42,7 +42,10 @@ public class SecurityConfiguration {
             "/api/posts/null/{postId}",
             "/api/auth/google",
             "/api/posts/related/**",
-            "/api/audio/**"
+            "/api/posts/post-by-com-id/**",
+            "/api/audio/**",
+            "/api/perspective/**",
+            "/api/report-items/**"
     };
 
     @Bean

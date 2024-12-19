@@ -105,4 +105,9 @@ public class CommentServiceImpl implements CommentService {
 
         postRepository.save(post);
     }
+
+    @Override
+    public String getPostByCommentId(String id) {
+        return commentRepository.findById(id).get().getPostId();
+    }
 }

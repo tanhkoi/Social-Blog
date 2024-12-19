@@ -21,7 +21,8 @@ import TagPage from "./pages/Public/TagPage/TagPage";
 import TagList from "./pages/Public/TagPage/TagList";
 import PopularPage from "./pages/Public/PopularPage/PopularPage";
 import SnowfallEffect from "./components/Support/SnowfallEffect";
-import  FeedbackPage  from "./pages/Public/FeedbackPage/FeedbackPage";
+import ReportItemList from './components/Report/ReportItemList';
+import FeedbackPage from './components/FeedbackPage/FeedbackPage';
 
 import {
   CategoriesPage,
@@ -51,6 +52,7 @@ const AdminLayout = () => {
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="customers" element={<CustomerPage />} />
           <Route path="settings" element={<SettingPage />} />
+          <Route path="/report-items" element={<ReportItemList />} />
         </Routes>
         <ToastContainer />
       </div>

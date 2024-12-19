@@ -21,7 +21,7 @@ public class AudioController {
             return ResponseEntity.badRequest().build();
         }
 
-        String flaskUrl = "http://localhost:5000/generate-audio";
+        String flaskUrl = "http://localhost:5002/generate-audio";
 
         try {
             RestTemplate restTemplate = new RestTemplate();
