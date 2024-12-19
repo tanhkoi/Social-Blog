@@ -40,7 +40,7 @@ const ReportButton = ({ reportText, type, id, message }) => {
       className="mx-4 py-2 text-black bg-white border-white hover:bg-white item-center"
       onClick={reportContent}
     >
-      {message === "Report Post" ? <MdReport size={24} /> : message}
+      {message === "Report Post" ? <MdReport size={24} className="hover:text-red-500 cursor-pointer" /> : message}
     </button>
   );
 };
