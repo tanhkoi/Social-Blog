@@ -11,6 +11,7 @@ const BlogContent = () => {
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true); // Trạng thái loading
 
+
   // Fetch blog data when component mounts
   useEffect(() => {
     const fetchBlogData = async () => {
@@ -38,6 +39,11 @@ const BlogContent = () => {
 
     fetchBlogData();
   }, [id]);
+
+  // Gọi API Zalo TTS để lấy audio URL
+  // Trích xuất văn bản thuần túy từ sanitizedContent
+
+
 
   // Nếu đang loading, hiển thị hiệu ứng loading
   if (loading) {

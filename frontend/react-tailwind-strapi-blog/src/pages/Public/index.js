@@ -12,6 +12,7 @@ import SavedBlogsPage from "./SavedBlogsPage/SavedBlogsPage";
 import TagPage from "./TagPage/TagPage";
 import TagList from "./TagPage/TagList";
 import PopularPage from "./PopularPage/PopularPage";
+import FeedbackPage from "./FeedbackPage/FeedbackPage"
 
 export {
     Homepage,
@@ -27,5 +28,6 @@ export {
     SavedBlogsPage,
     TagPage,
     TagList,
-    PopularPage
+    PopularPage,
+    FeedbackPage
 };
