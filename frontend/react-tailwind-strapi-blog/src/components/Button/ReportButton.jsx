@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { toast } from 'react-toastify';
+import { MdReport } from "react-icons/md";
 
-const ReportButton = ({ reportText, type, id }) => {
+const ReportButton = ({ reportText, type, id, message }) => {
   const [reportStatus, setReportStatus] = useState(null);
 
   const reportContent = async () => {
@@ -34,9 +35,13 @@ const ReportButton = ({ reportText, type, id }) => {
   };
 
   return (
-    <div>
-      <button className="mx-4 py-2 text-black bg-white  border-white hover:bg-white" onClick={reportContent}>Report</button>
-    </div>
+
+    <button
+      className="mx-4 py-2 text-black bg-white border-white hover:bg-white item-center"
+      onClick={reportContent}
+    >
+      {message === "Report Post" ? <MdReport size={24} className="hover:text-red-500 cursor-pointer" /> : message}
+    </button>
   );
 };
 

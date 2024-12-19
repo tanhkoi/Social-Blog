@@ -51,7 +51,7 @@ public class CommentController {
     )
     @CheckUserEnabled
     public ResponseEntity<Void> deleteComment(@PathVariable String id) {
-        commentService.deleteComment(id);
+        commentService.deleteCommentR(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -2,6 +2,7 @@ package com.javaproject.socialblog.springboot.security.service.Impl;
 
 import com.javaproject.socialblog.springboot.model.*;
 import com.javaproject.socialblog.springboot.repository.BookmarkRepository;
+import com.javaproject.socialblog.springboot.repository.CommentRepository;
 import com.javaproject.socialblog.springboot.repository.LikeRepository;
 import com.javaproject.socialblog.springboot.repository.PostRepository;
 import com.javaproject.socialblog.springboot.security.dto.PostRequest;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+
+    private final CommentRepository commentRepository;
 
     private final UserService userService;
 
@@ -128,7 +131,44 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(String id) {
+        // lay post
+        Post post = postRepository.findById(id).orElseThrow();
+        // lay ds comments
+        List<Comment> comments = post.getComments();
+        // xoa ds comments
+        for (var c : comments) {
+            commentRepository.deleteById(c.getId());
+        }
+        // lay ds likes
+        List<Like> likes = post.getLikes();
+        // xoa ds likes
+        for (var l : likes) {
+            likeRepository.deleteById(l.getId());
+        }
+        // xoa post
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public String deletePostR(String id) {
+        // lay post
+        Post post = postRepository.findById(id).orElseThrow();
+        String userid = post.getAuthor().getId();
+        // lay ds comments
+        List<Comment> comments = post.getComments();
+        // xoa ds comments
+        for (var c : comments) {
+            commentRepository.deleteById(c.getId());
+        }
+        // lay ds likes
+        List<Like> likes = post.getLikes();
+        // xoa ds likes
+        for (var l : likes) {
+            likeRepository.deleteById(l.getId());
+        }
+        // xoa post
+        postRepository.deleteById(id);
+        return userid;
     }
 
     @Override

@@ -1,90 +1,110 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { GoogleLogin } from '@react-oauth/google';
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("userRole");
+
     if (token) {
-      navigate('/');
+      if (role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     }
   }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
+    setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch(`http://localhost:8080/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
 
       if (!response.ok) {
-        throw new Error('Login failed, please check your credentials!');
+        throw new Error("Invalid username or password!");
       }
 
       const data = await response.json();
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('profilePicture', data.profilePicture || '');
-      localStorage.setItem('userId', data.id);
-      toast.success('Login successful!', {
-        position: 'top-right',
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("username", data.username);
+      localStorage.setItem("profilePicture", data.profilePicture || "");
+      localStorage.setItem("userId", data.id);
+      localStorage.setItem("userRole", data.userRole);
+
+      toast.success("Login successful!", {
+        position: "top-right",
         autoClose: 3000,
       });
 
-      navigate('/');
+      if (data.userRole === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       setError(err.message);
       toast.error(err.message, {
-        position: 'top-right',
+        position: "top-right",
         autoClose: 3000,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleGoogleLogin = (credentialResponse) => {
+  const handleGoogleLogin = async (credentialResponse) => {
     const token = credentialResponse.credential;
 
-    fetch('http://localhost:8080/api/auth/google', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Google login failed!');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('username', data.username);
-        localStorage.setItem('profilePicture', data.profilePicture);
-        localStorage.setItem('userId', data.id);
-        console.log(data.id);
-        toast.success('Google login successful!', {
-          position: 'top-right',
-          autoClose: 3000,
-        });
-
-        navigate('/');
-      })
-      .catch((error) => {
-        toast.error(error.message, {
-          position: 'top-right',
-          autoClose: 3000,
-        });
+    try {
+      const response = await fetch(`http://localhost:8080/api/auth/google`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
       });
+
+      if (!response.ok) {
+        throw new Error("Google login failed!");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("username", data.username);
+      localStorage.setItem("profilePicture", data.profilePicture);
+      localStorage.setItem("userId", data.id);
+      localStorage.setItem("userRole", data.userRole);
+
+      toast.success("Google login successful!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+
+      if (data.userRole === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error(error.message, {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
   };
 
   return (
@@ -102,39 +122,44 @@ const Login = () => {
             <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
               <form onSubmit={handleLogin}>
                 <div className="mb-6">
+                  <label htmlFor="username" className="block mb-1 text-sm">Username</label>
                   <input
-                    onChange={(e) => setUsername(e.target.value)}
+                    id="username"
                     type="text"
-                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white border rounded focus:outline-none"
                     placeholder="Username"
-                    required
                     value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-6">
+                  <label htmlFor="password" className="block mb-1 text-sm">Password</label>
                   <input
-                    onChange={(e) => setPassword(e.target.value)}
+                    id="password"
                     type="password"
-                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white border rounded focus:outline-none"
                     placeholder="Password"
-                    required
                     value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="text-center lg:text-left">
                   <button
                     type="submit"
-                    className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-white transition duration-150 ease-in-out"
+                    className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700"
+                    disabled={isLoading}
                   >
-                    Login
+                    {isLoading ? "Logging in..." : "Login"}
                   </button>
                   <p className="text-sm font-semibold mt-2 pt-1 mb-0">
-                    Don’t have an account?{' '}
+                    Don’t have an account?{" "}
                     <Link
                       to="/register"
-                      className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out"
+                      className="text-red-600 hover:text-red-700"
                     >
-                      SignUp
+                      Sign Up
                     </Link>
                   </p>
                 </div>
@@ -143,12 +168,7 @@ const Login = () => {
               <div className="mt-4">
                 <GoogleLogin
                   onSuccess={handleGoogleLogin}
-                  onError={() => {
-                    toast.error('Google login failed!', {
-                      position: 'top-right',
-                      autoClose: 3000,
-                    });
-                  }}
+                  onError={() => toast.error("Google login failed!")}
                 />
               </div>
             </div>

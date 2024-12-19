@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CommentButton from "../Button/CommentButton";
 import RelatedBlogs from "./RelatedBlogs";
@@ -10,6 +10,7 @@ const BlogContent = () => {
   const { id } = useParams(); // Lấy id của bài blog từ URL
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true); // Trạng thái loading
+  const navigate = useNavigate();
 
   // Fetch blog data when component mounts
   useEffect(() => {
@@ -25,6 +26,7 @@ const BlogContent = () => {
         });
 
         if (!response.ok) {
+          navigate("/*");
           throw new Error("Failed to fetch blog data");
         }
         const blogData = await response.json();
@@ -38,6 +40,11 @@ const BlogContent = () => {
 
     fetchBlogData();
   }, [id]);
+
+  // Gọi API Zalo TTS để lấy audio URL
+  // Trích xuất văn bản thuần túy từ sanitizedContent
+
+
 
   // Nếu đang loading, hiển thị hiệu ứng loading
   if (loading) {
@@ -82,12 +89,20 @@ const BlogContent = () => {
               alt="Blog cover"
             />
             <h1 className="font-bold text-2xl my-1 pt-5">{blog.title}</h1>
-            <BlogAudio blogText={blog.content}></BlogAudio>
             <div className="pt-5 text-justify">
               <div
                 className="content"
                 dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-              ></div>
+              >
+              </div>
+              <hr className="mt-4" />
+              <div className="flex justify-between">
+                <BlogAudio blogText={blog.content} />
+                <div className="bg-white text-black p-4 flex hover:bg-red">
+                  <ReportButton reportText={blog.content} id={blog.id} type={"Post"} message={"Report Post"} />
+                </div>
+              </div>
+              <hr />
             </div>
           </div>
 
@@ -109,11 +124,10 @@ const BlogContent = () => {
             </div>
           </div>
         </div>
-        <ReportButton reportText={blog.content} id={blog.id} type={"Post"}></ReportButton>
         <RelatedBlogs tag={blog.tags[0]} postId={blog.id} />
         <CommentButton blogId={id} />
       </div>
-    </div>
+    </div >
   );
 };
 

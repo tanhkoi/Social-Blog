@@ -107,6 +107,24 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public String deleteCommentR(String id) {
+        Comment comment = commentRepository.findById(id).orElseThrow();
+        String userid = comment.getUser().getId();
+
+        Post post = postRepository.findById(comment.getPostId()).orElseThrow();
+        List<Comment> comments = post.getComments();
+
+        comments.removeIf(c -> c.getId().equals(id));
+
+        post.setComments(comments);
+
+        commentRepository.deleteById(id);
+
+        postRepository.save(post);
+        return userid;
+    }
+
+    @Override
     public String getPostByCommentId(String id) {
         return commentRepository.findById(id).get().getPostId();
     }

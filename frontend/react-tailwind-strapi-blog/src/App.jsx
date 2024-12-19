@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import Header from "./pages/Admin/Header";
 import Sidebar from "./pages/Admin/Sidebar";
 import Home from "./pages/Admin/Home";
@@ -21,7 +22,8 @@ import TagPage from "./pages/Public/TagPage/TagPage";
 import TagList from "./pages/Public/TagPage/TagList";
 import PopularPage from "./pages/Public/PopularPage/PopularPage";
 import SnowfallEffect from "./components/Support/SnowfallEffect";
-import ReportItemList from './components/Report/ReportItemList';
+import ReportItemList from "./components/Report/ReportItemList";
+import FeedbackPage from "./pages/Public/FeedbackPage/FeedbackPage";
 
 import {
   CategoriesPage,
@@ -29,6 +31,9 @@ import {
   CustomerPage,
   SettingPage,
 } from "./pages/Admin";
+
+// Helper function to get user role from localStorage
+const getUserRole = () => localStorage.getItem("userRole");
 
 const AdminLayout = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -38,13 +43,12 @@ const AdminLayout = () => {
     setOpenSidebarToggle(!openSidebarToggle);
   };
 
-  // Close sidebar when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         sidebarRef.current &&
         !sidebarRef.current.contains(event.target) &&
-        openSidebarToggle // Only act if the sidebar is open
+        openSidebarToggle
       ) {
         setOpenSidebarToggle(false);
       }
@@ -60,7 +64,7 @@ const AdminLayout = () => {
     <div className="grid-container">
       <Header OpenSidebar={OpenSidebar} />
       <Sidebar
-        ref={sidebarRef} // Pass the ref to the Sidebar component
+        ref={sidebarRef}
         openSidebarToggle={openSidebarToggle}
         OpenSidebar={OpenSidebar}
       />
@@ -71,12 +75,17 @@ const AdminLayout = () => {
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="customers" element={<CustomerPage />} />
           <Route path="settings" element={<SettingPage />} />
-          <Route path="/report-items" element={<ReportItemList />} />
+          <Route path="report-items" element={<ReportItemList />} />
         </Routes>
-        <ToastContainer />
       </div>
     </div>
   );
+};
+
+// Role-based Route Protection for Admin Pages
+const AdminRoute = ({ children }) => {
+  const userRole = getUserRole();
+  return userRole === "ADMIN" ? children : <Navigate to="/" />;
 };
 
 const App = () => {
@@ -85,13 +94,13 @@ const App = () => {
       <SnowfallEffect />
       <ToastContainer />
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Homepage />} />
         <Route path="/blog/:id" element={<BlogContentPage />} />
         <Route path="/about" element={<Aboutpage />} />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/support" element={<SupportPage />} />
-        <Route path="/admin/*" element={<AdminLayout />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/account" element={<AccountDetailPage />} />
         <Route path="/newpost" element={<NewPostPage />} />
@@ -100,6 +109,19 @@ const App = () => {
         <Route path="/category/:categoryName" element={<TagList />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/popular" element={<PopularPage />} />
+        <Route path="/feedback" element={<FeedbackPage />} />
+
+        {/* Admin Routes */}
+        <Route
+          path="/admin/*"
+          element={
+            <AdminRoute>
+              <AdminLayout />
+            </AdminRoute>
+          }
+        />
+
+        {/* Fallback Route */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
